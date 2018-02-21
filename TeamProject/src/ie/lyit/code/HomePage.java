@@ -246,8 +246,8 @@ public class HomePage extends JFrame{
 			/* If event equals > create account button,
 			 * AND either field does not contain original
 			 * text or empty string (All fields entered)
-			 * write customer to database
-			 * (TODO -- validate that customer is NEW)
+			 * write account to database
+			 * (TODO -- validate that account is NEW)
 			 * */
 			if(event == createAccBtn) {
 
@@ -261,16 +261,16 @@ public class HomePage extends JFrame{
 							emailText.getText().equals("") ||
 							passwordText.getText().equals(""))) {
 
-						//create customer with details taken from text fields
-						Account c = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
+						//create account with details taken from text fields
+						Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
 						//pass to DB handler (write to database)
-						DBConnector.writeCustomer(c);
+						DBConnector.writeAccount(a);
 
 						//dispose home page 
 						dispose();
 
 						//Jump to Order page
-						OrderPage op = new OrderPage(c);
+						OrderPage op = new OrderPage(a);
 						op.setTitle("Order");
 						//op.pack();
 						op.setSize(500, 300);
@@ -295,21 +295,21 @@ public class HomePage extends JFrame{
 				 * or contain original text
 				 * 
 				 * then make a query straight to the database,
-				 * read in the customer with the email supplied,
-				 * assign to a customer object
+				 * read in the account with the email supplied,
+				 * assign to a account object
 				 * */
 				if(!(emailText.getText().equalsIgnoreCase("Enter Email") || 
 						passwordText.getText().equalsIgnoreCase("Enter Password") ||
 						emailText.getText().equals("")  ||
 						passwordText.getText().equals(""))) {
 
-					Account c = DBConnector.readCustomer(emailText.getText());
+					Account a = DBConnector.readAccount(emailText.getText());
 
 					
-					/* if the customer object is NOT null,
+					/* if the account object is NOT null,
 					 * the customer was found in the database
 					 * */
-					if(!(c == null)) {
+					if(!(a == null)) {
 
 						/* if the customer is found in the database,
 						 * make sure they entered the correct password.
@@ -317,7 +317,7 @@ public class HomePage extends JFrame{
 						 * if so, display dialog box and let user know
 						 * 
 						 * */
-						if(c.getPassword().equals(passwordText.getText())) {
+						if(a.getPassword().equals(passwordText.getText())) {
 
 							JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
@@ -325,7 +325,7 @@ public class HomePage extends JFrame{
 							dispose();
 							
 							//Jump to Order page
-							OrderPage op = new OrderPage(c);
+							OrderPage op = new OrderPage(a);
 							op.setTitle("Order");
 							//op.pack();
 							op.setSize(500, 300);
@@ -337,18 +337,18 @@ public class HomePage extends JFrame{
 						 * let the user know and retry,
 						 * clearing password field
 						 * */
-						else if(!(c.getPassword().equals(passwordText.getText()))) {
+						else if(!(a.getPassword().equals(passwordText.getText()))) {
 							JOptionPane.showMessageDialog(null, "Please enter correct password", "Wrong Password", JOptionPane.INFORMATION_MESSAGE);
 							passwordText.setText(null);
 						}
 					}
 					/* if user equals NULL
-					 * then customer is not in database
-					 * i.e. Not a customer.
+					 * then account is not in database
+					 * i.e. Not a account.
 					 * 
 					 * inform user and retry.
 					 */
-					else if(c == null) {
+					else if(a == null) {
 						JOptionPane.showMessageDialog(null, "Email not found in database", "Create Account", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}

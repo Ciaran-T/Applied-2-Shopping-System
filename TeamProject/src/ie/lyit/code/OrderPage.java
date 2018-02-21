@@ -37,7 +37,7 @@ public class OrderPage extends JFrame {
 	
 	private JButton backBtn, placeOrder;
 	
-	public OrderPage(Account cust) {
+	public OrderPage(Account acc) {
 		
 		//north panel
 		northPanel = new JPanel();
@@ -66,7 +66,7 @@ public class OrderPage extends JFrame {
 		//name of customer
 		//set width
 		//make un-editable
-		name = new JTextField(cust.getfName() + " " + cust.getlName());
+		name = new JTextField(acc.getfName() + " " + acc.getlName());
 		name.setColumns(15);
 		name.setEditable(false);
 		//add text field to panel
@@ -74,14 +74,14 @@ public class OrderPage extends JFrame {
 		eastPanel.add(new JLabel());
 		
 		//email of customer
-		email = new JTextField(cust.getEmail());
+		email = new JTextField(acc.getEmail());
 		email.setEditable(false);
 		//add to panel
 		eastPanel.add(email);
 		eastPanel.add(new JLabel());
 		
 		//password of customer
-		password = new JTextField(cust.getPassword());
+		password = new JTextField(acc.getPassword());
 		password.setEditable(false);
 		//add to panel
 		eastPanel.add(password);

@@ -72,49 +72,49 @@ public class DBConnector {
 	}
 
 	
-	/* Customer methods
+	/* Account methods
 	 * 
-	 * take in customer object
+	 * take in account object
 	 * create connection to DB,
 	 * try execute query
 	*/
-	public static void writeCustomer(Account cust) {
+	public static void writeAccount(Account acc) {
 
 		createConnection(DB_URL, USER, PASSWORD);
 
 		try {
-			String query = insertCustomer(cust.getfName(), cust.getlName(), cust.getEmail(), cust.getPassword());
+			String query = insertAccount(acc.getfName(), acc.getlName(), acc.getEmail(), acc.getPassword());
 			stmt.executeUpdate(query);
 
-			System.out.println("Written Customer to DB successfully");
+			System.out.println("Written Account to DB successfully");
 
 		}catch(Exception e) {
-			System.out.println("Problem with write customer method ==> " + e.getMessage());
+			System.out.println("Problem with write account method ==> " + e.getMessage());
 		}finally {
 			closeConnection();
 		}
 	}
 
-	/* read customer from DB, 
+	/* read account from DB, 
 	 * create connection
 	 * 
 	 * retrieve results and place into a result set object
-	 * pass customer back 
+	 * pass account back 
 	 * 
 	 * */
-	public static Account readCustomer(String email) {
-		Account c = null;
+	public static Account readAccount(String email) {
+		Account a = null;
 		ResultSet res;
 		
 		createConnection(DB_URL, USER, PASSWORD);
 
 		try {
-			String query = queryCustomer(email);
+			String query = queryAccount(email);
 			res = stmt.executeQuery(query);
 
 			res.next();
 
-			c = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
+			a = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
 
 		}catch(SQLException e) {
 			System.out.println("SQL error ==>" + e.getMessage());
@@ -124,7 +124,7 @@ public class DBConnector {
 			closeConnection();
 		}
 
-		return c;
+		return a;
 	}
 
 	/*
@@ -133,7 +133,7 @@ public class DBConnector {
 	 * 
 	 * retrieving
 	 */
-	private static String queryCustomer(String email) {
+	private static String queryAccount(String email) {
 		String query = "SELECT FirstName, LastName, Email, Password FROM Accounts WHERE Email = '" + email + "';";
 
 		return query;
@@ -145,7 +145,7 @@ public class DBConnector {
 	 * 
 	 * pushing
 	 */
-	private static String insertCustomer(String fName, String lName, String email, String pass) {
+	private static String insertAccount(String fName, String lName, String email, String pass) {
 		String query = "INSERT INTO Accounts(Email, Password, FirstName, LastName) " 
 				+ " VALUES ('" + email + "', '" + pass + "', '" + fName + "', '" + lName + "') "
 				+ " ON DUPLICATE KEY UPDATE password='" + pass + "', firstname='" + fName + "', lastname='" + lName +"';";
@@ -163,7 +163,7 @@ public class DBConnector {
 	public static void main(String[] args) {
 		//DBConnector db = new DBConnector();
 		Account cus = new Account("John", "Smith", "jsmith@gmail.com", "johnspass");
-		DBConnector.writeCustomer(cus);
+		DBConnector.writeAccount(cus);
 		//Customer c = db.readCustomer("ctoman@mail.ie");
 		//System.out.println(c);
 		System.out.print("Finished");
