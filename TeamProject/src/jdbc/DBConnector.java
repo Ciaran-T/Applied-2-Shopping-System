@@ -1,11 +1,12 @@
 package jdbc;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import ie.lyit.data.Customer;
+import ie.lyit.data.Account;
 
 public class DBConnector {
 
@@ -77,7 +78,7 @@ public class DBConnector {
 	 * create connection to DB,
 	 * try execute query
 	*/
-	public static void writeCustomer(Customer cust) {
+	public static void writeCustomer(Account cust) {
 
 		createConnection(DB_URL, USER, PASSWORD);
 
@@ -101,8 +102,8 @@ public class DBConnector {
 	 * pass customer back 
 	 * 
 	 * */
-	public static Customer readCustomer(String email) {
-		Customer c = null;
+	public static Account readCustomer(String email) {
+		Account c = null;
 		ResultSet res;
 		
 		createConnection(DB_URL, USER, PASSWORD);
@@ -113,7 +114,7 @@ public class DBConnector {
 
 			res.next();
 
-			c = new Customer(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
+			c = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
 
 		}catch(SQLException e) {
 			System.out.println("SQL error ==>" + e.getMessage());
@@ -133,7 +134,7 @@ public class DBConnector {
 	 * retrieving
 	 */
 	private static String queryCustomer(String email) {
-		String query = "SELECT FirstName, LastName, Email, Password FROM Customer WHERE Email = '" + email + "';";
+		String query = "SELECT FirstName, LastName, Email, Password FROM Accounts WHERE Email = '" + email + "';";
 
 		return query;
 	}
@@ -145,7 +146,7 @@ public class DBConnector {
 	 * pushing
 	 */
 	private static String insertCustomer(String fName, String lName, String email, String pass) {
-		String query = "INSERT INTO Customer(Email, Password, FirstName, LastName) " 
+		String query = "INSERT INTO Accounts(Email, Password, FirstName, LastName) " 
 				+ " VALUES ('" + email + "', '" + pass + "', '" + fName + "', '" + lName + "') "
 				+ " ON DUPLICATE KEY UPDATE password='" + pass + "', firstname='" + fName + "', lastname='" + lName +"';";
 
@@ -161,7 +162,7 @@ public class DBConnector {
 	//main
 	public static void main(String[] args) {
 		//DBConnector db = new DBConnector();
-		Customer cus = new Customer("John", "Smith", "jsmith@gmail.com", "johnspass");
+		Account cus = new Account("John", "Smith", "jsmith@gmail.com", "johnspass");
 		DBConnector.writeCustomer(cus);
 		//Customer c = db.readCustomer("ctoman@mail.ie");
 		//System.out.println(c);

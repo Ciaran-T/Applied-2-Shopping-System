@@ -1,17 +1,18 @@
 package ie.lyit.data;
 
-public class Customer {
+
+public class Account {
 
 	private String fName, lName, email, password;
 
-	public Customer(String fName, String lName, String email, String password) {
+	public Account(String fName, String lName, String email, String password) {
 		super();
 		this.fName = fName;
 		this.lName = lName;
 		this.email = email;
 		this.password = password;
 	}
-	
+
 	public String getfName() {
 		return fName;
 	}
@@ -62,7 +63,7 @@ public class Customer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
+		Account other = (Account) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -71,10 +72,13 @@ public class Customer {
 		return true;
 	}
 
-	
+
 	@Override
 	public String toString() {
 		return "FirstName=" + fName + " LastName=" + lName + " Email=" + email + " Password=" + password;
 	}
-	
+
 }
+
+
+

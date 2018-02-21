@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import ie.lyit.data.Customer;
+import ie.lyit.data.Account;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -37,7 +37,7 @@ public class OrderPage extends JFrame {
 	
 	private JButton backBtn, placeOrder;
 	
-	public OrderPage(Customer cust) {
+	public OrderPage(Account cust) {
 		
 		//north panel
 		northPanel = new JPanel();
@@ -198,7 +198,7 @@ public class OrderPage extends JFrame {
 	//tester
 	//main method
 	public static void main(String[] args){
-		OrderPage op = new OrderPage(new Customer("Somebody","Else","elseIf@mail.ie","TestPass"));
+		OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass"));
 		op.setTitle("Order");		
 		op.pack();
 		//hp.setSize(500, 300);

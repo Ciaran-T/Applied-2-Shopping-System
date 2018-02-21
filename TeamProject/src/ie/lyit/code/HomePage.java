@@ -1,7 +1,7 @@
 package ie.lyit.code;
 
 import jdbc.DBConnector;
-import ie.lyit.data.Customer;
+import ie.lyit.data.Account;
 import ie.lyit.code.OrderPage;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -262,7 +262,7 @@ public class HomePage extends JFrame{
 							passwordText.getText().equals(""))) {
 
 						//create customer with details taken from text fields
-						Customer c = new Customer(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
+						Account c = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
 						//pass to DB handler (write to database)
 						DBConnector.writeCustomer(c);
 
@@ -303,7 +303,7 @@ public class HomePage extends JFrame{
 						emailText.getText().equals("")  ||
 						passwordText.getText().equals(""))) {
 
-					Customer c = DBConnector.readCustomer(emailText.getText());
+					Account c = DBConnector.readCustomer(emailText.getText());
 
 					
 					/* if the customer object is NOT null,
