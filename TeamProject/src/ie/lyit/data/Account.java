@@ -6,13 +6,13 @@ public class Account {
 	private String fName, lName, email, password;
 	private int orders;
 
-	public Account(String fName, String lName, String email, String password) {
+	public Account(String fName, String lName, String email, String password, int orders) {
 		super();
 		this.fName = fName;
 		this.lName = lName;
 		this.email = email;
 		this.password = password;
-		this.orders = 0;
+		this.orders = orders;
 	}
 
 	public String getfName() {
@@ -49,6 +49,11 @@ public class Account {
 	
 	public int getOrders() {
 		return this.orders;
+	}
+	
+	public void incrementOrders() {
+		
+		this.orders++;
 	}
 
 	//auto generated hash code

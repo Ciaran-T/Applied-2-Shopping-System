@@ -134,7 +134,7 @@ public class DBConnector {
 
 			res.next();
 
-			a = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
+			a = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4), res.getInt(5));
 
 		}catch(SQLException e) {
 			System.out.println("SQL error ==>" + e.getMessage());
@@ -154,7 +154,7 @@ public class DBConnector {
 	 * retrieving
 	 */
 	private static String queryAccount(String email) {
-		String query = "SELECT FirstName, LastName, Email, Password FROM Accounts WHERE Email = '" + email + "';";
+		String query = "SELECT FirstName, LastName, Email, Password, orders FROM Accounts WHERE Email = '" + email + "';";
 
 		return query;
 	}
@@ -172,14 +172,44 @@ public class DBConnector {
 
 		return query;
 	}
+	
+	//update account
+	private static void updateAccountOrders(Account acc) {
+		
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+		try {
+			String query = queryAccOrderUpdate(acc);
+			stmt.executeUpdate(query);
+
+			System.out.println("Incremented orders in acc table successfully");
+
+		}catch(Exception e) {
+			System.out.println("Problem with update order method method ==> " + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+		
+	}
+	
+	//query Account table
+	//update orders field
+	private static String queryAccOrderUpdate(Account acc) {
+		
+		return "UPDATE Accounts SET orders = " + acc.getOrders() + " WHERE Email='" + acc.getEmail() + "';";
+	}
+	
 
 	/*
 	 * TODO -- other queries to DB ( Order_Products)
 	 * */
 
 	//*****************************************
-	public static void writeOrder(Order o) {
+	public static void writeOrder(Order o, Account acc) {
 
+		//increment order in account
+		acc.incrementOrders();
 
 		ArrayList<Product> products = o.getProducts();
 		createConnection(DB_URL, USER, PASSWORD);
@@ -200,6 +230,12 @@ public class DBConnector {
 		 * (OrderProducts = Table to break many to many relationship)*/
 		
 		//writeOrderProducts(o.getOrderID(), products);
+		
+		
+		//update account which increment orders of account
+		//and writes the changes to table
+		updateAccountOrders(acc);
+		
 
 	}
 
@@ -216,6 +252,7 @@ public class DBConnector {
 		return query; 
 	}
 
+	
 	/*
 	// TODO - OrderProducts
 	private static void writeOrderProducts(int orderID, ArrayList<Product> products) {

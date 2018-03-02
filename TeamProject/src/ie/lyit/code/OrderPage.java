@@ -69,6 +69,7 @@ public class OrderPage extends JFrame {
 		
 		a = acc;
 		
+		
 		//north panel
 		northPanel = new JPanel();
 		
@@ -249,7 +250,7 @@ public class OrderPage extends JFrame {
 				
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
-				DBConnector.writeOrder(o);
+				DBConnector.writeOrder(o, a);
 			}
 			
 			/* if event equals add to cart button
@@ -307,7 +308,7 @@ public class OrderPage extends JFrame {
 	//tester
 	//main method
 	public static void main(String[] args){
-		OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass"));
+		OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass", 0));
 		op.setTitle("Order");		
 		//op.pack();
 		op.setSize(550, 400);

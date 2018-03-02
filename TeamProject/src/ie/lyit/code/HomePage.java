@@ -246,7 +246,7 @@ public class HomePage extends JFrame{
 
 			/* test connection
 			 * 
-			 * if internet is available
+			 * if Internet is available
 			 * 
 			 * check which button event came from
 			 */
@@ -275,7 +275,7 @@ public class HomePage extends JFrame{
 								passwordText.getText().equals(""))) {
 
 							//create account with details taken from text fields
-							Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
+							Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText(), 0);
 							//pass to DB handler (write to database)
 							DBConnector.writeAccount(a);
 
