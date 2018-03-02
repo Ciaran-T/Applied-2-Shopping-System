@@ -4,6 +4,7 @@ package ie.lyit.data;
 public class Account {
 
 	private String fName, lName, email, password;
+	private int orders;
 
 	public Account(String fName, String lName, String email, String password) {
 		super();
@@ -11,6 +12,7 @@ public class Account {
 		this.lName = lName;
 		this.email = email;
 		this.password = password;
+		this.orders = 0;
 	}
 
 	public String getfName() {
@@ -43,6 +45,10 @@ public class Account {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public int getOrders() {
+		return this.orders;
 	}
 
 	//auto generated hash code

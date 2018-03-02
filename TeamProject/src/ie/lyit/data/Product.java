@@ -7,14 +7,29 @@ public class Product {
 	private double price;
 	private String name;
 	private String type;
+	private int quantity;
+	private static int nextProductNo = 1;
+	
+	public Product(String name, double price, int id) {
+		
+		this.name = name;
+		this.price = price;
+		productNo = id;
+	}
+	public Product(double price, String name, String type, int quantity) {
+		
+		this.price = price;
+		this.name = name;
+		this.type = type;
+		this.quantity = quantity;
+		this.productNo = nextProductNo++;
+	}
 	
 	//setters and getters
 	public int getProductNo() {
 		return productNo;
 	}
-	public void setProductNo(int productNo) {
-		this.productNo = productNo;
-	}
+	
 	public double getPrice() {
 		return price;
 	}
@@ -34,13 +49,21 @@ public class Product {
 		this.type = type;
 	}
 	
+	public int getQuantity() {
+		
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		
+		this.quantity = quantity;
+	}
 	
 	//Hash code, equals and toString
 	
 	@Override
 	public String toString() {
 		
-		return "Product No. : " + productNo + "\nPrice : " + price + "\nName : " + name + "\nType : " + type;
+		return name + "       €" + price;
 	}
 	
 	

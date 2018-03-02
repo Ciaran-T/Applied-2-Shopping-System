@@ -2,7 +2,6 @@ package ie.lyit.code;
 
 import jdbc.DBConnector;
 import ie.lyit.data.Account;
-import ie.lyit.code.OrderPage;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -34,6 +33,7 @@ public class HomePage extends JFrame{
 	//Buttons
 	private JButton loginBtn, createAccBtn;
 
+	//constructor
 	public HomePage() {
 
 		
@@ -127,6 +127,7 @@ public class HomePage extends JFrame{
 
 		//disable resizing of frame
 		setResizable(false);
+		
 
 
 		
@@ -235,150 +236,170 @@ public class HomePage extends JFrame{
 	}//end of inner class
 
 	//inner ActionListener
-	private class ActionListenerClass implements ActionListener{
+	private class ActionListenerClass implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			//get source of event
-			Object event = e.getSource();
+			//check is Internet available
+			boolean conn = DBConnector.checkInternet();
 
-			/* If event equals > create account button,
-			 * AND either field does not contain original
-			 * text or empty string (All fields entered)
-			 * write account to database
-			 * (TODO -- validate that account is NEW)
-			 * */
-			if(event == createAccBtn) {
+			/* test connection
+			 * 
+			 * if internet is available
+			 * 
+			 * check which button event came from
+			 */
+			if(conn) {
 
-				if(!(fNameText.getText().equalsIgnoreCase("Enter first name") ||
-						lNameText.getText().equalsIgnoreCase("Enter last name") ||
-						emailText.getText().equalsIgnoreCase("Enter new email address") ||
-						passwordText.getText().equalsIgnoreCase("Enter new password"))) {
+				//get source of event
+				Object event = e.getSource();
 
-					if(!(fNameText.getText().equals("") ||
-							lNameText.getText().equals("") ||
-							emailText.getText().equals("") ||
+
+				/* If event equals > create account button,
+				 * AND either field does not contain original
+				 * text or empty string (All fields entered)
+				 * write account to database
+				 * (TODO -- validate that account is NEW)
+				 * */
+				if(event == createAccBtn) {
+
+					if(!(fNameText.getText().equalsIgnoreCase("Enter first name") ||
+							lNameText.getText().equalsIgnoreCase("Enter last name") ||
+							emailText.getText().equalsIgnoreCase("Enter new email address") ||
+							passwordText.getText().equalsIgnoreCase("Enter new password"))) {
+
+						if(!(fNameText.getText().equals("") ||
+								lNameText.getText().equals("") ||
+								emailText.getText().equals("") ||
+								passwordText.getText().equals(""))) {
+
+							//create account with details taken from text fields
+							Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
+							//pass to DB handler (write to database)
+							DBConnector.writeAccount(a);
+
+							//dispose home page 
+							dispose();
+
+							//Jump to Order page
+							ie.lyit.code.OrderPage.drawOrder(a);
+
+						}
+					}
+					//else account is not created
+					//dialog box to notify user
+					else{
+
+						JOptionPane.showMessageDialog(null, "Enter all Details to Create Account", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+
+				else if(event == loginBtn) {
+
+					/* If event equals login button,
+					 * and either of the fields are not blank,
+					 * or contain original text
+					 * 
+					 * then make a query straight to the database,
+					 * read in the account with the email supplied,
+					 * assign to a account object
+					 * */
+					if(!(emailText.getText().equalsIgnoreCase("Enter Email") || 
+							passwordText.getText().equalsIgnoreCase("Enter Password") ||
+							emailText.getText().equals("")  ||
 							passwordText.getText().equals(""))) {
 
-						//create account with details taken from text fields
-						Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText());
-						//pass to DB handler (write to database)
-						DBConnector.writeAccount(a);
+						Account a = DBConnector.readAccount(emailText.getText());
 
-						//dispose home page 
-						dispose();
 
-						//Jump to Order page
-						OrderPage op = new OrderPage(a);
-						op.setTitle("Order");
-						//op.pack();
-						op.setSize(500, 300);
-						op.setLocationRelativeTo(null);
-						op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-						op.setVisible(true);
+						/* if the account object is NOT null,
+						 * the account was found in the database
+						 * */
+						if(!(a == null)) {
 
+							/* if the account is found in the database,
+							 * make sure they entered the correct password.
+							 * 
+							 * if so, display dialog box and let user know
+							 * 
+							 * */
+							if(a.getPassword().equals(passwordText.getText())) {
+
+								JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+
+								//dispose home page
+								dispose();
+
+								//jump to order page
+								ie.lyit.code.OrderPage.drawOrder(a);
+							}
+							/* if password is wrong,
+							 * let the user know and retry,
+							 * clearing password field
+							 * */
+							else if(!(a.getPassword().equals(passwordText.getText()))) {
+								JOptionPane.showMessageDialog(null, "Please enter correct password", "Wrong Password", JOptionPane.INFORMATION_MESSAGE);
+								passwordText.setText(null);
+							}
+						}
+						/* if user equals NULL
+						 * then account is not in database
+						 * i.e. Not an account holder.
+						 * 
+						 * inform user and retry.
+						 */
+						else if(a == null) {
+							JOptionPane.showMessageDialog(null, "Email not found in database", "Create Account", JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
-				}
-				//else account is not created
-				//dialog box to notify user
-				else{
 
-					JOptionPane.showMessageDialog(null, "Enter all Details to Create Account", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+					/* if all else fails,
+					 * 
+					 * OR
+					 * 
+					 * the user tries to sign in with
+					 * original text or blank text
+					 * 
+					 * inform user and retry
+					 * */
+					else{
+						JOptionPane.showMessageDialog(null, "Enter email and password to sign in", "Wrong details", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			}
-
-			else if(event == loginBtn) {
-
-				/* If event equals login button,
-				 * and either of the fields are not blank,
-				 * or contain original text
-				 * 
-				 * then make a query straight to the database,
-				 * read in the account with the email supplied,
-				 * assign to a account object
-				 * */
-				if(!(emailText.getText().equalsIgnoreCase("Enter Email") || 
-						passwordText.getText().equalsIgnoreCase("Enter Password") ||
-						emailText.getText().equals("")  ||
-						passwordText.getText().equals(""))) {
-
-					Account a = DBConnector.readAccount(emailText.getText());
-
-					
-					/* if the account object is NOT null,
-					 * the customer was found in the database
-					 * */
-					if(!(a == null)) {
-
-						/* if the customer is found in the database,
-						 * make sure they entered the correct password.
-						 * 
-						 * if so, display dialog box and let user know
-						 * 
-						 * */
-						if(a.getPassword().equals(passwordText.getText())) {
-
-							JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-
-							//dispose home page
-							dispose();
-							
-							//Jump to Order page
-							OrderPage op = new OrderPage(a);
-							op.setTitle("Order");
-							//op.pack();
-							op.setSize(500, 300);
-							op.setLocationRelativeTo(null);
-							op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-							op.setVisible(true);
-						}
-						/* if password is wrong,
-						 * let the user know and retry,
-						 * clearing password field
-						 * */
-						else if(!(a.getPassword().equals(passwordText.getText()))) {
-							JOptionPane.showMessageDialog(null, "Please enter correct password", "Wrong Password", JOptionPane.INFORMATION_MESSAGE);
-							passwordText.setText(null);
-						}
-					}
-					/* if user equals NULL
-					 * then account is not in database
-					 * i.e. Not a account.
-					 * 
-					 * inform user and retry.
-					 */
-					else if(a == null) {
-						JOptionPane.showMessageDialog(null, "Email not found in database", "Create Account", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-				
-				/* if all else fails,
-				 * 
-				 * OR
-				 * 
-				 * the user tries to sign in with
-				 * original text or blank text
-				 * 
-				 * inform user and retry
-				 * */
-				else{
-					JOptionPane.showMessageDialog(null, "Enter email and password to sign in", "Wrong details", JOptionPane.INFORMATION_MESSAGE);
-				}
+			
+			//if no Internet
+			//inform user
+			else {
+				JOptionPane.showMessageDialog(null, "Check Your Internet Connection", "NO INTERNET", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
 
+	
+	//method to create window
+	public static void drawHome() {
+		
+		HomePage hp = new HomePage();
+		hp.setTitle("Create Account or Sign In");		
+		//hp.pack();
+		hp.setSize(550, 400);
+		hp.setLocationRelativeTo(null);
+		hp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		hp.setVisible(true);
+		
+		//fix to take focus off first text field
+		//request focus in window instead
+		hp.requestFocusInWindow(true);
+		
+		
+	}
 
 	//tester
 	//main method
 	public static void main(String[] args){
-		HomePage hp = new HomePage();
-		hp.setTitle("Create Account or Sign In");		
-		hp.pack();
-		//hp.setSize(500, 300);
-		hp.setLocationRelativeTo(null);
-		hp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		hp.setVisible(true);
+
+		drawHome();
 	}//end of main method
 }

@@ -2,33 +2,40 @@ package ie.lyit.data;
 
 import ie.lyit.data.Product;
 import java.util.ArrayList;
-import java.sql.Time;
+
+
 
 public class Order {
 	
 	private ArrayList<Product> products;
-	private int orderNo;
 	private double total;
-	private String quantity;
-	private Time time;
+	private String customerEmail;
+	private int orderID;
 	
 	
+	public Order() {
+		
+		products = new ArrayList<Product>();
+		total = 0.0;
+		
+	}
+	public Order(ArrayList<Product> products, double total, int orderID, String customerEmail) {
+		
+		this.products = new ArrayList<Product>(products);
+		this.total = total;
+		this.orderID = orderID;
+		this.customerEmail = customerEmail;
+	}
+	
+	public int getOrderID() {
+		return orderID;
+	}
 	//setters/getters
 	public ArrayList<Product> getProducts() {
 		return products;
 	}
 	
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
-	}
 	
-	public int getOrderNo() {
-		return orderNo;
-	}
-	
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
 	
 	public double getTotal() {
 		return total;
@@ -38,32 +45,19 @@ public class Order {
 		this.total = total;
 	}
 	
-	public String getQuantity() {
-		return quantity;
+	public String getCustomerEmail() {
+		return customerEmail;
 	}
 	
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
-	
-	public Time getTime() {
-		return time;
-	}
-	
-	public void setTime(Time time) {
-		this.time = time;
-	}
-
-	//equals, hashcode and toString
+	//hashCode and equals methods
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + orderNo;
+		result = prime * result + ((customerEmail == null) ? 0 : customerEmail.hashCode());
+		result = prime * result + orderID;
 		return result;
 	}
-
-	//testing unique orderNumber
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,12 +67,19 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		if (orderNo != other.orderNo)
+		if (customerEmail == null) {
+			if (other.customerEmail != null)
+				return false;
+		} else if (!customerEmail.equals(other.customerEmail))
+			return false;
+		if (orderID != other.orderID)
 			return false;
 		return true;
 	}
-
-
+	
+	
+	
+	
 	
 	
 	

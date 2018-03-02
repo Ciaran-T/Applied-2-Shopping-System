@@ -5,10 +5,17 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import ie.lyit.data.Account;
+import ie.lyit.data.Order;
+import ie.lyit.data.Product;
+import jdbc.DBConnector;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,6 +24,11 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 public class OrderPage extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	//panels
 	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
@@ -29,15 +41,33 @@ public class OrderPage extends JFrame {
 	private JLabel titleLabel, custDetailsLabel, shoppingCartLabel, productsLabel;
 	
 	//text fields
-	private JTextField name, email, password, total;
+	private JTextField name, email, password, totalTf;
 	
 	//scroll pane for lists
 	private JScrollPane westScrollPane, centerScrollPane;
-	private JList westJlist, centerJlist;
 	
-	private JButton backBtn, placeOrder;
+	//lists
+	private JList<Product> westJlist;
+	private JList<Product> centerJlist;
 	
+	//buttons
+	private JButton backBtn, placeOrder, addToCartBtn, removeBtn;
+	
+	//default model view for products
+	private DefaultListModel<Product> listModel;
+	
+	//total of order
+	private double total = 0;
+	
+	//account passed into OrderPage constructor
+	//assign to global variable
+	private Account a;
+	
+	
+	//constructor
 	public OrderPage(Account acc) {
+		
+		a = acc;
 		
 		//north panel
 		northPanel = new JPanel();
@@ -90,11 +120,11 @@ public class OrderPage extends JFrame {
 		eastPanel.add(new JLabel());
 		
 		//total bill
-		total = new JTextField("Total: €");
-		total.setEditable(false);
+		totalTf = new JTextField("Total: €");
+		totalTf.setEditable(false);
 		
 		//add to panel
-		eastPanel.add(total);
+		eastPanel.add(totalTf);
 		
 		
 		
@@ -105,6 +135,7 @@ public class OrderPage extends JFrame {
 		backBtn = new JButton("Back/Log Out");
 		southPanel.add(backBtn);
 		
+		//button to place order
 		placeOrder = new JButton("Place Order");
 		southPanel.add(placeOrder);
 		
@@ -122,17 +153,18 @@ public class OrderPage extends JFrame {
 		//add label to panel
 		westPanel.add(productsLabel, BorderLayout.NORTH);
 		
-		//test string array (replaced with products from DB)
-		String[] test = {"Apple","Orange","Orange","Orange","Orange","Orange","Orange"};
-		westJlist = new JList(test);
+		//read products from DB and populate product array
+		Product[] test = DBConnector.readProducts();
+		westJlist = new JList<Product>(test);
 		westScrollPane = new JScrollPane(westJlist);
-		westScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		westScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		//westScrollPane.setColumnHeader(shoppingCart);
 		
 		//add label to panel
 		//panel to frame
 		westPanel.add(westScrollPane, BorderLayout.CENTER);
+		addToCartBtn = new JButton("Add");
+		westPanel.add(addToCartBtn, BorderLayout.SOUTH);
 		add(westPanel, BorderLayout.WEST);
 		
 		
@@ -142,32 +174,45 @@ public class OrderPage extends JFrame {
 		shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
 		shoppingCartLabel.setFont(generalFont);
 		
+		//add to panel
 		centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
 		
+		//remove button
+		removeBtn = new JButton("Remove");
+		centerPanel.add(removeBtn, BorderLayout.SOUTH);
+		
 		//create list and passing into  scroll pane
-		//set vertical scroll bars
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList(test);
+		listModel = new DefaultListModel<Product>();
+		
+		centerJlist = new JList<Product>(listModel);
 		centerScrollPane = new JScrollPane(centerJlist);
-		centerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		centerPanel.add(centerScrollPane, BorderLayout.CENTER);
 		
-		add(centerPanel, BorderLayout.CENTER);
 		
-		//TODO -- create other listeners
-		//
-		//register listener on button
-		backBtn.addActionListener(new ActionListenerClass());
+		add(centerPanel, BorderLayout.CENTER);
+		setResizable(false);
+		
+		
+		//listeners on buttons
+		ActionListenerClass listener = new ActionListenerClass();
+		backBtn.addActionListener(listener);
+		addToCartBtn.addActionListener(listener);
+		removeBtn.addActionListener(listener);
+		placeOrder.addActionListener(listener);
 	}
 	
 	
 	//inner action listener
 	public class ActionListenerClass implements ActionListener{
 		
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			DecimalFormat df = new DecimalFormat("#0.00");
 			
 			//get source of event
 			Object event = e.getSource();
@@ -177,22 +222,86 @@ public class OrderPage extends JFrame {
 			 * */
 			if(event == backBtn) {
 				dispose();
-				HomePage hp = new HomePage();
-				hp.setTitle("Create Account or Sign In");		
-				hp.pack();
-				//hp.setSize(500, 300);
-				hp.setLocationRelativeTo(null);
-				hp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				hp.setVisible(true);
+				
+				//draw new Home page using path to draw method
+				ie.lyit.code.HomePage.drawHome();
 				
 			}
+			
+			/* if event equal place order button
+			 * 
+			 * get no. of product in list
+			 * create array list to store products
+			 * 
+			 * connect to DB to get last order No. given out
+			 * create order and write to DB
+			 * 
+			 * */
 			else if(event == placeOrder) {
 				
+				int noOfProducts = listModel.getSize();
 				
+				ArrayList<Product> prods = new ArrayList<>();
+				
+				for(int i = 0; i < noOfProducts; i++) {
+					prods.add(listModel.getElementAt(i));
+				}
+				
+				int id = DBConnector.getLastOrderID() + 1;
+				Order o = new Order(prods, total, id, a.getEmail());
+				DBConnector.writeOrder(o);
+			}
+			
+			/* if event equals add to cart button
+			 * 
+			 * add to model list
+			 * 
+			 * accumulate total (Decimal format, 2 decimal places)
+			 * set total text field to display total
+			 * 
+			 * */
+			else if(event == addToCartBtn) {
+				
+				Product item = westJlist.getSelectedValue();
+				if(item != null) {
+					listModel.addElement(item);
+					total += item.getPrice();
+					totalTf.setText("Total: €" + df.format(total));
+				}
+				
+			}
+			
+			/* if event equals remove button
+			 * 
+			 * remove selected item from list,
+			 * 
+			 * take away from total.
+			 * 
+			 * */
+			else if(event == removeBtn) {
+				
+				int item = (int)centerJlist.getSelectedIndex();
+				if(item != -1) {
+					Product p = listModel.remove(item);
+					total -= p.getPrice();
+					totalTf.setText("Total: €" + df.format(total));
+					
+				}
 			}
 		}
 	}
 	
+	public static void drawOrder(Account acc) {
+		
+		OrderPage op = new OrderPage(acc);
+		op.setTitle("Order");		
+		//op.pack();
+		op.setSize(550, 400);
+		op.setLocationRelativeTo(null);
+		op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		op.setVisible(true);
+		op.requestFocusInWindow(true);
+	}
 	
 	
 	//tester
@@ -200,8 +309,8 @@ public class OrderPage extends JFrame {
 	public static void main(String[] args){
 		OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass"));
 		op.setTitle("Order");		
-		op.pack();
-		//hp.setSize(500, 300);
+		//op.pack();
+		op.setSize(550, 400);
 		op.setLocationRelativeTo(null);
 		op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		op.setVisible(true);
