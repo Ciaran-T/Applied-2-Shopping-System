@@ -197,7 +197,7 @@ public class OrderPage extends JFrame {
 		setResizable(false);
 		
 		
-		//listeners on buttons
+		//add listeners on buttons
 		ActionListenerClass listener = new ActionListenerClass();
 		backBtn.addActionListener(listener);
 		addToCartBtn.addActionListener(listener);
@@ -251,6 +251,10 @@ public class OrderPage extends JFrame {
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
 				DBConnector.writeOrder(o, a);
+				
+				dispose();
+				
+				ie.lyit.code.DeliveryPage.drawDelivery(a, o);
 			}
 			
 			/* if event equals add to cart button

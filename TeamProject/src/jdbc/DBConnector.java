@@ -229,7 +229,7 @@ public class DBConnector {
 		/*TODO --- writing to order but not OrderProducts
 		 * (OrderProducts = Table to break many to many relationship)*/
 		
-		//writeOrderProducts(o.getOrderID(), products);
+		writeOrderProducts(o.getOrderID(), products);
 		
 		
 		//update account which increment orders of account
@@ -253,42 +253,61 @@ public class DBConnector {
 	}
 
 	
-	/*
-	// TODO - OrderProducts
+	
+	// OrderProducts
 	private static void writeOrderProducts(int orderID, ArrayList<Product> products) {
 
 		createConnection(DB_URL, USER, PASSWORD);
-		int qty = 0;
-		Product p = products.get(0);
 		
-		//TODO -- fix quantity -- holes in arrayList
+		int qty = 0;
+		
+		//dump list
+		ArrayList<Product> pr = new ArrayList<>();
+		
 		try {
-			for(int j = 1; j < products.size(); j++) {
+			do {
+			
+				//get first product and increment qty
+				Product p = products.get(0);
 				boolean gone = products.remove(p);
 				qty++;
+				
 				if(gone) {
-					for(int i = j +1; i < products.size(); i++) {
 
+					//loop through list to compare products
+					for(int i = 0; i < products.size(); i++) {
+
+						//if products are the same
 						if(products.get(i).equals(p)) {
 							qty++;
-							products.remove(i);
+							
+							//add to dump list
+							pr.add(products.get(i));
+							
 						}
 					}
 				}
+				
+				//query DB + reset qty
 				String query = insertOrderProducts(orderID, p.getProductNo(), qty);
 				stmt.executeUpdate(query);
 				qty = 0;
-			}
+				
+				//remove dump list
+				products.removeAll(pr);
+				
+			}while(!products.isEmpty()); // while products list is NOT empty
+			
 			System.out.println("Written Order to DB successfully");
 
 		}catch(Exception e) {
-			System.out.println("Problem with write order method ==> " + e.getMessage());
+			System.out.println("Problem with write order_products method ==> " + e.getMessage());
 		}finally {
 			closeConnection();
 		}
 
 	}
-	*/
+	
 
 	//order_products table
 	//DB query
@@ -354,8 +373,8 @@ public class DBConnector {
 	}
 
 
-	//get product at end of table
-	//take their number + 1
+	//get Order at end of table
+	//take that number + 1
 	public static int getLastOrderID() {
 
 		String query = "SELECT * FROM Orders ORDER BY OrderNo DESC;";
