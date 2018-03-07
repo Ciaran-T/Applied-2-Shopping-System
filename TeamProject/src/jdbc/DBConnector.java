@@ -202,10 +202,11 @@ public class DBConnector {
 	
 
 	/*
-	 * TODO -- other queries to DB ( Order_Products)
+	 * Queries to DB ( Order, Order_Products)
 	 * */
 
-	//*****************************************
+	//write order to order and order_product table
+	//update account table
 	public static void writeOrder(Order o, Account acc) {
 
 		//increment order in account
@@ -226,9 +227,8 @@ public class DBConnector {
 			closeConnection();
 		}
 
-		/*TODO --- writing to order but not OrderProducts
+		/* Writing to OrderProducts table
 		 * (OrderProducts = Table to break many to many relationship)*/
-		
 		writeOrderProducts(o.getOrderID(), products);
 		
 		
@@ -346,9 +346,10 @@ public class DBConnector {
 			String query = queryProduct();
 			res = stmt.executeQuery(query);
 
-			while(res.next()) {
-				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3)); //get name and price
-				products.add(pr);
+			while(res.next()) {				//get name, price, productNo and type
+				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4)); 
+				products.add(pr);  
+				
 			}
 
 
@@ -405,10 +406,29 @@ public class DBConnector {
 
 	}
 
+	
+	
+	//get meat products query
+	public static String queryMeat() {
+		
+		return "SELECT * FROM products WHERE Type='Meat';";
+	}
+	
+	//get dairy products query
+	public static String queryDiary() {
+		
+		return "SELECT * FROM Products WHERE Type='Diary';";
+	}
+	
+	//get Veg products query
+	public static String queryVeg() {
+		
+		return "SELECT * FROM Products WHERE Type='Veg';";
+	}
 
 	//get products from DB query
 	private static String queryProduct() {
-		String query = "SELECT Name, Price, ProductNo FROM Products;" ;
+		String query = "SELECT Name, Price, ProductNo, Type FROM Products;" ;
 
 		return query;
 	}
