@@ -166,8 +166,8 @@ public class DBConnector {
 	 * pushing
 	 */
 	private static String insertAccount(String fName, String lName, String email, String pass) {
-		String query = "INSERT INTO Accounts(Email, Password, FirstName, LastName) " 
-				+ " VALUES ('" + email + "', '" + pass + "', '" + fName + "', '" + lName + "') "
+		String query = "INSERT INTO Accounts(Email, Password, FirstName, LastName, orders) " 
+				+ " VALUES ('" + email + "', '" + pass + "', '" + fName + "', '" + lName + "', '" + 0 + "') "
 				+ " ON DUPLICATE KEY UPDATE password='" + pass + "', firstname='" + fName + "', lastname='" + lName +"';";
 
 		return query;
@@ -361,7 +361,7 @@ public class DBConnector {
 			closeConnection();
 		}
 
-		//Transfer products to String array
+		//Transfer products to array
 		int noOfProducts = products.size();
 		productList = new Product[noOfProducts];
 
@@ -375,7 +375,7 @@ public class DBConnector {
 
 
 	//get Order at end of table
-	//take that number + 1
+	//take that number
 	public static int getLastOrderID() {
 
 		String query = "SELECT * FROM Orders ORDER BY OrderNo DESC;";
