@@ -10,12 +10,14 @@ public class Product {
 	private int quantity;
 	private static int nextProductNo = 1;
 	
-	public Product(String name, double price, int id) {
+	public Product(String name, double price, int id, String type) {
 		
 		this.name = name;
 		this.price = price;
 		productNo = id;
+		this.type = type;
 	}
+	
 	public Product(double price, String name, String type, int quantity) {
 		
 		this.price = price;
@@ -63,7 +65,7 @@ public class Product {
 	@Override
 	public String toString() {
 		
-		return name + "       €" + price;
+		return "    " + name;
 	}
 	
 	
