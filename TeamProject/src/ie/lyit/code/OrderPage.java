@@ -31,17 +31,18 @@ public class OrderPage extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	//panels
-	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
+	private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, westPanel, southPanel;
 	
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//labels
-	private JLabel titleLabel, custDetailsLabel, shoppingCartLabel, productsLabel;
+	private JLabel titleLabel, orderDetailsLabel, shoppingCartLabel, productsLabel;
+	private JLabel custNameLabel, productPriceLabel, productTypeLabel;
 	
 	//text fields
-	private JTextField name, email, password, totalTf;
+	private JTextField nameTf, productTypeTf, productPriceTf, totalTf;
 	
 	//scroll pane for lists
 	private JScrollPane westScrollPane, centerScrollPane;
@@ -85,40 +86,63 @@ public class OrderPage extends JFrame {
 		
 		
 		
-		//east panel
-		eastPanel = new JPanel(new GridLayout(8, 1));
+		//east top panel to hold title
+		eastTopPanel = new JPanel(new BorderLayout());
+		
+		//east panel to add to eastTopPanel
+		eastPanel = new JPanel(new GridLayout(7, 1));
+		
 		//label and set alignment
-		custDetailsLabel = new JLabel("Account Details");
-		custDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
-		custDetailsLabel.setFont(generalFont);
+		orderDetailsLabel = new JLabel("Order Details");
+		orderDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
+		orderDetailsLabel.setFont(generalFont);
+		
 		//add label to panel
-		eastPanel.add(custDetailsLabel);
+		eastTopPanel.add(orderDetailsLabel, BorderLayout.NORTH);
+		
+		//add east panel to east top panel
+		eastTopPanel.add(eastPanel, BorderLayout.CENTER);
 		
 		//name of customer
 		//set width
 		//make un-editable
-		name = new JTextField(acc.getfName() + " " + acc.getlName());
-		name.setColumns(15);
-		name.setEditable(false);
+		nameTf = new JTextField(acc.getfName() + " " + acc.getlName());
+		nameTf.setColumns(15);
+		nameTf.setEditable(false);
+		
+		//create label and add to panel
+		//set alignment				
+		custNameLabel = new JLabel("<html><u> Customer Name </u></html");//used to underline label
+		eastPanel.add(custNameLabel);
+		custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		//add text field to panel
-		eastPanel.add(name);
-		eastPanel.add(new JLabel());
+		eastPanel.add(nameTf);
 		
-		//email of customer
-		email = new JTextField(acc.getEmail());
-		email.setEditable(false);
-		//add to panel
-		eastPanel.add(email);
-		eastPanel.add(new JLabel());
+		//create label and add to panel
+		//set alignment
+		productTypeLabel = new JLabel("<html><u> Product Type </u></html");
+		eastPanel.add(productTypeLabel);
+		productTypeLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		//password of customer
-		password = new JTextField(acc.getPassword());
-		password.setEditable(false);
+		//product type text field
+		productTypeTf = new JTextField("");
+		productTypeTf.setEditable(false);
 		//add to panel
-		eastPanel.add(password);
+		eastPanel.add(productTypeTf);
+		
+		//create product price label
+		productPriceLabel = new JLabel("<html><u> Product Price </u></html");
+		eastPanel.add(productPriceLabel);
+		productPriceLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		//price of product
+		productPriceTf = new JTextField("");
+		productPriceTf.setEditable(false);
+		//add to panel
+		eastPanel.add(productPriceTf);
 		//add panel to frame
-		add(eastPanel, BorderLayout.EAST);
-		eastPanel.add(new JLabel());
+		add(eastTopPanel, BorderLayout.EAST);
+		//eastPanel.add(new JLabel());
 		
 		//total bill
 		totalTf = new JTextField("Total: €");
@@ -182,10 +206,11 @@ public class OrderPage extends JFrame {
 		removeBtn = new JButton("Remove");
 		centerPanel.add(removeBtn, BorderLayout.SOUTH);
 		
-		//create list and passing into  scroll pane
-		//set horizontal scroll bars to NEVER
+		//create model list
 		listModel = new DefaultListModel<Product>();
 		
+		//create list and passing into  scroll pane
+		//set horizontal scroll bars to NEVER
 		centerJlist = new JList<Product>(listModel);
 		centerScrollPane = new JScrollPane(centerJlist);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -213,6 +238,7 @@ public class OrderPage extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+			//format number to two decimal places
 			DecimalFormat df = new DecimalFormat("#0.00");
 			
 			//get source of event
@@ -225,7 +251,7 @@ public class OrderPage extends JFrame {
 				dispose();
 				
 				//draw new Home page using path to draw method
-				ie.lyit.code.HomePage.drawHome();
+				HomePage.drawHome();
 				
 			}
 			
@@ -236,6 +262,8 @@ public class OrderPage extends JFrame {
 			 * 
 			 * connect to DB to get last order No. given out
 			 * create order and write to DB
+			 * 
+			 * dispose order page and jump to delivery page
 			 * 
 			 * */
 			else if(event == placeOrder) {
@@ -254,7 +282,7 @@ public class OrderPage extends JFrame {
 				
 				dispose();
 				
-				ie.lyit.code.DeliveryPage.drawDelivery(a, o);
+				DeliveryPage.drawDelivery(a, o);
 			}
 			
 			/* if event equals add to cart button
@@ -272,6 +300,10 @@ public class OrderPage extends JFrame {
 					listModel.addElement(item);
 					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
+					
+					//set details of product in east panel
+					productPriceTf.setText("" + item.getPrice());
+					productTypeTf.setText("" + item.getType());
 				}
 				
 			}
@@ -290,6 +322,10 @@ public class OrderPage extends JFrame {
 					Product p = listModel.remove(item);
 					total -= p.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
+					
+					productPriceTf.setText("-" + p.getPrice());
+					productTypeTf.setText("" + p.getType());
+					
 					
 				}
 			}
