@@ -298,7 +298,7 @@ public class DBConnector {
 				
 			}while(!products.isEmpty()); // while products list is NOT empty
 			
-			System.out.println("Written Order to DB successfully");
+			System.out.println("Written Order_Products to DB successfully");
 
 		}catch(Exception e) {
 			System.out.println("Problem with write order_products method ==> " + e.getMessage());
@@ -325,21 +325,20 @@ public class DBConnector {
 	 * retrieve results and place into a result set object,
 	 * iterate over result set,
 	 * create product object with row value's contained in result set.
+	 * add to product array list
 	 * 
 	 * catch any exceptions,
-	 * for loop to put ArrayList products into Array products
-	 * (i.e. list model takes Array not ArrayList)
 	 * 
-	 * pass product array back 
+	 * 
+	 * pass product array list back 
 	 * 
 	 * */
-	public static Product[] readProducts() {
+	public static ArrayList<Product> readProducts() {
+		
 		ArrayList<Product> products = new ArrayList<>();
-		Product[] productList;
 		ResultSet res;
 
 		createConnection(DB_URL, USER, PASSWORD);
-
 
 
 		try {
@@ -360,17 +359,9 @@ public class DBConnector {
 		}finally {
 			closeConnection();
 		}
+		
 
-		//Transfer products to array
-		int noOfProducts = products.size();
-		productList = new Product[noOfProducts];
-
-		for(int i = 0; i < noOfProducts; i++) {
-
-			productList[i] = products.get(i);
-		}
-
-		return productList;
+		return products;
 	}
 
 
