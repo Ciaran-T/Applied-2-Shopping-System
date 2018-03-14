@@ -5,8 +5,11 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import ie.lyit.data.Account;
 import ie.lyit.data.Order;
@@ -15,11 +18,15 @@ import jdbc.DBConnector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -48,14 +55,15 @@ public class OrderPage extends JFrame {
 	private JScrollPane westScrollPane, centerScrollPane;
 	
 	//lists
-	private JList<Product> westJlist;
-	private JList<Product> centerJlist;
+	private JList<ImageIcon> westJlist;
+	private JList<ImageIcon> centerJlist;
 	
 	//buttons
 	private JButton backBtn, placeOrder, addToCartBtn, removeBtn;
 	
 	//default model view for products
-	private DefaultListModel<Product> listModel;
+	private DefaultListModel<ImageIcon> listModel;
+	private DefaultListModel<ImageIcon> productModel;
 	
 	//total of order
 	private double total = 0;
@@ -63,6 +71,9 @@ public class OrderPage extends JFrame {
 	//account passed into OrderPage constructor
 	//assign to global variable
 	private Account a;
+	
+	//hash map to map image to product
+	private HashMap<ImageIcon, Product> imageMap; 
 	
 	
 	//constructor
@@ -112,7 +123,7 @@ public class OrderPage extends JFrame {
 		
 		//create label and add to panel
 		//set alignment				
-		custNameLabel = new JLabel("<html><u> Customer Name </u></html");//used to underline label
+		custNameLabel = new JLabel("<html><u>Customer Name</u></html");//used to underline label
 		eastPanel.add(custNameLabel);
 		custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		//add text field to panel
@@ -171,16 +182,23 @@ public class OrderPage extends JFrame {
 		//west panel
 		//shopping cart
 		westPanel = new JPanel(new BorderLayout());
-		productsLabel = new JLabel("Products   ");
+		productsLabel = new JLabel("Products");
 		productsLabel.setFont(generalFont);
 		productsLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//add label to panel
 		westPanel.add(productsLabel, BorderLayout.NORTH);
 		
-		//read products from DB and populate product array
-		Product[] test = DBConnector.readProducts();
-		westJlist = new JList<Product>(test);
+		//read products from DB and populate product array list
+		ArrayList<Product> test = DBConnector.readProducts();
+		
+		//populate list with images
+		productModel = createProductModel(test);
+		
+		//pass product model list into JList
+		westJlist = new JList<ImageIcon>(productModel);
+		//set width of list
+		westJlist.setFixedCellWidth(100);
 		westScrollPane = new JScrollPane(westJlist);
 		westScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		//westScrollPane.setColumnHeader(shoppingCart);
@@ -207,11 +225,12 @@ public class OrderPage extends JFrame {
 		centerPanel.add(removeBtn, BorderLayout.SOUTH);
 		
 		//create model list
-		listModel = new DefaultListModel<Product>();
+		listModel = new DefaultListModel<ImageIcon>();
 		
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList<Product>(listModel);
+		centerJlist = new JList<ImageIcon>(listModel);
+		
 		centerScrollPane = new JScrollPane(centerJlist);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
@@ -260,6 +279,9 @@ public class OrderPage extends JFrame {
 			 * get no. of product in list
 			 * create array list to store products
 			 * 
+			 * get product by selected image
+			 * add products to array list
+			 * 
 			 * connect to DB to get last order No. given out
 			 * create order and write to DB
 			 * 
@@ -273,16 +295,22 @@ public class OrderPage extends JFrame {
 				ArrayList<Product> prods = new ArrayList<>();
 				
 				for(int i = 0; i < noOfProducts; i++) {
-					prods.add(listModel.getElementAt(i));
+					ImageIcon img = listModel.getElementAt(i);
+					Product prod = imageMap.get(img);
+					prods.add(prod);
+					
 				}
 				
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
 				DBConnector.writeOrder(o, a);
 				
-				dispose();
 				
+				//draw delivery page
 				DeliveryPage.drawDelivery(a, o);
+				
+				//dispose order page
+				dispose();
 			}
 			
 			/* if event equals add to cart button
@@ -295,15 +323,16 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-				Product item = westJlist.getSelectedValue();
+				ImageIcon item = westJlist.getSelectedValue();
+				Product product = imageMap.get(item);
 				if(item != null) {
 					listModel.addElement(item);
-					total += item.getPrice();
+					total += product.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
-					productPriceTf.setText("" + item.getPrice());
-					productTypeTf.setText("" + item.getType());
+					productPriceTf.setText("" + product.getPrice());
+					productTypeTf.setText("" + product.getType());
 				}
 				
 			}
@@ -318,11 +347,16 @@ public class OrderPage extends JFrame {
 			else if(event == removeBtn) {
 				
 				int item = (int)centerJlist.getSelectedIndex();
+				
+				//if item equals -1, no element is selected
 				if(item != -1) {
-					Product p = listModel.remove(item);
+					ImageIcon icon = listModel.remove(item);
+					//get product by image
+					Product p = imageMap.get(icon);
 					total -= p.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
+					//fill fields in with details of product
 					productPriceTf.setText("-" + p.getPrice());
 					productTypeTf.setText("" + p.getType());
 					
@@ -331,6 +365,65 @@ public class OrderPage extends JFrame {
 			}
 		}
 	}
+	
+	
+	/* create model list of images
+	 * 
+	 * initialize hash map and list model
+	 * 
+	 * create path to pictures
+	 * create directory/file and pass in path
+	 * 
+	 * create array of files
+	 * 
+	 * for every product in the product array list
+	 * 			for every file in the file array
+	 * 
+	 * 				compare names to find the right picture.
+	 * 					once found, add product to list,
+	 * 					map the image to product
+	 * 						- and break out of inner for each loop
+	 * 				
+	 * 				catch exceptions
+	 * 
+	 * return list of images
+	 * 
+	 */
+	private DefaultListModel<ImageIcon> createProductModel(ArrayList<Product> prods) {
+		
+		imageMap = new HashMap<>();
+		ImageIcon icon;
+
+		DefaultListModel<ImageIcon> temp = new DefaultListModel<>();
+		
+		String pathName = "src/pictures";
+		
+		File dir = new File(pathName);
+		File[] files = dir.listFiles();
+		
+		for(Product p: prods) {
+			
+			for(File f: files) {
+				
+				if(f.getName().contains(p.getName())) {
+					try {
+						icon = new ImageIcon(ImageIO.read(f));
+						temp.addElement(icon);
+						imageMap.put(icon, p);
+						break;
+					} catch (IOException e) {
+						System.out.println("Input/Output Error");
+					}
+				}
+			}
+		}
+		
+		
+		return temp;
+		
+	}
+	
+	
 	
 	public static void drawOrder(Account acc) {
 		
@@ -355,5 +448,6 @@ public class OrderPage extends JFrame {
 		op.setLocationRelativeTo(null);
 		op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		op.setVisible(true);
+		//op.
 	}//end of main method
 }
