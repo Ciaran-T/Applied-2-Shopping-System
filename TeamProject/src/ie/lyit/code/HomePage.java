@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class HomePage extends JFrame{
 	/**
@@ -18,7 +21,7 @@ public class HomePage extends JFrame{
 	//frame default layout is border layout,
 	//panels for each section
 	//in BorderLayout
-	private JPanel northPanel, eastPanel, westPanel;
+	private JPanel northPanel, eastPanel, westPanel, centerPanel;
 
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
@@ -31,7 +34,7 @@ public class HomePage extends JFrame{
 	private JLabel titleLabel, existingUser, newUser;
 
 	//Buttons
-	private JButton loginBtn, createAccBtn;
+	private JButton loginBtn, createAccBtn, adminBtn;
 
 	//constructor
 	public HomePage() {
@@ -129,6 +132,23 @@ public class HomePage extends JFrame{
 		setResizable(false);
 		
 
+		centerPanel = new JPanel(new GridLayout(8,0));
+		adminBtn = new JButton("Administrator");
+		
+		
+		
+		//center panel, admin link
+		//add blank labels to make all buttons match
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		centerPanel.add(new JLabel());
+		
+		centerPanel.add(adminBtn);
+		add(centerPanel);
 
 		
 		//Listeners
@@ -145,6 +165,7 @@ public class HomePage extends JFrame{
 		//add action listens to button
 		createAccBtn.addActionListener(new ActionListenerClass());
 		loginBtn.addActionListener(new ActionListenerClass());
+		adminBtn.addActionListener(new ActionListenerClass());
 
 	}//end of constructor
 
@@ -260,6 +281,7 @@ public class HomePage extends JFrame{
 				 * AND either field does not contain original
 				 * text or empty string (All fields entered)
 				 * write account to database
+				 * 
 				 * (TODO -- validate that account is NEW)
 				 * */
 				if(event == createAccBtn) {
@@ -276,14 +298,18 @@ public class HomePage extends JFrame{
 
 							//create account with details taken from text fields
 							Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText(), 0);
+							
 							//pass to DB handler (write to database)
 							DBConnector.writeAccount(a);
-
-							//dispose home page 
-							dispose();
+							//inform user that account has been created
+							JOptionPane.showMessageDialog(null, "Your new Account has been created", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+							
 
 							//Jump to Order page
-							ie.lyit.code.OrderPage.drawOrder(a);
+							OrderPage.drawOrder(a);
+							
+							//dispose home page 
+							dispose();
 
 						}
 					}
@@ -332,7 +358,7 @@ public class HomePage extends JFrame{
 								dispose();
 
 								//jump to order page
-								ie.lyit.code.OrderPage.drawOrder(a);
+								OrderPage.drawOrder(a);
 							}
 							/* if password is wrong,
 							 * let the user know and retry,
@@ -365,6 +391,17 @@ public class HomePage extends JFrame{
 					 * */
 					else{
 						JOptionPane.showMessageDialog(null, "Enter email and password to sign in", "Wrong details", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				//if event equals admin button
+				else if(event == adminBtn) {
+					
+					try {
+						//open desktop default browser -- Test
+						Desktop.getDesktop().browse(new URI("www.google.com"));
+					} catch (IOException | URISyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 			}
