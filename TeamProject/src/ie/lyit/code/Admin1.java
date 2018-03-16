@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,12 +33,17 @@ public class Admin1 extends JFrame {
 	
 	//panels
 	private JPanel northPanel, centerPanel;
+	//blank panels
+	private JPanel eastPanel, westPanel;
 	
 	//label
 	private JLabel detailLabel;
 	
 	//text fields
 	private JTextField usernameTf, passwordTf;
+	
+	//button
+	private JButton loginBtn;
 	
 	//constructor
 	public Admin1() {
@@ -67,7 +74,9 @@ public class Admin1 extends JFrame {
 		
 		//create text fields
 		usernameTf = new JTextField("Enter Username");
+		usernameTf.setColumns(100);
 		passwordTf = new JTextField("Enter Password");
+		passwordTf.setColumns(100);
 
 		//add to panel
 		centerPanel.add(usernameTf);
@@ -75,7 +84,25 @@ public class Admin1 extends JFrame {
 		centerPanel.add(passwordTf);
 		
 		
+		//create login button
+		loginBtn = new JButton("Login");
+		
+		//add to panel
+		centerPanel.add(new JLabel());//blank space
+		centerPanel.add(loginBtn);
+		
+		
+		//create blank panels
+		eastPanel = new JPanel();
+		westPanel = new JPanel();
+		//add panels to frame
+		add(eastPanel, BorderLayout.EAST);
+		add(westPanel, BorderLayout.WEST);
+		
+		
 	}
+	
+	
 	
 	//draw GUI
 	public static void drawAdmin1() {
