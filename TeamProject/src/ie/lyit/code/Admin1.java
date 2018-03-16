@@ -26,6 +26,7 @@ public class Admin1 extends JFrame {
 	private JLabel titleLabel = new JLabel("Simple Shopping Service");
 	//font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
+	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
 	
 	//panels
 	private JPanel northPanel, centerPanel;
@@ -48,7 +49,11 @@ public class Admin1 extends JFrame {
 		//center panel
 		centerPanel = new JPanel(new GridLayout(7, 1));
 		//create label
-		detailLabel = new JLabel("Enter Administrator Username and Password");
+		detailLabel = new JLabel("Enter Administrator details");
+		//set font and alignment
+		detailLabel.setFont(generalFont);
+		detailLabel.setHorizontalAlignment(JLabel.CENTER);
+		
 		
 		//add to panel
 		centerPanel.add(new JLabel());//blank space
