@@ -9,10 +9,12 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Admin1 extends JFrame {
 	
@@ -25,8 +27,11 @@ public class Admin1 extends JFrame {
 	//font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
-	//panel
-	private JPanel northPanel;
+	//panels
+	private JPanel northPanel, centerPanel;
+	
+	//label
+	private JLabel detailLabel;
 	
 	//constructor
 	public Admin1() {
@@ -39,6 +44,20 @@ public class Admin1 extends JFrame {
 		//add to frame
 		add(northPanel, BorderLayout.NORTH);
 		
+		
+		//center panel
+		centerPanel = new JPanel(new GridLayout(7, 1));
+		//create label
+		detailLabel = new JLabel("Enter Administrator Username and Password");
+		
+		//add to panel
+		centerPanel.add(new JLabel());//blank space
+		centerPanel.add(detailLabel);
+		
+		//add panel to frame
+		add(centerPanel, BorderLayout.CENTER);
+		
+		
 	}
 	
 	//draw GUI
@@ -47,7 +66,7 @@ public class Admin1 extends JFrame {
 		Admin1 a1 = new Admin1();
 		a1.setTitle("Administrator");		
 		//op.pack();
-		a1.setSize(550, 400);
+		a1.setSize(500, 300);
 		a1.setLocationRelativeTo(null);
 		a1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		a1.setVisible(true);
