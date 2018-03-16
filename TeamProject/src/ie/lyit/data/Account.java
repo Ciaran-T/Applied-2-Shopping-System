@@ -1,3 +1,15 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: Account Class,
+ * 		 Methods:
+ * 				- Set instance variables.
+ * 				- Get instance variables.
+ * 				- Equals, toString and hashCode.
+ * 
+ * 
+ */	
+
+
 package ie.lyit.data;
 
 

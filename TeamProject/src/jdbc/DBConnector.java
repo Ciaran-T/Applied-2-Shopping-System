@@ -1,3 +1,21 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: Database Connector Class,
+ * 		 Methods:
+ * 				- Create connection to DB.
+ * 				- Close connection to DB
+ * 				- Read and write, to and from the Account table.
+ * 				- Read from the product table.
+ * 				- Read and write, to and from the Order table.
+ * 				- Write to the Order_Products table.
+ * 				- Get product by type.
+ * 				- Get last Order number given out.
+ * 				- Check if Internet is available.
+ * 
+ *  
+ */	
+
+
 package jdbc;
 
 import java.io.IOException;

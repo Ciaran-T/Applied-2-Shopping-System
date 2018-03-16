@@ -1,3 +1,11 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: GUI application delivery page template.
+ * 
+ * 
+ */	
+
+
 package ie.lyit.code;
 
 import java.awt.BorderLayout;

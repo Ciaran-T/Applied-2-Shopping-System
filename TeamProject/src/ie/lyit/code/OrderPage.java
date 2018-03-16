@@ -1,3 +1,15 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: GUI application order page.
+ * 		 Methods:
+ * 		 		- Populate model list of image icons.
+ * 		 		- Draw GUI.
+ * 
+ * 		 Classes:
+ * 				- Action Listener
+ */	 
+
+
 package ie.lyit.code;
 
 import java.awt.BorderLayout;

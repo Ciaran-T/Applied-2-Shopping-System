@@ -1,3 +1,15 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: Order Class,
+ * 		 Methods:
+ * 				- Set instance variables.
+ * 				- Get instance variables.
+ * 				- Equals and hashCode.
+ * 
+ * 
+ */	
+
+
 package ie.lyit.data;
 
 import ie.lyit.data.Product;
@@ -48,6 +60,7 @@ public class Order {
 	public String getCustomerEmail() {
 		return customerEmail;
 	}
+	
 	
 	//hashCode and equals methods
 	@Override

@@ -1,3 +1,15 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: GUI application home page.
+ * 		 Methods:
+ * 		 		- Draw GUI.
+ * 		 
+ * 		 Classes:
+ * 				- Action Listener
+ * 				- Focus Listener
+*/
+
+
 package ie.lyit.code;
 
 import jdbc.DBConnector;
