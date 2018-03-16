@@ -8,6 +8,7 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -34,6 +35,9 @@ public class Admin1 extends JFrame {
 	//label
 	private JLabel detailLabel;
 	
+	//text fields
+	private JTextField usernameTf, passwordTf;
+	
 	//constructor
 	public Admin1() {
 		
@@ -54,13 +58,21 @@ public class Admin1 extends JFrame {
 		detailLabel.setFont(generalFont);
 		detailLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		
 		//add to panel
 		centerPanel.add(new JLabel());//blank space
 		centerPanel.add(detailLabel);
 		
 		//add panel to frame
 		add(centerPanel, BorderLayout.CENTER);
+		
+		//create text fields
+		usernameTf = new JTextField("Enter Username");
+		passwordTf = new JTextField("Enter Password");
+
+		//add to panel
+		centerPanel.add(usernameTf);
+		centerPanel.add(new JLabel());//blank space
+		centerPanel.add(passwordTf);
 		
 		
 	}
