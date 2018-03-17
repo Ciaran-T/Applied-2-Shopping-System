@@ -1,6 +1,8 @@
 /* Author: Ciaran Toman
  * Class: Cloud Computing
  * DESC: GUI application, Administrator panel builder.
+ * 				Methods:
+ * 						- Get methods for each text field
  * 
  * 
  */
@@ -63,6 +65,23 @@ public class Admin2PanelBuilder extends JPanel {
 		priceTf.setMargin(new Insets(2, 2, 2, 2));
 	}
 
+	//getters
+	public String getNameText() {
+		
+		return nameTf.getText();
+	}
+	
+	public String getPriceText() {
+		
+		return priceTf.getText();
+	}
+	
+	public String getTypeText() {
+		
+		return typeTf.getText();
+	}
+	
+	
 	
 	//tester
 	//main
