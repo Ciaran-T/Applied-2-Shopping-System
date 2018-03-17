@@ -408,13 +408,11 @@ public class HomePage extends JFrame{
 				//if event equals admin button
 				else if(event == adminBtn) {
 					
-					try {
-						//open desktop default browser -- Test
-						Desktop.getDesktop().browse(new URI("www.google.com"));
-					} catch (IOException | URISyntaxException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					//dispose home page
+					dispose();
+					
+					//open admin login page
+					Admin1.drawAdmin1();
 				}
 			}
 			
