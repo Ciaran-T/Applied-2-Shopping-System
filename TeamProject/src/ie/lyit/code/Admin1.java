@@ -1,6 +1,8 @@
 /* Author: Ciaran Toman
  * Class: Cloud Computing
  * DESC: GUI application Administrator first page.
+ * 				Classes:
+ * 						- Anonymous inner Action Listener Class
  * 
  * 
  */	
@@ -10,12 +12,18 @@ package ie.lyit.code;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import ie.lyit.data.Account;
+import jdbc.DBConnector;
 
 public class Admin1 extends JFrame {
 	
@@ -105,7 +113,48 @@ public class Admin1 extends JFrame {
 		add(westPanel, BorderLayout.WEST);
 		
 		
-	}
+		//add anonymous listener on login button
+		loginBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(!(usernameTf.getText().equalsIgnoreCase("Enter Username") || 
+						passwordTf.getText().equalsIgnoreCase("Enter Password") ||
+						usernameTf.getText().equalsIgnoreCase("") || 
+						passwordTf.getText().equalsIgnoreCase(""))) {
+					
+					Account a = DBConnector.readAccount(usernameTf.getText());
+					
+					//if account exists
+					if(!(a == null)) {
+						
+						//validate password
+						if(a.getPassword().equals(passwordTf.getText())) {
+
+							JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+
+							//dispose home page
+							dispose();
+						}
+						//else password doesn't exist
+						else if(!(a.getPassword().equals(passwordTf.getText()))) {
+							JOptionPane.showMessageDialog(null, "Please enter correct password", "Wrong Password", JOptionPane.INFORMATION_MESSAGE);
+							passwordTf.setText(null);
+						}
+					}
+					//if details are wrong
+					else if(a == null) {
+						JOptionPane.showMessageDialog(null, "Email not found in database", "Enter correct email", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				//if no details entered
+				else{
+					JOptionPane.showMessageDialog(null, "Enter Administrator email and password to sign in", "Wrong details", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		
+		
+	}//end constructor
 	
 	
 	
