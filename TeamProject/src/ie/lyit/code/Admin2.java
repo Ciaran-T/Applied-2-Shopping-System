@@ -11,18 +11,20 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 public class Admin2 extends JFrame {
 	
 	//instance fields
 	//panels
-	private JPanel centerPanel;
+	private JPanel centerPanel, northPanel;
 	private AdminPanelBuilder apb1, apb2;
 	//panel type
 	private String add = "add";
@@ -37,24 +39,38 @@ public class Admin2 extends JFrame {
 	//constructor
 	public Admin2() {
 		
-		//create title label and add to frame
+		//create north title panel
+		northPanel = new JPanel();
+		//create title label and add to north panel
 		titleLabel.setFont(titleFont);
-		add(titleLabel, BorderLayout.NORTH);
+		northPanel.add(titleLabel);
+		//set alignment and border of label
 		titleLabel.setHorizontalAlignment(JLabel.CENTER);
+		titleLabel.setBorder(new LineBorder(Color.BLACK, 1));
+		//add to frame
+		add(northPanel, BorderLayout.NORTH);
 		
 		centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
 		//create panels
 		apb1 = new AdminPanelBuilder(add);
 		apb2 = new AdminPanelBuilder(remove);
+		
+		//add panels to center panel
+		centerPanel.add(apb1);
+		centerPanel.add(apb2);
+		
+		//add center panel to frame
+		add(centerPanel, BorderLayout.CENTER);
 	}
+	
 	
 	//draw GUI
 	public static void drawAdmin2() {
 		
 		Admin2 a2 = new Admin2();
 		a2.setTitle("Administrator");		
-		//op.pack();
-		a2.setSize(500, 300);
+		//a2.pack();
+		a2.setSize(550, 400);
 		a2.setLocationRelativeTo(null);
 		a2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		a2.setVisible(true);
