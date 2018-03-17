@@ -3,6 +3,7 @@
  * DESC: GUI application Administrator first page.
  * 				Classes:
  * 						- Anonymous inner Action Listener Class
+ * 						- Inner Focus Listener Class
  * 
  * 
  */	
@@ -14,6 +15,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -112,6 +115,12 @@ public class Admin1 extends JFrame {
 		add(eastPanel, BorderLayout.EAST);
 		add(westPanel, BorderLayout.WEST);
 		
+		//create focus listener
+		MyListenerClass listener = new MyListenerClass();
+		//add focus listeners to text fields
+		usernameTf.addFocusListener(listener);
+		passwordTf.addFocusListener(listener);
+		
 		
 		//add anonymous listener on login button
 		loginBtn.addActionListener(new ActionListener() {
@@ -157,6 +166,67 @@ public class Admin1 extends JFrame {
 	}//end constructor
 	
 	
+	
+	//inner FocusListener
+	private class MyListenerClass implements FocusListener{
+
+
+		@Override
+		public void focusGained(FocusEvent f) {
+
+			//get source of event
+			Object event = f.getSource();
+
+			/* if event equals any of the listeners
+			 * 		if the text field contains the original text
+			 * 			then set Text to NULL
+			 * 
+			 */
+
+			if(event == usernameTf) {
+				if(usernameTf.getText().equalsIgnoreCase("Enter Username")) {
+					usernameTf.setText(null);
+				}
+			}
+			else if(event == passwordTf) {
+				if(passwordTf.getText().equalsIgnoreCase("Enter Password")) {
+					passwordTf.setText(null);
+
+				}
+
+			}//end of if-else ladder
+
+		}//end of method
+
+
+		@Override
+		public void focusLost(FocusEvent f){
+
+			//get source of event
+			Object event = f.getSource();
+
+			
+			/* if Focus is lost and no text was entered
+			 * 		set text to the original text
+			 * 
+			 */
+			if(event == usernameTf){
+				if(usernameTf.getText() == null || usernameTf.getText().equals("")){
+					usernameTf.setText("Enter Username");
+
+				}
+			}
+			else if(event == passwordTf){
+				if(passwordTf.getText() == null || passwordTf.getText().equals("")){
+					passwordTf.setText("Enter Password");
+
+				}
+			}
+
+		}//end of method
+	}//end of inner class
+		
+		
 	
 	//draw GUI
 	public static void drawAdmin1() {
