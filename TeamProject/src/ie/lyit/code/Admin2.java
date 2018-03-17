@@ -4,6 +4,9 @@
  * 				Methods:
  * 						- Draw GUI
  * 
+ * 				Classes:
+ * 						- Inner ActionListener
+ * 
  * 
  */	
 
@@ -14,6 +17,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +28,12 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class Admin2 extends JFrame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	
 	//instance fields
 	//panels
@@ -122,9 +134,67 @@ public class Admin2 extends JFrame {
 		centerBottomSouthPanel.add(removeAllBtn);
 
 		
+		//create action listener
+		ActionListenerClass actionListener = new ActionListenerClass();
+		//set listeners on buttons
+		backBtn.addActionListener(actionListener);
+		deliveryScheduleBtn.addActionListener(actionListener);
+		addBtn.addActionListener(actionListener);
+		addAllBtn.addActionListener(actionListener);
+		removeBtn.addActionListener(actionListener);
+		removeAllBtn.addActionListener(actionListener);
+		
+		
+		//disable resizing of frame
+		setResizable(false);
+		
 		
 	}
 	
+	public class ActionListenerClass implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			Object event = e.getSource();
+			
+			if(event == backBtn) {
+				
+				//dispose page
+				dispose();
+				
+				//open Admin1 page
+				Admin1.drawAdmin1();
+			}
+			// TODO - Event handling
+			else if(event == deliveryScheduleBtn) {
+				
+			}
+			else if(event == addBtn) {
+				
+				Admin2PanelBuilder apb = AdminPanelBuilder.getBuilder();
+				
+			}
+			else if(event == addAllBtn) {
+				
+				ArrayList<Admin2PanelBuilder> list = AdminPanelBuilder.getBuilderDetails();
+				
+			}
+			else if(event == removeBtn) {
+				
+				Admin2PanelBuilder apb = AdminPanelBuilder.getBuilder();
+				
+			}
+			else if(event == removeAllBtn) {
+				
+				ArrayList<Admin2PanelBuilder> list = AdminPanelBuilder.getBuilderDetails();
+			}
+			
+		}
+		
+	}
+	
+
 	
 	//draw GUI
 	public static void drawAdmin2() {

@@ -1,6 +1,9 @@
 /* Author: Ciaran Toman
  * Class: Cloud Computing
  * DESC: GUI application, Administrator bigger panel builder.
+ * 					Methods:
+ * 							- Get array list of panels to retrieve details
+ * 							- Get first panel
  * 
  * 
  */
@@ -9,6 +12,7 @@
 package ie.lyit.code;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +32,7 @@ public class AdminPanelBuilder extends JPanel {
 	//panel
 	private JPanel panel1;
 	//inner panels
-	Admin2PanelBuilder apb2, apb3, apb4;
+	private static Admin2PanelBuilder apb2, apb3, apb4;
 	//labels
 	private JLabel nameLabel, priceLabel, typeLabel;
 	
@@ -68,8 +72,26 @@ public class AdminPanelBuilder extends JPanel {
 		apb4 = new Admin2PanelBuilder();
 		add(apb4);
 		
+		
 	}
 	
+	//get first panel
+	public static Admin2PanelBuilder getBuilder() {
+		
+		return apb2;
+	}
+	
+	
+	//get the set of panels
+	public static ArrayList<Admin2PanelBuilder> getBuilderDetails() {
+		
+		ArrayList<Admin2PanelBuilder> list = new ArrayList<>();
+		list.add(apb2);
+		list.add(apb3);
+		list.add(apb4);
+		
+		return list;
+	}
 	
 	
 	//tester
