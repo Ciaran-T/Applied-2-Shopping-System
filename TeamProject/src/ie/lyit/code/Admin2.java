@@ -25,7 +25,8 @@ public class Admin2 extends JFrame {
 	
 	//instance fields
 	//panels
-	private JPanel centerPanel, centerTopPanel, centerBottomPanel, northPanel;
+	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
+	private JPanel northPanel, southPanel;
 	private AdminPanelBuilder apb1, apb2;
 	//panel type
 	private String add = "add";
@@ -45,6 +46,7 @@ public class Admin2 extends JFrame {
 	//constructor
 	public Admin2() {
 		
+		//north panel
 		//create north title panel
 		northPanel = new JPanel();
 		//create title label and add to north panel
@@ -57,9 +59,9 @@ public class Admin2 extends JFrame {
 		add(northPanel, BorderLayout.NORTH);
 		
 		
-		
+		//center panel
 		//create center panel
-		centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+		centerPanel = new JPanel(new GridLayout(3, 1, 0, 10));
 		//create top center panel
 		centerTopPanel = new JPanel(new BorderLayout());
 		//create bottom center panel
@@ -79,6 +81,24 @@ public class Admin2 extends JFrame {
 		centerPanel.add(centerBottomPanel);
 		//add center panel to frame
 		add(centerPanel, BorderLayout.CENTER);
+		
+		//south panel
+		//create south panel
+		southPanel = new JPanel(new GridLayout(1, 2));
+		//back button
+		backBtn = new JButton("Back/Logout");
+		//add button to south panel
+		southPanel.add(backBtn);
+		
+		//delivery button
+		deliveryScheduleBtn = new JButton("Go to Delivery Schedule");
+		//add button to panel
+		southPanel.add(deliveryScheduleBtn);
+		
+		//add panel to frame
+		add(southPanel, BorderLayout.SOUTH);
+		
+		
 	}
 	
 	
@@ -87,8 +107,8 @@ public class Admin2 extends JFrame {
 		
 		Admin2 a2 = new Admin2();
 		a2.setTitle("Administrator");		
-		//a2.pack();
-		a2.setSize(550, 400);
+		a2.pack();
+		//a2.setSize(550, 400);
 		a2.setLocationRelativeTo(null);
 		a2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		a2.setVisible(true);
