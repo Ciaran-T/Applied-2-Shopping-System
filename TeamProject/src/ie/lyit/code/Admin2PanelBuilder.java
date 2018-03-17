@@ -10,6 +10,7 @@ package ie.lyit.code;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,8 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+
+
 public class Admin2PanelBuilder extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//instance fields
 	private JLabel titleLabel;
 	
@@ -31,9 +39,9 @@ public class Admin2PanelBuilder extends JPanel {
 		//set line border
 		this.setBorder(new LineBorder(Color.BLACK, 1));
 		//set layout of panel
-		this.setLayout(new GridLayout(4, 1));
+		this.setLayout(new GridLayout(4, 1, 0, 10));
 		
-		//create title labe
+		//create title label
 		titleLabel = new JLabel("Product");
 		//add to panel
 		add(titleLabel);
@@ -41,6 +49,18 @@ public class Admin2PanelBuilder extends JPanel {
 		//set horizontal alignment of label
 		titleLabel.setHorizontalAlignment(JLabel.CENTER);
 		
+		//create text fields and add to panel
+		nameTf = new JTextField("");
+		add(nameTf);
+		priceTf = new JTextField("");
+		add(priceTf);
+		typeTf = new JTextField("");
+		add(typeTf);
+		
+		//set margin
+		nameTf.setMargin(new Insets(2, 2, 2, 2));
+		priceTf.setMargin(new Insets(2, 2, 2, 2));
+		priceTf.setMargin(new Insets(2, 2, 2, 2));
 	}
 
 	
