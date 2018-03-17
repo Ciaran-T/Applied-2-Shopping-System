@@ -26,6 +26,7 @@ public class Admin2 extends JFrame {
 	//instance fields
 	//panels
 	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
+	private JPanel centerTopSouthPanel, centerBottomSouthPanel;
 	private JPanel northPanel, southPanel;
 	private AdminPanelBuilder apb1, apb2;
 	//panel type
@@ -97,6 +98,29 @@ public class Admin2 extends JFrame {
 		
 		//add panel to frame
 		add(southPanel, BorderLayout.SOUTH);
+		
+		
+		//create add buttons
+		addBtn = new JButton("Add");
+		addAllBtn = new JButton("Add All");
+		//create panel
+		centerTopSouthPanel = new JPanel(new GridLayout(1, 4));
+		//add to panel
+		centerTopPanel.add(centerTopSouthPanel, BorderLayout.SOUTH);
+		//add buttons to panel
+		centerTopSouthPanel.add(addBtn);
+		centerTopSouthPanel.add(addAllBtn);
+		
+		//create remove buttons
+		removeBtn = new JButton("Remove");
+		removeAllBtn = new JButton("Remove All");
+		//create panel
+		centerBottomSouthPanel = new JPanel(new GridLayout(1, 4));
+		//add to panel
+		centerBottomPanel.add(centerBottomSouthPanel, BorderLayout.SOUTH);
+		centerBottomSouthPanel.add(removeBtn);
+		centerBottomSouthPanel.add(removeAllBtn);
+
 		
 		
 	}
