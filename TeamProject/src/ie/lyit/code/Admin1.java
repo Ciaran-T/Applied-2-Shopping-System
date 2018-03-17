@@ -8,11 +8,9 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +27,7 @@ public class Admin1 extends JFrame {
 	private JLabel titleLabel = new JLabel("Simple Shopping Service");
 	//font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
-	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
+	private Font generalFont = new Font("SanSerif", Font.BOLD, 14);
 	
 	//panels
 	private JPanel northPanel, centerPanel;
@@ -41,6 +39,11 @@ public class Admin1 extends JFrame {
 	
 	//text fields
 	private JTextField usernameTf, passwordTf;
+	//blank text fields
+	private JLabel blanklabel1 = new JLabel("                              "
+			+ "                ");
+	private JLabel blanklabel2 = new JLabel("                              "
+			+ "                ");
 	
 	//button
 	private JButton loginBtn;
@@ -60,23 +63,21 @@ public class Admin1 extends JFrame {
 		//center panel
 		centerPanel = new JPanel(new GridLayout(7, 1));
 		//create label
-		detailLabel = new JLabel("Enter Administrator details");
+		detailLabel = new JLabel("<html><u>Enter Administrator details<u/><html/>");
 		//set font and alignment
 		detailLabel.setFont(generalFont);
 		detailLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//add to panel
-		centerPanel.add(new JLabel());//blank space
 		centerPanel.add(detailLabel);
+		centerPanel.add(new JLabel());//blank space
 		
 		//add panel to frame
 		add(centerPanel, BorderLayout.CENTER);
 		
 		//create text fields
 		usernameTf = new JTextField("Enter Username");
-		usernameTf.setColumns(100);
 		passwordTf = new JTextField("Enter Password");
-		passwordTf.setColumns(100);
 
 		//add to panel
 		centerPanel.add(usernameTf);
@@ -95,6 +96,10 @@ public class Admin1 extends JFrame {
 		//create blank panels
 		eastPanel = new JPanel();
 		westPanel = new JPanel();
+		
+		//add blank labels to the blank panels
+		eastPanel.add(blanklabel1);
+		westPanel.add(blanklabel2);
 		//add panels to frame
 		add(eastPanel, BorderLayout.EAST);
 		add(westPanel, BorderLayout.WEST);
