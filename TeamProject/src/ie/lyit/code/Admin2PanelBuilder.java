@@ -44,7 +44,7 @@ public class Admin2PanelBuilder extends JPanel {
 		this.setLayout(new GridLayout(4, 1, 0, 10));
 		
 		//create title label
-		titleLabel = new JLabel("Product");
+		titleLabel = new JLabel("Product details");
 		//add to panel
 		add(titleLabel);
 		
