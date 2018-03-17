@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import javafx.scene.layout.Border;
 
 public class AdminPanelBuilder extends JPanel {
 
@@ -31,7 +30,6 @@ public class AdminPanelBuilder extends JPanel {
 	//inner panels
 	Admin2PanelBuilder apb2, apb3, apb4;
 	//labels
-	private JLabel titleLabel;
 	private JLabel nameLabel, priceLabel, typeLabel;
 	
 	private String s = "Products to ";
@@ -45,8 +43,6 @@ public class AdminPanelBuilder extends JPanel {
 		//set border
 		this.setBorder(new TitledBorder(s + removeOrAdd));
 		
-		//titleLabel = new JLabel();
-		
 		//create panel
 		panel1 = new JPanel(new GridLayout(4, 1));
 		panel1.add(new JLabel());
@@ -54,16 +50,23 @@ public class AdminPanelBuilder extends JPanel {
 		//create labels
 		nameLabel = new JLabel("Enter product name: ");
 		priceLabel = new JLabel("Enter product price: ");
-		typeLabel = new JLabel("Enter product type");
+		typeLabel = new JLabel("Enter product type: ");
 		
 		//add to panel1
 		panel1.add(nameLabel);
 		panel1.add(priceLabel);
 		panel1.add(typeLabel);
 		
-		//add panel1 to panel
+		//add panel1 to this panel
 		add(panel1);
 		
+		//create panels and add to this panel
+		apb2 = new Admin2PanelBuilder();
+		add(apb2);
+		apb3 = new Admin2PanelBuilder();
+		add(apb3);
+		apb4 = new Admin2PanelBuilder();
+		add(apb4);
 		
 	}
 	

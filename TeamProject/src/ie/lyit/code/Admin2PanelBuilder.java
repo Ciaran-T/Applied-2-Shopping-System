@@ -39,9 +39,9 @@ public class Admin2PanelBuilder extends JPanel {
 	public Admin2PanelBuilder() {
 		
 		//set line border
-		this.setBorder(new LineBorder(Color.BLACK, 1));
+		//this.setBorder(new LineBorder(Color.BLACK, 1));
 		//set layout of panel
-		this.setLayout(new GridLayout(4, 1, 0, 10));
+		this.setLayout(new GridLayout(4, 1, 0, 1));
 		
 		//create title label
 		titleLabel = new JLabel("Product details");
