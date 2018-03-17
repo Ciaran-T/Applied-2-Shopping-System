@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ public class Admin2 extends JFrame {
 	
 	//instance fields
 	//panels
-	private JPanel centerPanel, northPanel;
+	private JPanel centerPanel, centerTopPanel, centerBottomPanel, northPanel;
 	private AdminPanelBuilder apb1, apb2;
 	//panel type
 	private String add = "add";
@@ -33,8 +34,13 @@ public class Admin2 extends JFrame {
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
 	
-	
+	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
+	
+	//buttons
+	private JButton backBtn, deliveryScheduleBtn;
+	private JButton addBtn, addAllBtn;
+	private JButton removeBtn, removeAllBtn;
 	
 	//constructor
 	public Admin2() {
@@ -50,15 +56,27 @@ public class Admin2 extends JFrame {
 		//add to frame
 		add(northPanel, BorderLayout.NORTH);
 		
+		
+		
+		//create center panel
 		centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
-		//create panels
+		//create top center panel
+		centerTopPanel = new JPanel(new BorderLayout());
+		//create bottom center panel
+		centerBottomPanel = new JPanel(new BorderLayout());
+		
+		//create panel
 		apb1 = new AdminPanelBuilder(add);
+		//add to top center panel
+		centerTopPanel.add(apb1);
+		//create panel
 		apb2 = new AdminPanelBuilder(remove);
+		//add to bottom center panel
+		centerBottomPanel.add(apb2);
 		
 		//add panels to center panel
-		centerPanel.add(apb1);
-		centerPanel.add(apb2);
-		
+		centerPanel.add(centerTopPanel);
+		centerPanel.add(centerBottomPanel);
 		//add center panel to frame
 		add(centerPanel, BorderLayout.CENTER);
 	}
