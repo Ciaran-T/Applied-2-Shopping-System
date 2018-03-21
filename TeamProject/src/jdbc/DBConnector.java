@@ -414,6 +414,38 @@ public class DBConnector {
 		return id;
 
 	}
+	
+	//get Order at end of table
+		//take that number
+		public static int getLastProductID() {
+
+			String query = "SELECT * FROM Products ORDER BY ProductNo DESC;";
+			int id = 0;
+			ResultSet res;
+
+			createConnection(DB_URL, USER, PASSWORD);
+
+
+
+			try {
+				res = stmt.executeQuery(query);
+
+				res.next();
+
+				id = res.getInt(1);
+
+
+			}catch(SQLException e) {
+				System.out.println("SQL error ==>" + e.getMessage());
+			}catch(Exception e) {
+				System.out.println("Error ==>" + e.getMessage());
+			}finally {
+				closeConnection();
+			}
+
+			return id;
+
+		}
 
 	
 	
