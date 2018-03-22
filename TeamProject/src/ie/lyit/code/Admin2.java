@@ -44,6 +44,7 @@ public class Admin2 extends JFrame {
 	//panel type
 	private String add = "add";
 	private String remove = "remove";
+	private String update = "update";
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
@@ -73,7 +74,7 @@ public class Admin2 extends JFrame {
 		
 		
 		//center panel
-		//create center panel
+		//create center panel -- main panel
 		centerPanel = new JPanel(new GridLayout(3, 1, 0, 10));
 		//create top center panel
 		centerTopPanel = new JPanel(new BorderLayout());
@@ -172,22 +173,30 @@ public class Admin2 extends JFrame {
 			}
 			else if(event == addBtn) {
 				
-				Admin2PanelBuilder apb = AdminPanelBuilder.getBuilder();
+				
+				//get text in first panel fields
+				String[] details = apb1.getAddFirstPanelDetails();
+				
+				//test
+				for(int i = 0; i < details.length; i++) {
+					
+					System.out.println(details[i]);
+				}
 				
 			}
 			else if(event == addAllBtn) {
 				
-				ArrayList<Admin2PanelBuilder> list = AdminPanelBuilder.getBuilderDetails();
+				
 				
 			}
 			else if(event == removeBtn) {
 				
-				Admin2PanelBuilder apb = AdminPanelBuilder.getBuilder();
+				
 				
 			}
 			else if(event == removeAllBtn) {
 				
-				ArrayList<Admin2PanelBuilder> list = AdminPanelBuilder.getBuilderDetails();
+				
 			}
 			
 		}

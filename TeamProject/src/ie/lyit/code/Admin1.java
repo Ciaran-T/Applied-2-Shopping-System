@@ -141,8 +141,11 @@ public class Admin1 extends JFrame {
 
 							JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
-							//dispose home page
+							//dispose admin1 page
 							dispose();
+							
+							//open admin2 page
+							Admin2.drawAdmin2();
 						}
 						//else password doesn't exist
 						else if(!(a.getPassword().equals(passwordTf.getText()))) {
