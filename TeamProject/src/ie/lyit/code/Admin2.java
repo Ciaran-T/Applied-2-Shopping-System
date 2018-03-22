@@ -17,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -121,7 +122,9 @@ public class Admin2 extends JFrame {
 		//add to panel
 		centerTopPanel.add(centerTopSouthPanel, BorderLayout.SOUTH);
 		//add buttons to panel
+		centerTopSouthPanel.add(new JLabel());//blank for space
 		centerTopSouthPanel.add(addBtn);
+		centerTopSouthPanel.add(new JLabel());
 		centerTopSouthPanel.add(addAllBtn);
 		
 		//create remove buttons
@@ -131,7 +134,9 @@ public class Admin2 extends JFrame {
 		centerBottomSouthPanel = new JPanel(new GridLayout(1, 4));
 		//add to panel
 		centerBottomPanel.add(centerBottomSouthPanel, BorderLayout.SOUTH);
+		centerBottomSouthPanel.add(new JLabel());
 		centerBottomSouthPanel.add(removeBtn);
+		centerBottomSouthPanel.add(new JLabel());
 		centerBottomSouthPanel.add(removeAllBtn);
 
 		
@@ -210,8 +215,8 @@ public class Admin2 extends JFrame {
 		
 		Admin2 a2 = new Admin2();
 		a2.setTitle("Administrator");		
-		a2.pack();
-		//a2.setSize(550, 400);
+		//a2.pack();
+		a2.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		a2.setLocationRelativeTo(null);
 		a2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		a2.setVisible(true);

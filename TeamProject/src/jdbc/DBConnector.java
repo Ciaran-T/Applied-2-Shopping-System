@@ -473,6 +473,11 @@ public class DBConnector {
 
 		return query;
 	}
+	
+	private static String addProductQuery(String name, double price, String text) {
+		
+		return "";
+	}
 
 
 
