@@ -2,8 +2,8 @@
  * Class: Cloud Computing
  * DESC: GUI application, Administrator bigger panel builder.
  * 					Methods:
- * 							- Get array list of panels to retrieve details
- * 							- Get first panel
+ * 							- Get first panel text
+ * 							- Get all panel text
  * 
  * 
  */
@@ -32,7 +32,7 @@ public class AdminPanelBuilder extends JPanel {
 	//panel
 	private JPanel panel1;
 	//inner panels
-	private static Admin2PanelBuilder apb2, apb3, apb4;
+	private Admin2PanelBuilder apb2, apb3, apb4;
 	//labels
 	private JLabel nameLabel, priceLabel, typeLabel;
 	
@@ -75,22 +75,38 @@ public class AdminPanelBuilder extends JPanel {
 		
 	}
 	
-	//get first panel
-	public static Admin2PanelBuilder getBuilder() {
+	//get first panel details
+	public String[] getAddFirstPanelDetails() {
 		
-		return apb2;
+		String[] details = new String[3];
+		
+		details[0] = "" + apb2.getNameText();
+		details[1] = "" + apb2.getPriceText();
+		details[2] = "" + apb2.getTypeText();
+		
+		return details;
 	}
 	
 	
-	//get the set of panels
-	public static ArrayList<Admin2PanelBuilder> getBuilderDetails() {
+	//get all panel details
+	public String[] getAddAllPanelDetails() {
 		
-		ArrayList<Admin2PanelBuilder> list = new ArrayList<>();
-		list.add(apb2);
-		list.add(apb3);
-		list.add(apb4);
+		String[] details = new String[9];
+
+		details[0] = "" + apb2.getNameText();
+		details[1] = "" + apb2.getPriceText();
+		details[2] = "" + apb2.getTypeText();
 		
-		return list;
+		details[3] = "" + apb3.getNameText();
+		details[4] = "" + apb3.getPriceText();
+		details[5] = "" + apb3.getTypeText();
+		
+		details[6] = "" + apb4.getNameText();
+		details[7] = "" + apb4.getPriceText();
+		details[8] = "" + apb4.getTypeText();
+
+		return details;
+		
 	}
 	
 	

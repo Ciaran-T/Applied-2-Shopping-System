@@ -52,11 +52,11 @@ public class Admin2PanelBuilder extends JPanel {
 		titleLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//create text fields and add to panel
-		nameTf = new JTextField("");
+		nameTf = new JTextField(10);
 		add(nameTf);
-		priceTf = new JTextField("");
+		priceTf = new JTextField();
 		add(priceTf);
-		typeTf = new JTextField("");
+		typeTf = new JTextField();
 		add(typeTf);
 		
 		//set margin
