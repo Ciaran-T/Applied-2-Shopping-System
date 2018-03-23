@@ -363,8 +363,8 @@ public class DBConnector {
 			String query = queryProduct();
 			res = stmt.executeQuery(query);
 
-			while(res.next()) {				//get name, price, productNo and type
-				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4)); 
+			while(res.next()) {				//get name, price, productNo, type and quantity
+				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
 				products.add(pr);  
 				
 			}
@@ -469,7 +469,7 @@ public class DBConnector {
 
 	//get products from DB query
 	private static String queryProduct() {
-		String query = "SELECT Name, Price, ProductNo, Type FROM Products;" ;
+		String query = "SELECT Name, Price, ProductNo, Type, Qty FROM Products;" ;
 
 		return query;
 	}
