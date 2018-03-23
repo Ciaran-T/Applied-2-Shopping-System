@@ -127,7 +127,7 @@ public class DBConnector {
 		}
 	}
 
-	
+
 	/* read account from DB, 
 	 * create connection
 	 * 
@@ -190,10 +190,10 @@ public class DBConnector {
 
 		return query;
 	}
-	
+
 	//update account
 	private static void updateAccountOrders(Account acc) {
-		
+
 		createConnection(DB_URL, USER, PASSWORD);
 
 
@@ -208,16 +208,16 @@ public class DBConnector {
 		}finally {
 			closeConnection();
 		}
-		
+
 	}
-	
+
 	//query Account table
 	//update orders field
 	private static String queryAccOrderUpdate(Account acc) {
-		
+
 		return "UPDATE Accounts SET orders = " + acc.getOrders() + " WHERE Email='" + acc.getEmail() + "';";
 	}
-	
+
 
 	/*
 	 * Queries to DB ( Order, Order_Products)
@@ -248,12 +248,12 @@ public class DBConnector {
 		/* Writing to OrderProducts table
 		 * (OrderProducts = Table to break many to many relationship)*/
 		writeOrderProducts(o.getOrderID(), products);
-		
-		
+
+
 		//update account which increment orders of account
 		//and writes the changes to table
 		updateAccountOrders(acc);
-		
+
 
 	}
 
@@ -270,26 +270,26 @@ public class DBConnector {
 		return query; 
 	}
 
-	
-	
+
+
 	// OrderProducts
 	private static void writeOrderProducts(int orderID, ArrayList<Product> products) {
 
 		createConnection(DB_URL, USER, PASSWORD);
-		
+
 		int qty = 0;
-		
+
 		//dump list
 		ArrayList<Product> pr = new ArrayList<>();
-		
+
 		try {
 			do {
-			
+
 				//get first product and increment qty
 				Product p = products.get(0);
 				boolean gone = products.remove(p);
 				qty++;
-				
+
 				if(gone) {
 
 					//loop through list to compare products
@@ -298,24 +298,24 @@ public class DBConnector {
 						//if products are the same
 						if(products.get(i).equals(p)) {
 							qty++;
-							
+
 							//add to dump list
 							pr.add(products.get(i));
-							
+
 						}
 					}
 				}
-				
+
 				//query DB + reset qty
 				String query = insertOrderProducts(orderID, p.getProductNo(), qty);
 				stmt.executeUpdate(query);
 				qty = 0;
-				
+
 				//remove dump list
 				products.removeAll(pr);
-				
+
 			}while(!products.isEmpty()); // while products list is NOT empty
-			
+
 			System.out.println("Written Order_Products to DB successfully");
 
 		}catch(Exception e) {
@@ -325,7 +325,7 @@ public class DBConnector {
 		}
 
 	}
-	
+
 
 	//order_products table
 	//DB query
@@ -352,7 +352,7 @@ public class DBConnector {
 	 * 
 	 * */
 	public static ArrayList<Product> readProducts() {
-		
+
 		ArrayList<Product> products = new ArrayList<>();
 		ResultSet res;
 
@@ -366,7 +366,7 @@ public class DBConnector {
 			while(res.next()) {				//get name, price, productNo, type and quantity
 				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
 				products.add(pr);  
-				
+
 			}
 
 
@@ -377,7 +377,7 @@ public class DBConnector {
 		}finally {
 			closeConnection();
 		}
-		
+
 
 		return products;
 	}
@@ -414,7 +414,7 @@ public class DBConnector {
 		return id;
 
 	}
-	
+
 	//get Order at end of table
 	//take that number
 	public static int getLastProductID() {
@@ -447,23 +447,23 @@ public class DBConnector {
 
 	}
 
-	
-	
+
+
 	//get meat products query
 	public static String queryMeat() {
-		
+
 		return "SELECT * FROM products WHERE Type='Meat';";
 	}
-	
+
 	//get dairy products query
 	public static String queryDiary() {
-		
+
 		return "SELECT * FROM Products WHERE Type='Diary';";
 	}
-	
+
 	//get Veg products query
 	public static String queryVeg() {
-		
+
 		return "SELECT * FROM Products WHERE Type='Veg';";
 	}
 
@@ -473,32 +473,98 @@ public class DBConnector {
 
 		return query;
 	}
-	
+
+
+	/*
+	 * Administrator methods
+	 * 
+	 * 
+	 * Query to insert product
+	 */
 	private static String insertProductQuery(String name, double price, int id, String type) {
-		
+
 		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
 				"', '" + name + "', '" + price + "', '" + type + "', '20');";
 	}
-	
+
+	//insert product into product table
 	public static void insertProduct(Product p) {
-		
+
 		createConnection(DB_URL, USER, PASSWORD);
-		
+
 		try {
 			String query = insertProductQuery(p.getName(), p.getPrice(), p.getProductNo(), p.getType());
 			stmt.executeUpdate(query);
 
 			System.out.println("Written Product to DB successfully");
 
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
 		}catch(Exception e) {
 			System.out.println("Problem with insert product method ==> " + e.getMessage());
 		}finally {
 			closeConnection();
 		}
-		
-		
+
+
 	}
 
+	//get number of products query
+	private static String countProductsQuery() {
+
+		return "SELECT COUNT(ProductNo) FROM Products";
+	}
+
+	//get number of products in DB
+	private static int getNumberOfProducts() {
+
+		int num = -1;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+		try {
+			String query = countProductsQuery();
+			ResultSet res = stmt.executeQuery(query);
+
+			res.next();
+			num = res.getInt(1);
+
+
+			System.out.println("Retreived number of products");
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Problem with insert product method ==> " + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+		return num;
+	}
+
+	//populate 2D array
+	public static String[][] getProductsTableData(){
+
+		ArrayList<Product> products = readProducts();
+
+		String[][] tableData = new String[products.size()][5];
+		int i = 0;
+
+		for(Product p: products) {
+
+			if(p != null) {
+				tableData[i][0] = "" + p.getProductNo();
+				tableData[i][1] = p.getName();
+				tableData[i][2] = "" + p.getPrice();
+				tableData[i][3] = p.getType();
+				tableData[i++][4] = "" + p.getQuantity();
+			}
+
+		}
+
+		return tableData;
+	}
 
 
 
@@ -549,7 +615,7 @@ public class DBConnector {
 	}
 
 
-	
+
 	//tester
 	//main
 	public static void main(String[] args) {

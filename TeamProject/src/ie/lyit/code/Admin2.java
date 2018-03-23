@@ -164,7 +164,7 @@ public class Admin2 extends JFrame {
 		p = DBConnector.readProducts();
 		
 		//create 2D array
-		tableData = new String[p.size()][productColumnNames.length];
+		tableData = DBConnector.getProductsTableData();
 		
 		//create table, pass in blank data and assign column names
 		table = new JTable(tableData, productColumnNames);
