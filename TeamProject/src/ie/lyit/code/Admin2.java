@@ -25,6 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import ie.lyit.data.Product;
@@ -43,7 +45,15 @@ public class Admin2 extends JFrame {
 	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
 	private JPanel centerTopSouthPanel, centerBottomSouthPanel;
 	private JPanel northPanel, southPanel;
+	private JPanel eastPanel;
 	private AdminPanelBuilder apb1, apb2;
+	
+	//Scroll pane, table and table data
+	private JScrollPane tablePane;
+	private JTable table;
+	private String[] productColumnNames = {"ProductNo", "Name", "Price", "Type", "Qty"};
+	private String[][] products;
+	
 	//panel type
 	private String add = "add";
 	private String remove = "remove";
@@ -120,26 +130,34 @@ public class Admin2 extends JFrame {
 		addBtn = new JButton("Add");
 		addAllBtn = new JButton("Add All");
 		//create panel
-		centerTopSouthPanel = new JPanel(new GridLayout(1, 4));
+		centerTopSouthPanel = new JPanel(new GridLayout(1, 2));
 		//add to panel
 		centerTopPanel.add(centerTopSouthPanel, BorderLayout.SOUTH);
 		//add buttons to panel
 		centerTopSouthPanel.add(new JLabel());//blank for space
 		centerTopSouthPanel.add(addBtn);
-		centerTopSouthPanel.add(new JLabel());
-		centerTopSouthPanel.add(addAllBtn);
+		//centerTopSouthPanel.add(new JLabel());
+		//centerTopSouthPanel.add(addAllBtn);
 		
 		//create remove buttons
 		removeBtn = new JButton("Remove");
 		removeAllBtn = new JButton("Remove All");
 		//create panel
-		centerBottomSouthPanel = new JPanel(new GridLayout(1, 4));
+		centerBottomSouthPanel = new JPanel(new GridLayout(1, 2));
 		//add to panel
 		centerBottomPanel.add(centerBottomSouthPanel, BorderLayout.SOUTH);
 		centerBottomSouthPanel.add(new JLabel());
 		centerBottomSouthPanel.add(removeBtn);
-		centerBottomSouthPanel.add(new JLabel());
-		centerBottomSouthPanel.add(removeAllBtn);
+		//centerBottomSouthPanel.add(new JLabel());
+		//centerBottomSouthPanel.add(removeAllBtn);
+		
+		
+		
+		//east panel
+		eastPanel = new JPanel();
+		eastPanel.add(new JLabel("                                                                            "));
+		
+		add(eastPanel, BorderLayout.EAST);
 
 		
 		//create action listener

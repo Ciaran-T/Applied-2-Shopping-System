@@ -67,10 +67,10 @@ public class AdminPanelBuilder extends JPanel {
 		//create panels and add to this panel
 		apb2 = new Admin2PanelBuilder();
 		add(apb2);
-		apb3 = new Admin2PanelBuilder();
-		add(apb3);
-		apb4 = new Admin2PanelBuilder();
-		add(apb4);
+		//apb3 = new Admin2PanelBuilder();
+		//add(apb3);
+		//apb4 = new Admin2PanelBuilder();
+		//add(apb4);
 		
 		
 	}
@@ -88,26 +88,26 @@ public class AdminPanelBuilder extends JPanel {
 	}
 	
 	
-	//get all panel details
-	public String[] getAddAllPanelDetails() {
-		
-		String[] details = new String[9];
-
-		details[0] = "" + apb2.getNameText();
-		details[1] = "" + apb2.getPriceText();
-		details[2] = "" + apb2.getTypeText();
-		
-		details[3] = "" + apb3.getNameText();
-		details[4] = "" + apb3.getPriceText();
-		details[5] = "" + apb3.getTypeText();
-		
-		details[6] = "" + apb4.getNameText();
-		details[7] = "" + apb4.getPriceText();
-		details[8] = "" + apb4.getTypeText();
-
-		return details;
-		
-	}
+//	//get all panel details
+//	public String[] getAddAllPanelDetails() {
+//		
+//		String[] details = new String[9];
+//
+//		details[0] = "" + apb2.getNameText();
+//		details[1] = "" + apb2.getPriceText();
+//		details[2] = "" + apb2.getTypeText();
+//		
+//		details[3] = "" + apb3.getNameText();
+//		details[4] = "" + apb3.getPriceText();
+//		details[5] = "" + apb3.getTypeText();
+//		
+//		details[6] = "" + apb4.getNameText();
+//		details[7] = "" + apb4.getPriceText();
+//		details[8] = "" + apb4.getTypeText();
+//
+//		return details;
+//		
+//	}
 	
 	
 	//tester
