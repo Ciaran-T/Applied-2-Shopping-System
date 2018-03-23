@@ -20,6 +20,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,7 +53,9 @@ public class Admin2 extends JFrame {
 	private JScrollPane tablePane;
 	private JTable table;
 	private String[] productColumnNames = {"ProductNo", "Name", "Price", "Type", "Qty"};
-	private String[][] products;
+	private String[][] tableData;
+	
+	private ArrayList<Product> p;
 	
 	//panel type
 	private String add = "add";
@@ -157,6 +160,23 @@ public class Admin2 extends JFrame {
 		eastPanel = new JPanel();
 		eastPanel.add(new JLabel("                                                                            "));
 		
+		//read products for row count of 2D array
+		p = DBConnector.readProducts();
+		
+		//create 2D array
+		tableData = new String[p.size()][productColumnNames.length];
+		
+		//create table, pass in blank data and assign column names
+		table = new JTable(tableData, productColumnNames);
+		
+		//create scroll pane, pass in table object
+		tablePane = new JScrollPane(table);
+		tablePane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		//add pane to east panel
+		eastPanel.add(tablePane);
+		
+		//add east panel to frame
 		add(eastPanel, BorderLayout.EAST);
 
 		
