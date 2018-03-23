@@ -30,6 +30,15 @@ public class Product {
 		this.type = type;
 	}
 	
+	public Product(String name, double price, int id, String type, int quantity) {
+
+		this.name = name;
+		this.price = price;
+		productNo = id;
+		this.type = type;
+		this.quantity = quantity;
+	}
+	
 	public Product(double price, String name, String type, int quantity) {
 		
 		this.price = price;
