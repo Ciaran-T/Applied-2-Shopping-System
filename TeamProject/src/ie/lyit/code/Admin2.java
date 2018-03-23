@@ -20,13 +20,15 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import ie.lyit.data.Product;
+import jdbc.DBConnector;
 
 public class Admin2 extends JFrame {
 	
@@ -182,11 +184,9 @@ public class Admin2 extends JFrame {
 				//get text in first panel fields
 				String[] details = apb1.getAddFirstPanelDetails();
 				
-				//test
-				for(int i = 0; i < details.length; i++) {
-					
-					System.out.println(details[i]);
-				}
+				Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2]);
+				
+				DBConnector.insertProduct(p);
 				
 			}
 			else if(event == addAllBtn) {

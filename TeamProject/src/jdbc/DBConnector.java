@@ -416,36 +416,36 @@ public class DBConnector {
 	}
 	
 	//get Order at end of table
-		//take that number
-		public static int getLastProductID() {
+	//take that number
+	public static int getLastProductID() {
 
-			String query = "SELECT * FROM Products ORDER BY ProductNo DESC;";
-			int id = 0;
-			ResultSet res;
+		String query = "SELECT * FROM Products ORDER BY ProductNo DESC;";
+		int id = 0;
+		ResultSet res;
 
-			createConnection(DB_URL, USER, PASSWORD);
-
-
-
-			try {
-				res = stmt.executeQuery(query);
-
-				res.next();
-
-				id = res.getInt(1);
+		createConnection(DB_URL, USER, PASSWORD);
 
 
-			}catch(SQLException e) {
-				System.out.println("SQL error ==>" + e.getMessage());
-			}catch(Exception e) {
-				System.out.println("Error ==>" + e.getMessage());
-			}finally {
-				closeConnection();
-			}
 
-			return id;
+		try {
+			res = stmt.executeQuery(query);
 
+			res.next();
+
+			id = res.getInt(1);
+
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
 		}
+
+		return id;
+
+	}
 
 	
 	
@@ -474,9 +474,29 @@ public class DBConnector {
 		return query;
 	}
 	
-	private static String addProductQuery(String name, double price, String text) {
+	private static String insertProductQuery(String name, double price, int id, String type) {
 		
-		return "";
+		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
+				"', '" + name + "', '" + price + "', '" + type + "', '20');";
+	}
+	
+	public static void insertProduct(Product p) {
+		
+		createConnection(DB_URL, USER, PASSWORD);
+		
+		try {
+			String query = insertProductQuery(p.getName(), p.getPrice(), p.getProductNo(), p.getType());
+			stmt.executeUpdate(query);
+
+			System.out.println("Written Product to DB successfully");
+
+		}catch(Exception e) {
+			System.out.println("Problem with insert product method ==> " + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+		
+		
 	}
 
 
