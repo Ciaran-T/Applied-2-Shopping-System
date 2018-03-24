@@ -34,32 +34,34 @@ public class AdminPanelBuilder extends JPanel {
 	//inner panels
 	private Admin2PanelBuilder apb2, apb3, apb4;
 	//labels
-	private JLabel nameLabel, priceLabel, typeLabel;
+	private JLabel nameLabel, priceLabel, typeLabel, qtyLabel;
 	
 	private String s = "Products to ";
 	
 	//constructor
-	public AdminPanelBuilder(String removeOrAdd) {
+	public AdminPanelBuilder(String editOrAdd) {
 		
 		//set layout
 		this.setLayout(new GridLayout(1, 4, 5, 10));
 		
 		//set border
-		this.setBorder(new TitledBorder(s + removeOrAdd));
+		this.setBorder(new TitledBorder(s + editOrAdd));
 		
 		//create panel
-		panel1 = new JPanel(new GridLayout(4, 1));
+		panel1 = new JPanel(new GridLayout(5, 1));
 		panel1.add(new JLabel());
 		
 		//create labels
 		nameLabel = new JLabel("Enter product name: ");
 		priceLabel = new JLabel("Enter product price: ");
 		typeLabel = new JLabel("Enter product type: ");
+		qtyLabel = new JLabel("Enter product quantity");
 		
 		//add to panel1
 		panel1.add(nameLabel);
 		panel1.add(priceLabel);
 		panel1.add(typeLabel);
+		panel1.add(qtyLabel);
 		
 		//add panel1 to this panel
 		add(panel1);
@@ -76,13 +78,14 @@ public class AdminPanelBuilder extends JPanel {
 	}
 	
 	//get first panel details
-	public String[] getAddFirstPanelDetails() {
+	public String[] getAddPanelDetails() {
 		
-		String[] details = new String[3];
+		String[] details = new String[4];
 		
 		details[0] = "" + apb2.getNameText();
 		details[1] = "" + apb2.getPriceText();
 		details[2] = "" + apb2.getTypeText();
+		details[3] = "" + apb2.getQtyText();
 		
 		return details;
 	}
