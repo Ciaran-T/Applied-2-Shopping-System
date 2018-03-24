@@ -11,6 +11,7 @@
 package ie.lyit.code;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
@@ -33,6 +34,8 @@ public class Admin2PanelBuilder extends JPanel {
 	private JLabel titleLabel;
 	
 	private JTextField nameTf, priceTf, typeTf, qtyTf;
+	//font
+	private Font labelFont = new Font("SanSerif", Font.BOLD, 22);
 	
 	
 	//constructor
@@ -45,6 +48,8 @@ public class Admin2PanelBuilder extends JPanel {
 		
 		//create title label
 		titleLabel = new JLabel("Product details");
+		//add font
+		titleLabel.setFont(labelFont);
 		//add to panel
 		add(titleLabel);
 		
