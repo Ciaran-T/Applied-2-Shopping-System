@@ -32,7 +32,7 @@ public class Admin2PanelBuilder extends JPanel {
 	//instance fields
 	private JLabel titleLabel;
 	
-	private JTextField nameTf, priceTf, typeTf;
+	private JTextField nameTf, priceTf, typeTf, qtyTf;
 	
 	
 	//constructor
@@ -41,7 +41,7 @@ public class Admin2PanelBuilder extends JPanel {
 		//set line border
 		//this.setBorder(new LineBorder(Color.BLACK, 1));
 		//set layout of panel
-		this.setLayout(new GridLayout(4, 1, 0, 1));
+		this.setLayout(new GridLayout(5, 1, 0, 1));
 		
 		//create title label
 		titleLabel = new JLabel("Product details");
@@ -58,11 +58,14 @@ public class Admin2PanelBuilder extends JPanel {
 		add(priceTf);
 		typeTf = new JTextField();
 		add(typeTf);
+		qtyTf = new JTextField();
+		add(qtyTf);
 		
 		//set margin
 		nameTf.setMargin(new Insets(2, 2, 2, 2));
 		priceTf.setMargin(new Insets(2, 2, 2, 2));
 		priceTf.setMargin(new Insets(2, 2, 2, 2));
+		qtyTf.setMargin(new Insets(2, 2, 2, 2));
 	}
 
 	//getters
@@ -79,6 +82,19 @@ public class Admin2PanelBuilder extends JPanel {
 	public String getTypeText() {
 		
 		return typeTf.getText();
+	}
+	
+	public String getQtyText() {
+		
+		return qtyTf.getText();
+	}
+	
+	public void resetFields() {
+		
+		nameTf.setText("");
+		priceTf.setText("");
+		typeTf.setText("");
+		qtyTf.setText("");
 	}
 	
 	
