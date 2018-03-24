@@ -36,6 +36,7 @@ public class Admin2PanelBuilder extends JPanel {
 	private JTextField nameTf, priceTf, typeTf, qtyTf;
 	//font
 	private Font labelFont = new Font("SanSerif", Font.BOLD, 22);
+	private Font tfFont = new Font("SanSerif", Font.PLAIN, 22);
 	
 	
 	//constructor
@@ -69,8 +70,13 @@ public class Admin2PanelBuilder extends JPanel {
 		//set margin
 		nameTf.setMargin(new Insets(2, 2, 2, 2));
 		priceTf.setMargin(new Insets(2, 2, 2, 2));
-		priceTf.setMargin(new Insets(2, 2, 2, 2));
+		typeTf.setMargin(new Insets(2, 2, 2, 2));
 		qtyTf.setMargin(new Insets(2, 2, 2, 2));
+		
+		nameTf.setFont(tfFont);
+		priceTf.setFont(tfFont);
+		typeTf.setFont(tfFont);
+		qtyTf.setFont(tfFont);
 	}
 
 	//getters
