@@ -481,10 +481,10 @@ public class DBConnector {
 	 * 
 	 * Query to insert product
 	 */
-	private static String insertProductQuery(String name, double price, int id, String type) {
+	private static String insertProductQuery(String name, double price, int id, String type, int qty) {
 
 		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
-				"', '" + name + "', '" + price + "', '" + type + "', '20');";
+				"', '" + name + "', '" + price + "', '" + type + "', '" + qty + "');";
 	}
 
 	//insert product into product table
@@ -493,7 +493,7 @@ public class DBConnector {
 		createConnection(DB_URL, USER, PASSWORD);
 
 		try {
-			String query = insertProductQuery(p.getName(), p.getPrice(), p.getProductNo(), p.getType());
+			String query = insertProductQuery(p.getName(), p.getPrice(), p.getProductNo(), p.getType(), p.getQuantity());
 			stmt.executeUpdate(query);
 
 			System.out.println("Written Product to DB successfully");
