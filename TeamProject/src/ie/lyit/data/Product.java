@@ -28,6 +28,7 @@ public class Product {
 		this.price = price;
 		productNo = id;
 		this.type = type;
+		this.quantity = 20;
 	}
 	
 	public Product(String name, double price, int id, String type, int quantity) {
