@@ -11,9 +11,10 @@
 
 package ie.lyit.code;
 
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +36,10 @@ public class AdminPanelBuilder extends JPanel {
 	private Admin2PanelBuilder apb2, apb3, apb4;
 	//labels
 	private JLabel nameLabel, priceLabel, typeLabel, qtyLabel;
+	//font
+	private Font labelFont = new Font("SanSerif", Font.BOLD, 22);
+	//title font
+	private Font titleBorderFont = new Font("SanSerif", Font.BOLD, 25);
 	
 	private String s = "Products to ";
 	
@@ -42,10 +47,10 @@ public class AdminPanelBuilder extends JPanel {
 	public AdminPanelBuilder(String editOrAdd) {
 		
 		//set layout
-		this.setLayout(new GridLayout(1, 4, 5, 10));
+		this.setLayout(new GridLayout(1, 1, 5, 1));
 		
 		//set border
-		this.setBorder(new TitledBorder(s + editOrAdd));
+		this.setBorder(BorderFactory.createTitledBorder(new TitledBorder(s + editOrAdd), s+editOrAdd,  TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
 		
 		//create panel
 		panel1 = new JPanel(new GridLayout(5, 1));
@@ -53,9 +58,13 @@ public class AdminPanelBuilder extends JPanel {
 		
 		//create labels
 		nameLabel = new JLabel("Enter product name: ");
+		nameLabel.setFont(labelFont);
 		priceLabel = new JLabel("Enter product price: ");
+		priceLabel.setFont(labelFont);
 		typeLabel = new JLabel("Enter product type: ");
+		typeLabel.setFont(labelFont);
 		qtyLabel = new JLabel("Enter product quantity");
+		qtyLabel.setFont(labelFont);
 		
 		//add to panel1
 		panel1.add(nameLabel);
