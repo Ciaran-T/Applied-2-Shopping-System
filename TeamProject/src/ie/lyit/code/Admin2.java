@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
@@ -54,6 +55,7 @@ public class Admin2 extends JFrame {
 	private JTable table;
 	private String[] productColumnNames = {"ProductNo", "Name", "Price", "Type", "Qty"};
 	private String[][] tableData;
+	private DefaultTableModel tableModel;
 	
 	private ArrayList<Product> p;
 	
@@ -158,7 +160,7 @@ public class Admin2 extends JFrame {
 		
 		//east panel
 		eastPanel = new JPanel();
-		eastPanel.add(new JLabel("                                                                            "));
+		//eastPanel.add(new JLabel("                                                                            "));
 		
 		//read products for row count of 2D array
 		p = DBConnector.readProducts();
@@ -166,8 +168,13 @@ public class Admin2 extends JFrame {
 		//create 2D array
 		tableData = DBConnector.getProductsTableData();
 		
+		tableModel = new DefaultTableModel(tableData, productColumnNames);
+		
 		//create table, pass in blank data and assign column names
-		table = new JTable(tableData, productColumnNames);
+		table = new JTable(tableModel);
+		
+		//make table uneditable
+		table.setEnabled(false);
 		
 		//create scroll pane, pass in table object
 		tablePane = new JScrollPane(table);
@@ -218,6 +225,7 @@ public class Admin2 extends JFrame {
 			}
 			else if(event == addBtn) {
 				
+				//TODO -- error checking
 				
 				//get text in first panel fields
 				String[] details = apb1.getAddFirstPanelDetails();
@@ -225,6 +233,10 @@ public class Admin2 extends JFrame {
 				Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2]);
 				
 				DBConnector.insertProduct(p);
+				
+				tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
+				
+				
 				
 			}
 			else if(event == addAllBtn) {
