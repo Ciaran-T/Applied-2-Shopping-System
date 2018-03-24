@@ -62,7 +62,7 @@ public class Admin2 extends JFrame {
 	
 	//panel type
 	private String add = "add";
-	private String remove = "remove";
+	private String edit = "edit";
 	private String update = "update";
 	
 	//labels
@@ -105,7 +105,7 @@ public class Admin2 extends JFrame {
 		//add to top center panel
 		centerTopPanel.add(apb1);
 		//create panel
-		apb2 = new AdminPanelBuilder(remove);
+		apb2 = new AdminPanelBuilder(edit);
 		//add to bottom center panel
 		centerBottomPanel.add(apb2);
 		
@@ -227,17 +227,20 @@ public class Admin2 extends JFrame {
 			else if(event == addBtn) {
 				
 				//get text in first panel fields
-				String[] details = apb1.getAddFirstPanelDetails();
+				String[] details = apb1.getAddPanelDetails();
 				
 				if(!(details[0].equals(null) || details[0].equals("") || 
 						details[1].equals(null) || details[1].equals("") || 
-						details[2].equals(null) || details[2].equals(""))) {
+						details[2].equals(null) || details[2].equals("") ||
+						details[3].equals(null) || details[3].equals(""))) {
 
-					Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2]);
+					Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2], Integer.parseInt(details[3]));
 
 					DBConnector.insertProduct(p);
 
 					tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
+					
+					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Add Product", JOptionPane.INFORMATION_MESSAGE);
@@ -252,6 +255,8 @@ public class Admin2 extends JFrame {
 			}
 			else if(event == removeBtn) {
 				
+				//get text in first panel fields
+				String[] details = apb2.getAddPanelDetails();
 				
 				
 			}
