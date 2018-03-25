@@ -381,6 +381,24 @@ public class DBConnector {
 
 		return products;
 	}
+	
+	
+	public static String[] getProductIds() {
+		///create array length - number of product in DB
+		String[] array = new String[getNumberOfProducts()];
+		//read products from DB
+		ArrayList<Product> products = readProducts();
+		//counter
+		int i = 0;
+		
+		//for every product
+		for(Product p: products) {
+			//add product number to array
+			array[i++] = "" + p.getProductNo();
+		}
+		//return array of product numbers
+		return array;
+	}
 
 
 	//get Order at end of table
