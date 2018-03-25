@@ -101,8 +101,7 @@ public class Admin2 extends JFrame {
 		apb2 = new AdminProducts();
 		//add to bottom center panel
 		westBottomPanel.add(apb2);
-		apb2.setBoxData(DBConnector.getProductIds());
-		
+		updateBox();		
 		//add panels to center panel
 		westPanel.add(westBottomPanel);
 		//add center panel to frame
@@ -249,7 +248,8 @@ public class Admin2 extends JFrame {
 					Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2], Integer.parseInt(details[3]));
 
 					//add product to map, combo box + DB.
-					updateProductsBox(p);
+					map.put(p.getProductNo(), p);
+					apb2.addBoxData("" + p.getProductNo());
 					DBConnector.insertProduct(p);
 
 					tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
@@ -324,16 +324,16 @@ public class Admin2 extends JFrame {
 			//remove button
 			else if(event == removeBtn) {
 				
+				int value = apb2.getBoxValue();
+				
+				DBConnector.removeProduct(value);
+				apb2.resetFields();
+				map.remove(value);
+				apb2.removeBoxData("" + value);
 				
 			}
 			
 		}
-		
-	}
-	
-	private void updateProductsBox(Product p) {
-		map.put(p.getProductNo(), p);
-		apb2.addBoxData("" + p.getProductNo());
 		
 	}
 	
@@ -345,6 +345,11 @@ public class Admin2 extends JFrame {
 			//map the product number to product
 			map.put(p.getProductNo(), p);
 		}
+	}
+	
+	public void updateBox() {
+		
+		apb2.setBoxData(DBConnector.getProductIds());
 	}
 
 	
