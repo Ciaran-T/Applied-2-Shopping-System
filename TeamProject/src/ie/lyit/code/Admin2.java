@@ -15,7 +15,6 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -23,8 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,7 +32,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ie.lyit.data.Product;
@@ -49,20 +47,18 @@ public class Admin2 extends JFrame {
 	
 	//instance fields
 	//panels
-	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
-	private JPanel centerTopSouthPanel, centerBottomSouthPanel;
+	private JPanel westPanel, westBottomPanel;
 	private JPanel northPanel, southPanel;
-	private JPanel eastPanel, removePanel, innerRemovePanel;
-	private AdminPanelBuilder apb1, apb2;
+	private JPanel centerPanel;
+	private AdminPanelBuilder apb2;
+	private JPanel btnPanel;
 	
 	//Scroll pane, table and table data
 	private JScrollPane tablePane;
 	private JTable table;
-	private String[] productColumnNames = {"Product No.", "Name", "Price", "Type", "Qty"};
+	private String[] productColumnNames = {"No.", "Name", "Price", "Type", "Qty"};
 	private String[][] tableData;
 	private DefaultTableModel tableModel;
-	
-	private ArrayList<Product> p;
 	
 	//panel type
 	private String add = "add";
@@ -71,8 +67,6 @@ public class Admin2 extends JFrame {
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
-	private JLabel removeTitleLabel;
-	private JLabel removeLabel;
 	
 	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
@@ -107,26 +101,23 @@ public class Admin2 extends JFrame {
 		
 		//center panel
 		//create center panel -- main panel
-		centerPanel = new JPanel(new GridLayout(2, 1));
-		//create top center panel
-		centerTopPanel = new JPanel(new BorderLayout());
-		//create bottom center panel
-		centerBottomPanel = new JPanel(new BorderLayout());
+		westPanel = new JPanel(new GridLayout(2, 1));
 		
-		//create panel
-		apb1 = new AdminPanelBuilder(add);
-		//add to top center panel
-		centerTopPanel.add(apb1);
+		//create bottom center panel
+		westBottomPanel = new JPanel(new BorderLayout());
+		
+
 		//create panel
 		apb2 = new AdminPanelBuilder(edit);
 		//add to bottom center panel
-		centerBottomPanel.add(apb2);
+		westBottomPanel.add(apb2);
+		apb2.setBoxData(DBConnector.getProductIds());
 		
 		//add panels to center panel
-		centerPanel.add(centerTopPanel);
-		centerPanel.add(centerBottomPanel);
+		westPanel.add(westBottomPanel);
 		//add center panel to frame
-		add(centerPanel, BorderLayout.CENTER);
+		add(westPanel, BorderLayout.WEST);
+		
 		
 		//south panel
 		//create south panel
@@ -145,36 +136,28 @@ public class Admin2 extends JFrame {
 		add(southPanel, BorderLayout.SOUTH);
 		
 		
-		//create add buttons
-		addBtn = new JButton("Add");
-		//create panel
-		centerTopSouthPanel = new JPanel(new GridLayout(1, 2));
-		//add to panel
-		centerTopPanel.add(centerTopSouthPanel, BorderLayout.SOUTH);
-		//add buttons to panel
-		centerTopSouthPanel.add(new JLabel());//blank for space
-		centerTopSouthPanel.add(addBtn);
-		//centerTopSouthPanel.add(new JLabel());
 		
-		//create remove buttons
+		//create add button
+		addBtn = new JButton("Add");
+		
+		//create edit button
 		editBtn = new JButton("Edit");
 		//create panel
-		centerBottomSouthPanel = new JPanel(new GridLayout(1, 2));
+		btnPanel = new JPanel(new GridLayout(1, 3, 20, 20));
 		//add to panel
-		centerBottomPanel.add(centerBottomSouthPanel, BorderLayout.SOUTH);
-		centerBottomSouthPanel.add(new JLabel());
-		centerBottomSouthPanel.add(editBtn);
-		//centerBottomSouthPanel.add(new JLabel());
-		//centerBottomSouthPanel.add(removeAllBtn);
+		westBottomPanel.add(btnPanel, BorderLayout.SOUTH);
+		
+		
+		btnPanel.add(editBtn);
+		btnPanel.add(addBtn);
+		removeBtn = new JButton("Remove");
+		btnPanel.add(removeBtn);
 		
 		
 		
 		//east panel
-		eastPanel = new JPanel(new GridLayout(2, 1));
-		//eastPanel.add(new JLabel("                                                                            "));
+		centerPanel = new JPanel(new GridLayout(1, 1));
 		
-		//read products for row count of 2D array
-		p = DBConnector.readProducts();
 		
 		//create 2D array
 		tableData = DBConnector.getProductsTableData();
@@ -187,7 +170,11 @@ public class Admin2 extends JFrame {
 		
 		//set font on table headers
 		table.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 16));
+		table.setFont(new Font("SanSerif", Font.BOLD, 15));
+		table.setRowHeight(20);
 		
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
 		//make table uneditable
 		table.setEnabled(false);
 		
@@ -196,52 +183,12 @@ public class Admin2 extends JFrame {
 		tablePane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		//add pane to east panel
-		eastPanel.add(tablePane);
+		centerPanel.add(tablePane);
+
 		
-		
-		//remove panel
-		//removePanel = new JPanel(new CardLayout());
-		removePanel = new JPanel(new GridLayout(6, 1));
-		innerRemovePanel = new JPanel(new GridLayout(1, 3));
-		//set border
-		removePanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Product to " + remove), "Product to " + remove,  
-				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
-		//create label
-		removeTitleLabel = new JLabel("Product Number");
-		//set font
-		removeTitleLabel.setFont(ltFont);
-		//add to panel
-		removePanel.add(removeTitleLabel);
-		//center
-		removeTitleLabel.setHorizontalAlignment(JLabel.CENTER);
-		//removePanel.add(new JLabel());//blank space
-		//innerRemovePanel.add(new JLabel());//blank space
-		//create text field
-		removeTf = new JTextField();
-		removeTf.setFont(new Font("SanSerif", Font.PLAIN, 22));
-		removeLabel = new JLabel("Enter Product Number: ");
-		removeLabel.setFont(ltFont);
-		
-		innerRemovePanel.add(removeLabel);
-		innerRemovePanel.add(removeTf);
-		
-		removePanel.add(innerRemovePanel);
-		
-		removePanel.add(new JLabel());
-		
-		removeBtn = new JButton("Remove");
-		removeBtn.setPreferredSize(new Dimension(20, 20));
-		removePanel.add(removeBtn);
-		
-		
-		
-		//removeTf.setPreferredSize(new Dimension(10, 10));
-		
-		//add remove panel to east panel
-		eastPanel.add(removePanel);
 		
 		//add east panel to frame
-		add(eastPanel, BorderLayout.EAST);
+		add(centerPanel, BorderLayout.CENTER);
 
 		
 		//create action listener
@@ -284,7 +231,7 @@ public class Admin2 extends JFrame {
 				boolean added = false;
 				
 				//get text in first panel fields
-				String[] details = apb1.getAddPanelDetails();
+				String[] details = apb2.getAddPanelDetails();
 				
 				if(!(details[0].equals(null) || details[0].equals("") || 
 						details[1].equals(null) || details[1].equals("") || 
@@ -307,13 +254,14 @@ public class Admin2 extends JFrame {
 				//if added
 				if(added) {
 					//reset text fields
-					apb1.resetPanel();
+					apb2.resetPanel();
 					//inform user
 					JOptionPane.showMessageDialog(null, "Product has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else if(event == editBtn) {
-				
+				//assume product has not been edited
+				boolean edited = false;
 				//get text in first panel fields
 				String[] details = apb2.getAddPanelDetails();
 				
@@ -324,21 +272,39 @@ public class Admin2 extends JFrame {
 					
 					Product product = DBConnector.readProducts(details[0]);
 					
-					//set price of product
-					product.setPrice(Double.parseDouble(details[1]));
-					product.setQuantity(Integer.parseInt(details[3]));
-					
-					//System.out.println(product);
-					
-					DBConnector.insertProduct(product);
-					
+					//if product is null then there is no product in DB
+					if(product != null) {
+
+						//set price of product
+						product.setPrice(Double.parseDouble(details[1]));
+						product.setQuantity(Integer.parseInt(details[3]));
+
+//						System.out.println(product.getPrice());
+//						System.out.println(product.getQuantity());
+
+						DBConnector.insertProduct(product);
+						edited = true;
+						
+					}
+					else if(product == null) {
+						//inform user no product in DB
+						JOptionPane.showMessageDialog(null, "Add Product to Edit Product", "Cannot Edit Product", JOptionPane.INFORMATION_MESSAGE);
+					}
 					
 				}
+				//else nothing was entered
 				else {
 					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Edit Product", JOptionPane.INFORMATION_MESSAGE);
 				}
 				
-				
+				//if product was successfully edited
+				if(edited) {
+					//reset panels
+					apb2.resetPanel();
+					//inform user
+					JOptionPane.showMessageDialog(null, "Product has been Edited", "EDITED", JOptionPane.INFORMATION_MESSAGE);
+					
+				}
 				
 			}
 			else if(event == removeBtn) {
