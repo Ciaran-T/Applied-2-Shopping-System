@@ -56,7 +56,7 @@ public class Admin2 extends JFrame {
 	//Scroll pane, table and table data
 	private JScrollPane tablePane;
 	private JTable table;
-	private String[] productColumnNames = {"ProductNo", "Name", "Price", "Type", "Qty"};
+	private String[] productColumnNames = {"Product No.", "Name", "Price", "Type", "Qty"};
 	private String[][] tableData;
 	private DefaultTableModel tableModel;
 	
@@ -69,6 +69,7 @@ public class Admin2 extends JFrame {
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
+	private JLabel removeTitleLabel;
 	
 	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
@@ -191,11 +192,19 @@ public class Admin2 extends JFrame {
 		
 		
 		//remove panel
-		removePanel = new JPanel(new GridLayout(4, 1));
+		removePanel = new JPanel(new GridLayout(6, 1));
+		//set border
 		removePanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Product to " + remove), "Product to " + remove,  
 				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
-		
-		//removePanel.add(new Jlabel());
+		//create label
+		removeTitleLabel = new JLabel("Product Number");
+		//set font
+		removeTitleLabel.setFont(new Font("SanSerif", Font.BOLD, 22));
+		//add to panel
+		removePanel.add(removeTitleLabel);
+		//center
+		removeTitleLabel.setHorizontalAlignment(JLabel.CENTER);
+		removePanel.add(new JLabel());//blank space
 		
 		//add remove panel to east panel
 		eastPanel.add(removePanel);
