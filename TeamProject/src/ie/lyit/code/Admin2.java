@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ie.lyit.data.Product;
@@ -48,7 +50,7 @@ public class Admin2 extends JFrame {
 	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
 	private JPanel centerTopSouthPanel, centerBottomSouthPanel;
 	private JPanel northPanel, southPanel;
-	private JPanel eastPanel;
+	private JPanel eastPanel, removePanel;
 	private AdminPanelBuilder apb1, apb2;
 	
 	//Scroll pane, table and table data
@@ -63,18 +65,20 @@ public class Admin2 extends JFrame {
 	//panel type
 	private String add = "add";
 	private String edit = "edit";
-	private String update = "update";
+	private String remove = "remove";
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
 	
 	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
+	//title border font
+	private Font titleBorderFont = new Font("SanSerif", Font.BOLD, 25);
 	
 	//buttons
 	private JButton backBtn, deliveryScheduleBtn;
 	private JButton addBtn, addAllBtn;
-	private JButton removeBtn, removeAllBtn;
+	private JButton editBtn, removeAllBtn;
 	
 	//constructor
 	public Admin2() {
@@ -94,7 +98,7 @@ public class Admin2 extends JFrame {
 		
 		//center panel
 		//create center panel -- main panel
-		centerPanel = new JPanel(new GridLayout(3, 1, 0, 10));
+		centerPanel = new JPanel(new GridLayout(2, 1));
 		//create top center panel
 		centerTopPanel = new JPanel(new BorderLayout());
 		//create bottom center panel
@@ -146,21 +150,21 @@ public class Admin2 extends JFrame {
 		//centerTopSouthPanel.add(addAllBtn);
 		
 		//create remove buttons
-		removeBtn = new JButton("Remove");
+		editBtn = new JButton("Edit");
 		removeAllBtn = new JButton("Remove All");
 		//create panel
 		centerBottomSouthPanel = new JPanel(new GridLayout(1, 2));
 		//add to panel
 		centerBottomPanel.add(centerBottomSouthPanel, BorderLayout.SOUTH);
 		centerBottomSouthPanel.add(new JLabel());
-		centerBottomSouthPanel.add(removeBtn);
+		centerBottomSouthPanel.add(editBtn);
 		//centerBottomSouthPanel.add(new JLabel());
 		//centerBottomSouthPanel.add(removeAllBtn);
 		
 		
 		
 		//east panel
-		eastPanel = new JPanel();
+		eastPanel = new JPanel(new GridLayout(2, 1));
 		//eastPanel.add(new JLabel("                                                                            "));
 		
 		//read products for row count of 2D array
@@ -169,9 +173,10 @@ public class Admin2 extends JFrame {
 		//create 2D array
 		tableData = DBConnector.getProductsTableData();
 		
+		//create default model list with table columns and data
 		tableModel = new DefaultTableModel(tableData, productColumnNames);
 		
-		//create table, pass in blank data and assign column names
+		//create table with table model
 		table = new JTable(tableModel);
 		
 		//make table uneditable
@@ -184,6 +189,17 @@ public class Admin2 extends JFrame {
 		//add pane to east panel
 		eastPanel.add(tablePane);
 		
+		
+		//remove panel
+		removePanel = new JPanel(new GridLayout(4, 1));
+		removePanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Product to " + remove), "Product to " + remove,  
+				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
+		
+		//removePanel.add(new Jlabel());
+		
+		//add remove panel to east panel
+		eastPanel.add(removePanel);
+		
 		//add east panel to frame
 		add(eastPanel, BorderLayout.EAST);
 
@@ -195,7 +211,7 @@ public class Admin2 extends JFrame {
 		deliveryScheduleBtn.addActionListener(actionListener);
 		addBtn.addActionListener(actionListener);
 		addAllBtn.addActionListener(actionListener);
-		removeBtn.addActionListener(actionListener);
+		editBtn.addActionListener(actionListener);
 		removeAllBtn.addActionListener(actionListener);
 		
 		
@@ -253,7 +269,7 @@ public class Admin2 extends JFrame {
 				
 				
 			}
-			else if(event == removeBtn) {
+			else if(event == editBtn) {
 				
 				//get text in first panel fields
 				String[] details = apb2.getAddPanelDetails();
