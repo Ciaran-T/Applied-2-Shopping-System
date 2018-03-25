@@ -143,6 +143,10 @@ public class AdminProducts extends JPanel{
 		}
 
 	}
+	
+	public void addBoxData(String s) {
+		box.addItem(s);
+	}
 
 	public int getBoxValue() {
 
