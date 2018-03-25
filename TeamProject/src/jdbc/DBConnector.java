@@ -628,13 +628,13 @@ public class DBConnector {
 	}
 	
 	//Remove product query
-	private String removeProductQuery(int id) {
+	private static String removeProductQuery(int id) {
 		
 		return "DELETE FROM Products WHERE ProductNo='" + id + "';";
 	}
 	
 	//remove product
-	public void removeProduct(int id) {
+	public static void removeProduct(int id) {
 		
 		createConnection(DB_URL, USER, PASSWORD);
 		
