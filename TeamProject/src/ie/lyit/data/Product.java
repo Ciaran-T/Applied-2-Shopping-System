@@ -22,6 +22,9 @@ public class Product {
 	private int quantity;
 	private static int nextProductNo = 1;
 	
+	public Product() {
+		
+	}
 	public Product(String name, double price, int id, String type) {
 		
 		this.name = name;
