@@ -317,6 +317,21 @@ public class Admin2 extends JFrame {
 				//get text in first panel fields
 				String[] details = apb2.getAddPanelDetails();
 				
+				if(!(details[0].equals(null) || details[0].equals("") || 
+						details[1].equals(null) || details[1].equals("") || 
+						details[2].equals(null) || details[2].equals("") ||
+						details[3].equals(null) || details[3].equals(""))) {
+					
+					Product product = DBConnector.readProducts(details[0]);
+					
+					
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Edit Product", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				
 				
 			}
 			else if(event == removeBtn) {
