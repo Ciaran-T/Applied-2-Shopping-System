@@ -83,8 +83,8 @@ public class Admin2 extends JFrame {
 	
 	//buttons
 	private JButton backBtn, deliveryScheduleBtn;
-	private JButton addBtn, addAllBtn;
-	private JButton editBtn, removeAllBtn;
+	private JButton addBtn;
+	private JButton editBtn, removeBtn;
 	
 	//text field
 	private JTextField removeTf;
@@ -147,7 +147,6 @@ public class Admin2 extends JFrame {
 		
 		//create add buttons
 		addBtn = new JButton("Add");
-		addAllBtn = new JButton("Add All");
 		//create panel
 		centerTopSouthPanel = new JPanel(new GridLayout(1, 2));
 		//add to panel
@@ -156,11 +155,9 @@ public class Admin2 extends JFrame {
 		centerTopSouthPanel.add(new JLabel());//blank for space
 		centerTopSouthPanel.add(addBtn);
 		//centerTopSouthPanel.add(new JLabel());
-		//centerTopSouthPanel.add(addAllBtn);
 		
 		//create remove buttons
 		editBtn = new JButton("Edit");
-		removeAllBtn = new JButton("Remove All");
 		//create panel
 		centerBottomSouthPanel = new JPanel(new GridLayout(1, 2));
 		//add to panel
@@ -188,6 +185,9 @@ public class Admin2 extends JFrame {
 		//create table with table model
 		table = new JTable(tableModel);
 		
+		//set font on table headers
+		table.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 16));
+		
 		//make table uneditable
 		table.setEnabled(false);
 		
@@ -200,6 +200,7 @@ public class Admin2 extends JFrame {
 		
 		
 		//remove panel
+		//removePanel = new JPanel(new CardLayout());
 		removePanel = new JPanel(new GridLayout(6, 1));
 		innerRemovePanel = new JPanel(new GridLayout(1, 3));
 		//set border
@@ -228,6 +229,11 @@ public class Admin2 extends JFrame {
 		
 		removePanel.add(new JLabel());
 		
+		removeBtn = new JButton("Remove");
+		removeBtn.setPreferredSize(new Dimension(20, 20));
+		removePanel.add(removeBtn);
+		
+		
 		
 		//removeTf.setPreferredSize(new Dimension(10, 10));
 		
@@ -244,9 +250,8 @@ public class Admin2 extends JFrame {
 		backBtn.addActionListener(actionListener);
 		deliveryScheduleBtn.addActionListener(actionListener);
 		addBtn.addActionListener(actionListener);
-		addAllBtn.addActionListener(actionListener);
 		editBtn.addActionListener(actionListener);
-		removeAllBtn.addActionListener(actionListener);
+		removeBtn.addActionListener(actionListener);
 		
 		
 		//disable resizing of frame
@@ -298,11 +303,6 @@ public class Admin2 extends JFrame {
 				
 				
 			}
-			else if(event == addAllBtn) {
-				
-				
-				
-			}
 			else if(event == editBtn) {
 				
 				//get text in first panel fields
@@ -310,7 +310,7 @@ public class Admin2 extends JFrame {
 				
 				
 			}
-			else if(event == removeAllBtn) {
+			else if(event == removeBtn) {
 				
 				
 			}
