@@ -148,14 +148,12 @@ public class Admin2 extends JFrame {
 		centerPanel = new JPanel(new GridLayout(1, 1));
 		
 		
-		//create 2D array
-		tableData = DBConnector.getProductsTableData();
 		
-		//create default model list with table columns and data
-		tableModel = new DefaultTableModel(tableData, productColumnNames);
 		
 		//create table with table model
-		table = new JTable(tableModel);
+		table = new JTable();
+		
+		updateTable();
 		
 		//set font on table headers
 		table.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 16));
@@ -329,11 +327,13 @@ public class Admin2 extends JFrame {
 				DBConnector.removeProduct(value);
 				apb2.resetFields();
 				map.remove(value);
-				apb2.removeBoxData("" + value);
+				apb2.removeBoxData("" + value);	
 				
 			}
-			
+		
+			updateTable();
 		}
+		
 		
 	}
 	
@@ -347,14 +347,27 @@ public class Admin2 extends JFrame {
 		}
 	}
 	
+	//update combo box
 	public void updateBox() {
 		
 		apb2.setBoxData(DBConnector.getProductIds());
 	}
+	
+	//update table
+	public void updateTable() {
+
+		//create 2D array
+		tableData = DBConnector.getProductsTableData();
+
+		//create default model list with table columns and data
+		tableModel = new DefaultTableModel(tableData, productColumnNames);
+		table.setModel(tableModel);
+	}
 
 	
+	
 	//draw GUI
-	public static void drawAdmin2() {
+ 	public static void drawAdmin2() {
 		
 		Admin2 a2 = new Admin2();
 		a2.setTitle("Administrator");		
