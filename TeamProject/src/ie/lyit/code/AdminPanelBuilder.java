@@ -33,13 +33,14 @@ public class AdminPanelBuilder extends JPanel {
 	//panel
 	private JPanel panel1;
 	//inner panels
-	private Admin2PanelBuilder apb2, apb3, apb4;
+	private Admin2PanelBuilder apb2;
 	//labels
 	private JLabel nameLabel, priceLabel, typeLabel, qtyLabel;
 	//font
 	private Font labelFont = new Font("SanSerif", Font.BOLD, 22);
 	//title font
 	private Font titleBorderFont = new Font("SanSerif", Font.BOLD, 25);
+	
 	
 	private String s = "Products to ";
 	
@@ -54,7 +55,9 @@ public class AdminPanelBuilder extends JPanel {
 		
 		//create panel
 		panel1 = new JPanel(new GridLayout(5, 1));
-		panel1.add(new JLabel());
+		JLabel label = new JLabel("Choose Product No. ");
+		label.setFont(labelFont);
+		panel1.add(label);
 		
 		//create labels
 		nameLabel = new JLabel("Enter product name: ");
@@ -103,6 +106,10 @@ public class AdminPanelBuilder extends JPanel {
 	public void resetPanel() {
 		
 		apb2.resetFields();
+	}
+	
+	public void setBoxData(String[] args) {
+		apb2.setBoxData(args);
 	}
 	
 	
