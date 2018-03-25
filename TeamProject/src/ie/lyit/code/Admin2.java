@@ -280,6 +280,8 @@ public class Admin2 extends JFrame {
 				
 			}
 			else if(event == addBtn) {
+				//assume product has not been added
+				boolean added = false;
 				
 				//get text in first panel fields
 				String[] details = apb1.getAddPanelDetails();
@@ -294,14 +296,21 @@ public class Admin2 extends JFrame {
 					DBConnector.insertProduct(p);
 
 					tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
-					
+					//flick added to true
+					added = true;
 					
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Add Product", JOptionPane.INFORMATION_MESSAGE);
 				}
 				
-				
+				//if added
+				if(added) {
+					//reset text fields
+					apb1.resetPanel();
+					//inform user
+					JOptionPane.showMessageDialog(null, "Product has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 			else if(event == editBtn) {
 				

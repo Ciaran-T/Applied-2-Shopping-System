@@ -99,6 +99,12 @@ public class AdminPanelBuilder extends JPanel {
 		return details;
 	}
 	
+	//reset panel fields
+	public void resetPanel() {
+		
+		apb2.resetFields();
+	}
+	
 	
 //	//get all panel details
 //	public String[] getAddAllPanelDetails() {
