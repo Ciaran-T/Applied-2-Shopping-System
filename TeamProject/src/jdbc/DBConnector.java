@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import ie.lyit.data.Account;
@@ -566,6 +567,7 @@ public class DBConnector {
 	public static String[][] getProductsTableData(){
 
 		ArrayList<Product> products = readProducts();
+		DecimalFormat df = new DecimalFormat("#0.00");
 
 		String[][] tableData = new String[products.size()][5];
 		int i = 0;
@@ -575,7 +577,7 @@ public class DBConnector {
 			if(p != null) {
 				tableData[i][0] = "" + p.getProductNo();
 				tableData[i][1] = p.getName();
-				tableData[i][2] = "" + p.getPrice();
+				tableData[i][2] = "" + df.format(p.getPrice());
 				tableData[i][3] = p.getType();
 				tableData[i++][4] = "" + p.getQuantity();
 			}
