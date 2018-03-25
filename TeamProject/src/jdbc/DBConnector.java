@@ -485,7 +485,7 @@ public class DBConnector {
 
 		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
 				"', '" + name + "', '" + price + "', '" + type + "', '" + qty + "') "
-						+ " ON DUPLICATE KEY UPDATE Price=' " + price + "', Type='" + type + "', Qty='" + qty + "';";
+						+ " ON DUPLICATE KEY UPDATE Price='" + price + "', Qty='" + qty + "';";
 	}
 
 	//insert product into product table
@@ -571,7 +571,7 @@ public class DBConnector {
 	//overloaded method
 	private static String queryProduct(String name) {
 		
-		return "SELECT Name, Price, ProductNo, Type, Qty FROM Products WHERE Name='" + name + "';";
+		return "SELECT * FROM Products WHERE Name='" + name + "';";
 	}
 	
 	//get product from DB
@@ -588,8 +588,8 @@ public class DBConnector {
 			String query = queryProduct(name);
 			res = stmt.executeQuery(query);
 
-			while(res.next()) {				//get name, price, productNo, type and quantity
-				product = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
+			while(res.next()) {				//name-row 2, price-row 3, productNo-row 1, type-row 4, quantity-row 5.
+				product = new Product(res.getString(2), res.getDouble(3), res.getInt(1), res.getString(4), res.getInt(5)); 
 
 			}
 
