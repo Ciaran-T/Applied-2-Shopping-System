@@ -627,7 +627,31 @@ public class DBConnector {
 		
 	}
 	
+	//Remove product query
+	private String removeProductQuery(int id) {
+		
+		return "DELETE FROM Products WHERE ProductNo='" + id + "';";
+	}
 	
+	//remove product
+	public void removeProduct(int id) {
+		
+		createConnection(DB_URL, USER, PASSWORD);
+		
+		try {
+			String query = removeProductQuery(id);
+			stmt.executeUpdate(query);
+
+			System.out.println("Removed Product from DB successfully");
+
+		}catch(Exception e) {
+			System.out.println("Problem with remove product method ==> " + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+		
+		
+	}
 
 
 	/* Method to check Internet connection
