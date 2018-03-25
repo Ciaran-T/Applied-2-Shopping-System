@@ -232,6 +232,8 @@ public class Admin2 extends JFrame {
 			else if(event == deliveryScheduleBtn) {
 				
 			}
+			
+			//add button
 			else if(event == addBtn) {
 				//assume product has not been added
 				boolean added = false;
@@ -246,11 +248,14 @@ public class Admin2 extends JFrame {
 
 					Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2], Integer.parseInt(details[3]));
 
+					//add product to map, combo box + DB.
+					updateProductsBox(p);
 					DBConnector.insertProduct(p);
 
 					tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
 					//flick added to true
 					added = true;
+					
 					
 				}
 				else {
@@ -265,6 +270,8 @@ public class Admin2 extends JFrame {
 					JOptionPane.showMessageDialog(null, "Product has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
+			
+			//edit button
 			else if(event == editBtn) {
 				//assume product has not been edited
 				boolean edited = false;
@@ -313,6 +320,8 @@ public class Admin2 extends JFrame {
 				}
 				
 			}
+			
+			//remove button
 			else if(event == removeBtn) {
 				
 				
@@ -322,6 +331,11 @@ public class Admin2 extends JFrame {
 		
 	}
 	
+	private void updateProductsBox(Product p) {
+		map.put(p.getProductNo(), p);
+		apb2.addBoxData("" + p.getProductNo());
+		
+	}
 	
 	//map number to product
 	private void mapProducts(ArrayList<Product> products) {
