@@ -484,7 +484,8 @@ public class DBConnector {
 	private static String insertProductQuery(String name, double price, int id, String type, int qty) {
 
 		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
-				"', '" + name + "', '" + price + "', '" + type + "', '" + qty + "');";
+				"', '" + name + "', '" + price + "', '" + type + "', '" + qty + "') "
+						+ " ON DUPLICATE KEY UPDATE Price=' " + price + "', Type='" + type + "', Qty='" + qty + "';";
 	}
 
 	//insert product into product table
@@ -574,7 +575,7 @@ public class DBConnector {
 	}
 	
 	//get product from DB
-	public static Product readProduct(String name) {
+	public static Product readProducts(String name) {
 		
 		Product product = new Product();
 		
@@ -605,6 +606,7 @@ public class DBConnector {
 		return product;
 		
 	}
+	
 	
 
 
