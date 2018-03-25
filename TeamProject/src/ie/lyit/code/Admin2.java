@@ -324,6 +324,13 @@ public class Admin2 extends JFrame {
 					
 					Product product = DBConnector.readProducts(details[0]);
 					
+					//set price of product
+					product.setPrice(Double.parseDouble(details[1]));
+					product.setQuantity(Integer.parseInt(details[3]));
+					
+					//System.out.println(product);
+					
+					DBConnector.insertProduct(product);
 					
 					
 				}
