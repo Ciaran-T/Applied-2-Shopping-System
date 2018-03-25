@@ -1,3 +1,12 @@
+/* Author: Ciaran Toman
+ * Class: Cloud Computing
+ * DESC: GUI application Admin products page.
+ * 
+ * 
+ * 
+*/
+
+
 package ie.lyit.code;
 
 import java.awt.Font;
