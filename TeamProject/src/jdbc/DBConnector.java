@@ -566,6 +566,46 @@ public class DBConnector {
 		return tableData;
 	}
 
+	//get product from DB by name query
+	//overloaded method
+	private static String queryProduct(String name) {
+		
+		return "SELECT Name, Price, ProductNo, Type, Qty FROM Products WHERE Name='" + name + "';";
+	}
+	
+	//get product from DB
+	public static Product readProduct(String name) {
+		
+		Product product = new Product();
+		
+		ResultSet res;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+		try {
+			String query = queryProduct(name);
+			res = stmt.executeQuery(query);
+
+			while(res.next()) {				//get name, price, productNo, type and quantity
+				product = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
+
+			}
+
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+
+		return product;
+		
+	}
+	
 
 
 	/* Method to check Internet connection
