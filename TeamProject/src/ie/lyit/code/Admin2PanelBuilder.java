@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ public class Admin2PanelBuilder extends JPanel {
 
 	//instance fields
 	private JLabel titleLabel;
+	private JComboBox<String> box;
 	
 	private JTextField nameTf, priceTf, typeTf, qtyTf;
 	//font
@@ -45,17 +47,20 @@ public class Admin2PanelBuilder extends JPanel {
 		//set line border
 		//this.setBorder(new LineBorder(Color.BLACK, 1));
 		//set layout of panel
-		this.setLayout(new GridLayout(5, 1, 0, 1));
+		this.setLayout(new GridLayout(5, 1, 50, 1));
 		
-		//create title label
-		titleLabel = new JLabel("Product details");
-		//add font
-		titleLabel.setFont(labelFont);
-		//add to panel
-		add(titleLabel);
+//		//create title label
+//		titleLabel = new JLabel("Product details");
+//		//add font
+//		titleLabel.setFont(labelFont);
+//		//add to panel
+//		add(titleLabel);
+		box = new JComboBox<>();
+		
+		add(box);
 		
 		//set horizontal alignment of label
-		titleLabel.setHorizontalAlignment(JLabel.CENTER);
+		//titleLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//create text fields and add to panel
 		nameTf = new JTextField(10);
@@ -108,21 +113,12 @@ public class Admin2PanelBuilder extends JPanel {
 		qtyTf.setText("");
 	}
 	
-	
-	
-	//tester
-	//main
-	public static void main(String[] args) {
-		JFrame jf = new JFrame();
-		Admin2PanelBuilder apb = new Admin2PanelBuilder();	
-		jf.add(apb);
-		jf.pack();
-		//jf.setSize(550, 400);
-		jf.setLocationRelativeTo(null);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.setVisible(true);
-		
+	public void setBoxData(String[] args) {
+		//iterate over array adding to combo box
+		for(String s: args) {
+			box.addItem(s);
+		}
 
-	}//end main
+	}
 
 }
