@@ -15,6 +15,7 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -30,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -50,7 +52,7 @@ public class Admin2 extends JFrame {
 	private JPanel centerPanel, centerTopPanel, centerBottomPanel;
 	private JPanel centerTopSouthPanel, centerBottomSouthPanel;
 	private JPanel northPanel, southPanel;
-	private JPanel eastPanel, removePanel;
+	private JPanel eastPanel, removePanel, innerRemovePanel;
 	private AdminPanelBuilder apb1, apb2;
 	
 	//Scroll pane, table and table data
@@ -70,16 +72,22 @@ public class Admin2 extends JFrame {
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
 	private JLabel removeTitleLabel;
+	private JLabel removeLabel;
 	
 	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	//title border font
 	private Font titleBorderFont = new Font("SanSerif", Font.BOLD, 25);
+	//label + text field font
+	private Font ltFont = new Font("SanSerif", Font.BOLD, 22);
 	
 	//buttons
 	private JButton backBtn, deliveryScheduleBtn;
 	private JButton addBtn, addAllBtn;
 	private JButton editBtn, removeAllBtn;
+	
+	//text field
+	private JTextField removeTf;
 	
 	//constructor
 	public Admin2() {
@@ -193,18 +201,35 @@ public class Admin2 extends JFrame {
 		
 		//remove panel
 		removePanel = new JPanel(new GridLayout(6, 1));
+		innerRemovePanel = new JPanel(new GridLayout(1, 3));
 		//set border
 		removePanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Product to " + remove), "Product to " + remove,  
 				TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
 		//create label
 		removeTitleLabel = new JLabel("Product Number");
 		//set font
-		removeTitleLabel.setFont(new Font("SanSerif", Font.BOLD, 22));
+		removeTitleLabel.setFont(ltFont);
 		//add to panel
 		removePanel.add(removeTitleLabel);
 		//center
 		removeTitleLabel.setHorizontalAlignment(JLabel.CENTER);
-		removePanel.add(new JLabel());//blank space
+		//removePanel.add(new JLabel());//blank space
+		//innerRemovePanel.add(new JLabel());//blank space
+		//create text field
+		removeTf = new JTextField();
+		removeTf.setFont(new Font("SanSerif", Font.PLAIN, 22));
+		removeLabel = new JLabel("Enter Product Number: ");
+		removeLabel.setFont(ltFont);
+		
+		innerRemovePanel.add(removeLabel);
+		innerRemovePanel.add(removeTf);
+		
+		removePanel.add(innerRemovePanel);
+		
+		removePanel.add(new JLabel());
+		
+		
+		//removeTf.setPreferredSize(new Dimension(10, 10));
 		
 		//add remove panel to east panel
 		eastPanel.add(removePanel);
