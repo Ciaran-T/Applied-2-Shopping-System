@@ -21,16 +21,15 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -50,7 +49,7 @@ public class Admin2 extends JFrame {
 	private JPanel westPanel, westBottomPanel;
 	private JPanel northPanel, southPanel;
 	private JPanel centerPanel;
-	private AdminPanelBuilder apb2;
+	private AdminProducts apb2;
 	private JPanel btnPanel;
 	
 	//Scroll pane, table and table data
@@ -60,28 +59,19 @@ public class Admin2 extends JFrame {
 	private String[][] tableData;
 	private DefaultTableModel tableModel;
 	
-	//panel type
-	private String add = "add";
-	private String edit = "edit";
-	private String remove = "remove";
+	//map product number to product 
+	private HashMap<Integer, Product> map;
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
 	
 	//title font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
-	//title border font
-	private Font titleBorderFont = new Font("SanSerif", Font.BOLD, 25);
-	//label + text field font
-	private Font ltFont = new Font("SanSerif", Font.BOLD, 22);
 	
 	//buttons
 	private JButton backBtn, deliveryScheduleBtn;
 	private JButton addBtn;
 	private JButton editBtn, removeBtn;
-	
-	//text field
-	private JTextField removeTf;
 	
 	//constructor
 	public Admin2() {
@@ -108,7 +98,7 @@ public class Admin2 extends JFrame {
 		
 
 		//create panel
-		apb2 = new AdminPanelBuilder(edit);
+		apb2 = new AdminProducts();
 		//add to bottom center panel
 		westBottomPanel.add(apb2);
 		apb2.setBoxData(DBConnector.getProductIds());
@@ -170,8 +160,8 @@ public class Admin2 extends JFrame {
 		
 		//set font on table headers
 		table.getTableHeader().setFont(new Font("SanSerif", Font.BOLD, 16));
-		table.setFont(new Font("SanSerif", Font.BOLD, 15));
-		table.setRowHeight(20);
+		table.setFont(apb2.getTfFont());
+		table.setRowHeight(30);
 		
 		//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
@@ -204,7 +194,23 @@ public class Admin2 extends JFrame {
 		//disable resizing of frame
 		setResizable(false);
 		
+		//map products
+		mapProducts(DBConnector.readProducts());
 		
+		//set listener
+		apb2.setBoxListener(new BoxListener());
+	}
+	
+	public class BoxListener implements ActionListener{
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		
+			int id = apb2.getBoxValue();
+			Product product = map.get(id);
+			apb2.setData(product);
+			
+		}
 	}
 	
 	public class ActionListenerClass implements ActionListener {
@@ -254,7 +260,7 @@ public class Admin2 extends JFrame {
 				//if added
 				if(added) {
 					//reset text fields
-					apb2.resetPanel();
+					apb2.resetFields();
 					//inform user
 					JOptionPane.showMessageDialog(null, "Product has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -300,7 +306,7 @@ public class Admin2 extends JFrame {
 				//if product was successfully edited
 				if(edited) {
 					//reset panels
-					apb2.resetPanel();
+					apb2.resetFields();
 					//inform user
 					JOptionPane.showMessageDialog(null, "Product has been Edited", "EDITED", JOptionPane.INFORMATION_MESSAGE);
 					
@@ -316,6 +322,16 @@ public class Admin2 extends JFrame {
 		
 	}
 	
+	
+	//map number to product
+	private void mapProducts(ArrayList<Product> products) {
+		map = new HashMap<>();
+		//for every product in products
+		for(Product p: products) {
+			//map the product number to product
+			map.put(p.getProductNo(), p);
+		}
+	}
 
 	
 	//draw GUI
