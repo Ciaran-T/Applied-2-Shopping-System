@@ -634,13 +634,17 @@ public class DBConnector {
 	}
 
 	//remove product
-	public static void removeProduct(int id) {
+	public static boolean removeProduct(int id) {
 
+		boolean removed = false;
 		createConnection(DB_URL, USER, PASSWORD);
 
 		try {
 			String query = removeProductQuery(id);
-			stmt.executeUpdate(query);
+			int i = stmt.executeUpdate(query);
+			if(i > 0) {
+				removed = true;
+			}
 
 			System.out.println("Removed Product from DB successfully");
 
@@ -650,7 +654,7 @@ public class DBConnector {
 			closeConnection();
 		}
 
-
+		return removed;
 	}
 
 	//Remove Account query
@@ -660,13 +664,16 @@ public class DBConnector {
 	}
 
 	//remove account
-	public static void removeAccount(String email) {
+	public static boolean removeAccount(String email) {
 
+		boolean removed = false;
 		createConnection(DB_URL, USER, PASSWORD);
 
 		try {
 			String query = removeAccountQuery(email);
-			stmt.executeUpdate(query);
+			int i = stmt.executeUpdate(query);
+			if(i > 0)
+				removed = true;
 
 			System.out.println("Removed Account from DB successfully");
 
@@ -676,7 +683,7 @@ public class DBConnector {
 			closeConnection();
 		}
 
-
+		return removed;
 	}
 	
 	//read accounts query
