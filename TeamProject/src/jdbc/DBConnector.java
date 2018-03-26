@@ -679,7 +679,44 @@ public class DBConnector {
 
 	}
 	
+	//read accounts query
+	private static String readAccountsQuery() {
+		
+		return "SELECT email, FirstName, LastName, Password, orders FROM Accounts;";
+	}
 	
+	//read accounts
+	public static ArrayList<Account> readAccounts() {
+		
+		ArrayList<Account> accounts = new ArrayList<>();
+		
+		Account a = null;
+		ResultSet res;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+
+		try {
+			String query = readAccountsQuery();
+			res = stmt.executeQuery(query);
+
+			while(res.next()) {
+
+				a = new Account(res.getString(1), res.getString(2), res.getString(3), res.getString(4), res.getInt(5));
+				accounts.add(a);
+			}
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+		return accounts;
+	}
 
 
 
