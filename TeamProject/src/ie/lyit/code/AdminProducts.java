@@ -4,7 +4,7 @@
  * 
  * 
  * 
-*/
+ */
 
 
 package ie.lyit.code;
@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import ie.lyit.data.Account;
 import ie.lyit.data.Product;
 
 public class AdminProducts extends JPanel{
@@ -43,10 +44,26 @@ public class AdminProducts extends JPanel{
 	private String s = "Details";
 
 	//constructor
-	public AdminProducts() {
+	public AdminProducts(Object obj) {
 
+		String[] type = new String[6];
+		if(obj instanceof Product) {
+			type[0] = "Product ";
+			type[1] = "Number:";
+			type[2] = "Name:";
+			type[3] = "Price:";
+			type[4] = "Type:";
+			type[5] = "Quantity:";
+		}else if(obj instanceof Account){
+			type[0] = "Customer ";
+			type[1] = "Email:";
+			type[2] = "Name:";
+			type[3] = "Password:";
+			type[4] = "Orders:";
+			type[5] = "Joined:";
+		}
 		//set line border
-		this.setBorder(BorderFactory.createTitledBorder(new TitledBorder(s), s,  TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
+		this.setBorder(BorderFactory.createTitledBorder(new TitledBorder(type[0] + s), type[0] + s,  TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
 		//set layout of panel
 		this.setLayout(new GridLayout(5, 2, 10, 10));
 
@@ -54,16 +71,21 @@ public class AdminProducts extends JPanel{
 		box = new JComboBox<>();
 
 		// create labels
-		numLbl = new JLabel("Choose number: ");
+		numLbl = new JLabel(type[0] + type[1]);
 		numLbl.setFont(labelFont);
-		nameLbl = new JLabel("Name: ");
+		numLbl.setHorizontalAlignment(JLabel.RIGHT);
+		nameLbl = new JLabel(type[0] + type[2]);
 		nameLbl.setFont(labelFont);
-		typeLbl = new JLabel("Type: ");
+		nameLbl.setHorizontalAlignment(JLabel.RIGHT);
+		typeLbl = new JLabel(type[0] + type[4]);
 		typeLbl.setFont(labelFont);
-		qtyLbl = new JLabel("Quantity: ");
+		typeLbl.setHorizontalAlignment(JLabel.RIGHT);
+		qtyLbl = new JLabel(type[0] + type[5]);
 		qtyLbl.setFont(labelFont);
-		priceLbl = new JLabel("Price: ");
+		qtyLbl.setHorizontalAlignment(JLabel.RIGHT);
+		priceLbl = new JLabel(type[0] + type[3]);
 		priceLbl.setFont(labelFont);
+		priceLbl.setHorizontalAlignment(JLabel.RIGHT);
 
 		// add labels 
 		add(numLbl);
@@ -122,9 +144,9 @@ public class AdminProducts extends JPanel{
 
 		return qtyTf.getText();
 	}
-	
+
 	public Font getTfFont() {
-		
+
 		return tfFont;
 	}
 
@@ -143,11 +165,11 @@ public class AdminProducts extends JPanel{
 		}
 
 	}
-	
+
 	public void addBoxData(String s) {
 		box.addItem(s);
 	}
-	
+
 	public void removeBoxData(String s) {
 		box.removeItem(s);
 	}
@@ -176,7 +198,7 @@ public class AdminProducts extends JPanel{
 
 		return details;
 	}
-	
+
 	public void setBoxListener(ActionListener l) {
 		box.addActionListener(l);
 	}
