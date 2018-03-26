@@ -682,7 +682,7 @@ public class DBConnector {
 	//read accounts query
 	private static String readAccountsQuery() {
 		
-		return "SELECT email, FirstName, LastName, Password, orders FROM Accounts;";
+		return "SELECT FirstName, LastName, email, Password, orders FROM Accounts;";
 	}
 	
 	//read accounts
@@ -717,8 +717,47 @@ public class DBConnector {
 
 		return accounts;
 	}
+	
+	//populate 2D array
+	public static String[][] getAccountsTableData(){
+
+		ArrayList<Account> accounts = readAccounts();
+
+		String[][] tableData = new String[accounts.size()][5];
+		int i = 0;
+
+		for(Account a: accounts) {
+
+			if(a != null) {
+				tableData[i][0] = a.getEmail();
+				tableData[i][1] = a.getfName();
+				tableData[i][2] = a.getlName();
+				tableData[i][3] = a.getPassword();
+				tableData[i++][4] = "" + a.getOrders();
+			}
+
+		}
+
+		return tableData;
+	}
 
 
+	//get account emails
+	public static String[] getAccountEmails() {
+		
+		ArrayList<Account> accounts = readAccounts();
+		String[] emails = new String[accounts.size()];
+		int i = 0;
+		
+		for(Account a: accounts) {
+			if(a != null) {
+				
+				emails[i++] = a.getEmail();
+			}
+			
+		}
+		return emails;
+	}
 
 
 	/* Method to check Internet connection
