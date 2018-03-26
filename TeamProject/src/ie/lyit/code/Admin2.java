@@ -72,6 +72,7 @@ public class Admin2 extends JFrame {
 	private JButton backBtn, deliveryScheduleBtn;
 	private JButton addBtn;
 	private JButton editBtn, removeBtn;
+	private JButton resetBtn;
 	
 	//constructor
 	public Admin2() {
@@ -132,14 +133,19 @@ public class Admin2 extends JFrame {
 		//create edit button
 		editBtn = new JButton("Edit");
 		//create panel
-		btnPanel = new JPanel(new GridLayout(1, 3, 20, 20));
+		btnPanel = new JPanel(new GridLayout(1, 4, 20, 20));
 		//add to panel
 		westBottomPanel.add(btnPanel, BorderLayout.SOUTH);
 		
-		
+		resetBtn = new JButton("Reset");
+		resetBtn.setFont(apb2.getTfFont());
+		btnPanel.add(resetBtn);
 		btnPanel.add(editBtn);
+		editBtn.setFont(apb2.getTfFont());
 		btnPanel.add(addBtn);
+		addBtn.setFont(apb2.getTfFont());
 		removeBtn = new JButton("Remove");
+		removeBtn.setFont(apb2.getTfFont());
 		btnPanel.add(removeBtn);
 		
 		
@@ -186,6 +192,7 @@ public class Admin2 extends JFrame {
 		addBtn.addActionListener(actionListener);
 		editBtn.addActionListener(actionListener);
 		removeBtn.addActionListener(actionListener);
+		resetBtn.addActionListener(new BoxListener());
 		
 		
 		//disable resizing of frame
@@ -203,10 +210,19 @@ public class Admin2 extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		
-			int id = apb2.getBoxValue();
-			Product product = map.get(id);
-			apb2.setData(product);
-			
+			Object event = e.getSource();
+			//reset button
+			if(event == resetBtn) {
+				
+				apb2.resetFields();
+				
+			}
+			//else its the combo box
+			else{
+				int id = apb2.getBoxValue();
+				Product product = map.get(id);
+				apb2.setData(product);
+			}
 		}
 	}
 	
@@ -330,6 +346,7 @@ public class Admin2 extends JFrame {
 				apb2.removeBoxData("" + value);	
 				
 			}
+			
 		
 			updateTable();
 		}
