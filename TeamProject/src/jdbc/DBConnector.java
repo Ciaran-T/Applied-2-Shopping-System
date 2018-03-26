@@ -382,8 +382,8 @@ public class DBConnector {
 
 		return products;
 	}
-	
-	
+
+
 	public static String[] getProductIds() {
 		///create array length - number of product in DB
 		String[] array = new String[getNumberOfProducts()];
@@ -391,7 +391,7 @@ public class DBConnector {
 		ArrayList<Product> products = readProducts();
 		//counter
 		int i = 0;
-		
+
 		//for every product
 		for(Product p: products) {
 			//add product number to array
@@ -504,7 +504,7 @@ public class DBConnector {
 
 		return "INSERT INTO Products (ProductNo, Name, Price, Type, Qty) VALUES('" + id +
 				"', '" + name + "', '" + price + "', '" + type + "', '" + qty + "') "
-						+ " ON DUPLICATE KEY UPDATE Price='" + price + "', Qty='" + qty + "';";
+				+ " ON DUPLICATE KEY UPDATE Price='" + price + "', Qty='" + qty + "';";
 	}
 
 	//insert product into product table
@@ -590,15 +590,15 @@ public class DBConnector {
 	//get product from DB by name query
 	//overloaded method
 	private static String queryProduct(String name) {
-		
+
 		return "SELECT * FROM Products WHERE Name='" + name + "';";
 	}
-	
+
 	//get product from DB
 	public static Product readProducts(String name) {
-		
+
 		Product product = new Product();
-		
+
 		ResultSet res;
 
 		createConnection(DB_URL, USER, PASSWORD);
@@ -624,20 +624,20 @@ public class DBConnector {
 
 
 		return product;
-		
+
 	}
-	
+
 	//Remove product query
 	private static String removeProductQuery(int id) {
-		
+
 		return "DELETE FROM Products WHERE ProductNo='" + id + "';";
 	}
-	
+
 	//remove product
 	public static void removeProduct(int id) {
-		
+
 		createConnection(DB_URL, USER, PASSWORD);
-		
+
 		try {
 			String query = removeProductQuery(id);
 			stmt.executeUpdate(query);
@@ -649,9 +649,39 @@ public class DBConnector {
 		}finally {
 			closeConnection();
 		}
-		
-		
+
+
 	}
+
+	//Remove Account query
+	private static String removeAccountQuery(String email) {
+
+		return "DELETE FROM Accounts WHERE email='" + email + "';";
+	}
+
+	//remove account
+	public static void removeAccount(String email) {
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+		try {
+			String query = removeAccountQuery(email);
+			stmt.executeUpdate(query);
+
+			System.out.println("Removed Account from DB successfully");
+
+		}catch(Exception e) {
+			System.out.println("Problem with remove account method ==> " + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+
+	}
+	
+	
+
+
 
 
 	/* Method to check Internet connection
