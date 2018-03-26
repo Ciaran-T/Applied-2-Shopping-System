@@ -198,8 +198,8 @@ public class AdminProducts extends JPanel{
 		else if(obj instanceof Account) {
 
 			Account a = (Account) obj;
-			tf1.setText(a.getfName());
-			tf2.setText(a.getlName());
+			tf1.setText(a.getfName() + " " + a.getlName());
+			tf2.setText(a.getEmail());
 			tf3.setText(a.getPassword());
 			tf4.setText("" + a.getOrders());
 		}

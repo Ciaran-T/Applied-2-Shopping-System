@@ -225,6 +225,7 @@ public class Admin3 extends JFrame {
 				String email = apb2.getBoxEmail();
 				Account account = map.get(email);
 				apb2.setData(account);
+				
 			}
 		}
 	}
@@ -301,19 +302,22 @@ public class Admin3 extends JFrame {
 						details[2].equals(null) || details[2].equals("") ||
 						details[3].equals(null) || details[3].equals(""))) {
 					
-					Product product = DBConnector.readProducts(details[0]);
+					Account product = map.get(details[1]);
 					
 					//if product is null then there is no product in DB
 					if(product != null) {
 
+						String[] name = details[0].split(" ");
 						//set price of product
-						product.setPrice(Double.parseDouble(details[1]));
-						product.setQuantity(Integer.parseInt(details[3]));
+						product.setfName(name[0]);
+						product.setlName(name[1]);
+						product.setEmail(details[1]);
+						product.setPassword(details[2]);
 
 //						System.out.println(product.getPrice());
 //						System.out.println(product.getQuantity());
 
-						DBConnector.insertProduct(product);
+						DBConnector.writeAccount(product);
 						edited = true;
 						
 					}
