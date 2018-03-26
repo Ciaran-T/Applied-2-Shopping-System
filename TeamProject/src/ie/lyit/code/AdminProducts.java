@@ -35,7 +35,7 @@ public class AdminProducts extends JPanel{
 	private JLabel numLbl, nameLbl, priceLbl, qtyLbl, typeLbl;
 	private JComboBox<String> box;
 
-	private JTextField nameTf, priceTf, typeTf, qtyTf;
+	private JTextField tf1, tf2, tf3, tf4;
 	//font
 	private Font labelFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font tfFont = new Font("SanSerif", Font.PLAIN, 22);
@@ -57,8 +57,8 @@ public class AdminProducts extends JPanel{
 		}else if(obj instanceof Account){
 			type[0] = "Customer ";
 			type[1] = "Email:";
-			type[2] = "First Name:";
-			type[3] = "Last Name:";
+			type[2] = "Name:";
+			type[3] = "Email:";
 			type[4] = "Password:";
 			type[5] = "Orders:";
 		}
@@ -95,31 +95,31 @@ public class AdminProducts extends JPanel{
 
 		add(nameLbl);
 		//create text fields and add to panel
-		nameTf = new JTextField(10);
-		add(nameTf);
+		tf1 = new JTextField(10);
+		add(tf1);
 
 		add(priceLbl);
-		priceTf = new JTextField();
-		add(priceTf);
+		tf2 = new JTextField();
+		add(tf2);
 
 		add(typeLbl);
-		typeTf = new JTextField();
-		add(typeTf);
+		tf3 = new JTextField();
+		add(tf3);
 
 		add(qtyLbl);
-		qtyTf = new JTextField();
-		add(qtyTf);
+		tf4 = new JTextField();
+		add(tf4);
 
 		//set margin
-		nameTf.setMargin(new Insets(2, 2, 2, 2));
-		priceTf.setMargin(new Insets(2, 2, 2, 2));
-		typeTf.setMargin(new Insets(2, 2, 2, 2));
-		qtyTf.setMargin(new Insets(2, 2, 2, 2));
+		tf1.setMargin(new Insets(2, 2, 2, 2));
+		tf2.setMargin(new Insets(2, 2, 2, 2));
+		tf3.setMargin(new Insets(2, 2, 2, 2));
+		tf4.setMargin(new Insets(2, 2, 2, 2));
 
-		nameTf.setFont(tfFont);
-		priceTf.setFont(tfFont);
-		typeTf.setFont(tfFont);
-		qtyTf.setFont(tfFont);
+		tf1.setFont(tfFont);
+		tf2.setFont(tfFont);
+		tf3.setFont(tfFont);
+		tf4.setFont(tfFont);
 		box.setFont(tfFont);
 
 	}
@@ -127,22 +127,22 @@ public class AdminProducts extends JPanel{
 	//getters
 	public String getNameText() {
 
-		return nameTf.getText();
+		return tf1.getText();
 	}
 
 	public String getPriceText() {
 
-		return priceTf.getText();
+		return tf2.getText();
 	}
 
 	public String getTypeText() {
 
-		return typeTf.getText();
+		return tf3.getText();
 	}
 
 	public String getQtyText() {
 
-		return qtyTf.getText();
+		return tf4.getText();
 	}
 
 	public Font getTfFont() {
@@ -152,10 +152,10 @@ public class AdminProducts extends JPanel{
 
 	public void resetFields() {
 
-		nameTf.setText("");
-		priceTf.setText("");
-		typeTf.setText("");
-		qtyTf.setText("");
+		tf1.setText("");
+		tf2.setText("");
+		tf3.setText("");
+		tf4.setText("");
 	}
 
 	public void setBoxData(String[] args) {
@@ -190,18 +190,18 @@ public class AdminProducts extends JPanel{
 		if(obj instanceof Product) {
 
 			Product p = (Product)obj;
-			nameTf.setText(p.getName());
-			typeTf.setText(p.getType());
-			priceTf.setText(""+ p.getPrice());
-			qtyTf.setText("" + p.getQuantity());
+			tf1.setText(p.getName());
+			tf3.setText(p.getType());
+			tf2.setText(""+ p.getPrice());
+			tf4.setText("" + p.getQuantity());
 		}
 		else if(obj instanceof Account) {
 
 			Account a = (Account) obj;
-			nameTf.setText(a.getfName());
-			typeTf.setText(a.getlName());
-			priceTf.setText(a.getPassword());
-			qtyTf.setText("" + a.getOrders());
+			tf1.setText(a.getfName());
+			tf2.setText(a.getlName());
+			tf3.setText(a.getPassword());
+			tf4.setText("" + a.getOrders());
 		}
 	}
 	
@@ -210,10 +210,10 @@ public class AdminProducts extends JPanel{
 
 		String[] details = new String[4];
 
-		details[0] = "" + nameTf.getText();
-		details[1] = "" + priceTf.getText();
-		details[2] = "" + typeTf.getText();
-		details[3] = "" + qtyTf.getText();
+		details[0] = "" + tf1.getText();
+		details[1] = "" + tf2.getText();
+		details[2] = "" + tf3.getText();
+		details[3] = "" + tf4.getText();
 
 		return details;
 	}

@@ -339,13 +339,21 @@ public class Admin2 extends JFrame {
 			
 			//remove button
 			else if(event == removeBtn) {
+				boolean removed = false;
 				
 				int value = apb2.getBoxValue();
 				
-				DBConnector.removeProduct(value);
-				apb2.resetFields();
-				map.remove(value);
-				apb2.removeBoxData("" + value);	
+				removed = DBConnector.removeProduct(value);
+				
+				if(removed) {
+					apb2.resetFields();
+					map.remove(value);
+					apb2.removeBoxData("" + value);
+					JOptionPane.showMessageDialog(null, "Product Has Been Removed", "Product Removed", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Product Not Removed", "Cannot Remove Product", JOptionPane.INFORMATION_MESSAGE);
+				}
 				
 			}
 			
