@@ -262,21 +262,22 @@ public class Admin3 extends JFrame {
 						details[2].equals(null) || details[2].equals("") ||
 						details[3].equals(null) || details[3].equals(""))) {
 
-					Product p = new Product(details[0], Double.parseDouble(details[1]), (DBConnector.getLastProductID()+1), details[2], Integer.parseInt(details[3]));
+					String[] name = details[0].split(" ");
+					Account p = new Account(name[0], name[1], details[1], details[2], Integer.parseInt(details[3]));
 
 					//add product to map, combo box + DB.
-					//map.put(p.getProductNo(), p);
-					apb2.addBoxData("" + p.getProductNo());
-					DBConnector.insertProduct(p);
+					map.put(p.getEmail(), p);
+					apb2.addBoxData("" + p.getEmail());
+					DBConnector.writeAccount(p);
 
-					tableModel.addRow(new String[]{String.valueOf(p.getProductNo()), p.getName(), String.valueOf(p.getPrice()), p.getType(), String.valueOf(p.getQuantity())});
+					tableModel.addRow(new String[]{p.getEmail(), p.getfName(), p.getlName(), p.getPassword(), String.valueOf(p.getOrders())});
 					//flick added to true
 					added = true;
 					
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Add Product", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Enter All Account details", "Cannot Add Account", JOptionPane.INFORMATION_MESSAGE);
 				}
 				
 				//if added
@@ -284,7 +285,7 @@ public class Admin3 extends JFrame {
 					//reset text fields
 					apb2.resetFields();
 					//inform user
-					JOptionPane.showMessageDialog(null, "Product has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Account has been Added", "ADDED", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			
@@ -318,13 +319,13 @@ public class Admin3 extends JFrame {
 					}
 					else if(product == null) {
 						//inform user no product in DB
-						JOptionPane.showMessageDialog(null, "Add Product to Edit Product", "Cannot Edit Product", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Add Account to Edit Account", "Cannot Edit Account", JOptionPane.INFORMATION_MESSAGE);
 					}
 					
 				}
 				//else nothing was entered
 				else {
-					JOptionPane.showMessageDialog(null, "Enter All Product Details", "Cannot Edit Product", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Enter All Account Details", "Cannot Edit Account", JOptionPane.INFORMATION_MESSAGE);
 				}
 				
 				//if product was successfully edited
@@ -332,7 +333,7 @@ public class Admin3 extends JFrame {
 					//reset panels
 					apb2.resetFields();
 					//inform user
-					JOptionPane.showMessageDialog(null, "Product has been Edited", "EDITED", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Account has been Edited", "EDITED", JOptionPane.INFORMATION_MESSAGE);
 					
 				}
 				
@@ -340,13 +341,19 @@ public class Admin3 extends JFrame {
 			
 			//remove button
 			else if(event == removeBtn) {
+				boolean removed = false;
+				String value = apb2.getBoxEmail();
 				
-				int value = apb2.getBoxValue();
-				
-				DBConnector.removeProduct(value);
-				apb2.resetFields();
-				map.remove(value);
-				apb2.removeBoxData("" + value);	
+				removed = DBConnector.removeAccount(value);
+				if(removed) {
+					apb2.resetFields();
+					map.remove(value);
+					apb2.removeBoxData("" + value);
+					JOptionPane.showMessageDialog(null, "Account has been removed", "Removed", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Account has not been removed", "Removed", JOptionPane.INFORMATION_MESSAGE);
+				}
 				
 			}
 			
