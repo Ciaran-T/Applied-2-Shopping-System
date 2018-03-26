@@ -61,6 +61,7 @@ public class Admin2 extends JFrame {
 	
 	//map product number to product 
 	private HashMap<Integer, Product> map;
+	private ArrayList<Product> productsList;
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
@@ -97,9 +98,11 @@ public class Admin2 extends JFrame {
 		//create bottom center panel
 		westBottomPanel = new JPanel(new BorderLayout());
 		
+		//map products
+		mapProducts(DBConnector.readProducts());
 
 		//create panel
-		apb2 = new AdminProducts();
+		apb2 = new AdminProducts(productsList.get(0));
 		//add to bottom center panel
 		westBottomPanel.add(apb2);
 		updateBox();		
@@ -111,14 +114,16 @@ public class Admin2 extends JFrame {
 		
 		//south panel
 		//create south panel
-		southPanel = new JPanel(new GridLayout(1, 2));
+		southPanel = new JPanel(new GridLayout(1, 2, 300, 0));
 		//back button
 		backBtn = new JButton("Back/Logout");
+		backBtn.setFont(apb2.getTfFont());
 		//add button to south panel
 		southPanel.add(backBtn);
 		
 		//delivery button
 		deliveryScheduleBtn = new JButton("Go to Delivery Schedule");
+		deliveryScheduleBtn.setFont(apb2.getTfFont());
 		//add button to panel
 		southPanel.add(deliveryScheduleBtn);
 		
@@ -197,9 +202,6 @@ public class Admin2 extends JFrame {
 		
 		//disable resizing of frame
 		setResizable(false);
-		
-		//map products
-		mapProducts(DBConnector.readProducts());
 		
 		//set listener
 		apb2.setBoxListener(new BoxListener());
@@ -357,6 +359,7 @@ public class Admin2 extends JFrame {
 	//map number to product
 	private void mapProducts(ArrayList<Product> products) {
 		map = new HashMap<>();
+		productsList = products;
 		//for every product in products
 		for(Product p: products) {
 			//map the product number to product
