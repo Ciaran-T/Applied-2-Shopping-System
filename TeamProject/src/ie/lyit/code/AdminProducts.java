@@ -57,10 +57,10 @@ public class AdminProducts extends JPanel{
 		}else if(obj instanceof Account){
 			type[0] = "Customer ";
 			type[1] = "Email:";
-			type[2] = "Name:";
-			type[3] = "Password:";
-			type[4] = "Orders:";
-			type[5] = "Joined:";
+			type[2] = "First Name:";
+			type[3] = "Last Name:";
+			type[4] = "Password:";
+			type[5] = "Orders:";
 		}
 		//set line border
 		this.setBorder(BorderFactory.createTitledBorder(new TitledBorder(type[0] + s), type[0] + s,  TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, titleBorderFont));
@@ -180,12 +180,31 @@ public class AdminProducts extends JPanel{
 		return Integer.parseInt(s);
 	}
 
-	public void setData(Product p) {
-		nameTf.setText(p.getName());
-		typeTf.setText(p.getType());
-		priceTf.setText(""+ p.getPrice());
-		qtyTf.setText("" + p.getQuantity());
+	public String getBoxEmail() {
+
+		return (String)box.getSelectedItem();
 	}
+
+	public void setData(Object obj) {
+
+		if(obj instanceof Product) {
+
+			Product p = (Product)obj;
+			nameTf.setText(p.getName());
+			typeTf.setText(p.getType());
+			priceTf.setText(""+ p.getPrice());
+			qtyTf.setText("" + p.getQuantity());
+		}
+		else if(obj instanceof Account) {
+
+			Account a = (Account) obj;
+			nameTf.setText(a.getfName());
+			typeTf.setText(a.getlName());
+			priceTf.setText(a.getPassword());
+			qtyTf.setText("" + a.getOrders());
+		}
+	}
+	
 	//get first panel details
 	public String[] getAddPanelDetails() {
 
