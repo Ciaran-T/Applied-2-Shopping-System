@@ -240,8 +240,8 @@ public class Admin2 extends JFrame {
 				//dispose page
 				dispose();
 				
-				//open Admin1 page
-				Admin1.drawAdmin1();
+				//open AdminHome page
+				AdminHome.drawAdminHome();
 			}
 			// TODO - Event handling
 			else if(event == deliveryScheduleBtn) {
