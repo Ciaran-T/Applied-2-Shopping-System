@@ -398,7 +398,7 @@ public class Admin2 extends JFrame {
  	public static void drawAdmin2() {
 		
 		Admin2 a2 = new Admin2();
-		a2.setTitle("Administrator");		
+		a2.setTitle("Administrator Products");		
 		//a2.pack();
 		a2.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		a2.setLocationRelativeTo(null);

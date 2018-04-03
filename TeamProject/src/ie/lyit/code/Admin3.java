@@ -399,10 +399,10 @@ public class Admin3 extends JFrame {
 	
 	
 	//draw GUI
- 	public static void drawAdmin2() {
+ 	public static void drawAdmin3() {
 		
 		Admin3 a3 = new Admin3();
-		a3.setTitle("Administrator");		
+		a3.setTitle("Administrator Customer");		
 		//a2.pack();
 		a3.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		a3.setLocationRelativeTo(null);
@@ -413,7 +413,7 @@ public class Admin3 extends JFrame {
 	
 	//main
 	public static void main(String[] args) {
-		drawAdmin2();
+		drawAdmin3();
 	}
 
 }

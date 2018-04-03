@@ -145,7 +145,7 @@ public class Admin1 extends JFrame {
 							dispose();
 							
 							//open admin2 page
-							Admin2.drawAdmin2();
+							AdminHome.drawAdminHome();
 						}
 						//else password doesn't exist
 						else if(!(a.getPassword().equals(passwordTf.getText()))) {
