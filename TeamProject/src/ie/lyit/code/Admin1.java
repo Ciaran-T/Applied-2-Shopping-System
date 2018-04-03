@@ -11,8 +11,10 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -38,10 +40,10 @@ public class Admin1 extends JFrame {
 	private JLabel titleLabel = new JLabel("Simple Shopping Service");
 	//font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
-	private Font generalFont = new Font("SanSerif", Font.BOLD, 14);
+	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	
 	//panels
-	private JPanel northPanel, centerPanel;
+	private JPanel northPanel, centerPanel, southPanel;
 	//blank panels
 	private JPanel eastPanel, westPanel;
 	
@@ -52,12 +54,14 @@ public class Admin1 extends JFrame {
 	private JTextField usernameTf, passwordTf;
 	//blank text fields
 	private JLabel blanklabel1 = new JLabel("                              "
-			+ "                ");
+			+ "                                                            "
+			+ "                                          ");
 	private JLabel blanklabel2 = new JLabel("                              "
-			+ "                ");
+			+ "                                                            "
+			+ "                                          ");
 	
 	//button
-	private JButton loginBtn;
+	private JButton loginBtn, backBtn, exitBtn;
 	
 	//constructor
 	public Admin1() {
@@ -72,8 +76,9 @@ public class Admin1 extends JFrame {
 		
 		
 		//center panel
-		centerPanel = new JPanel(new GridLayout(7, 1));
+		centerPanel = new JPanel(new GridLayout(11, 1));
 		//create label
+		centerPanel.add(new JLabel());//blank space
 		detailLabel = new JLabel("<html><u>Enter Administrator details<u/><html/>");
 		//set font and alignment
 		detailLabel.setFont(generalFont);
@@ -88,7 +93,9 @@ public class Admin1 extends JFrame {
 		
 		//create text fields
 		usernameTf = new JTextField("Enter Username");
+		usernameTf.setFont(generalFont);
 		passwordTf = new JTextField("Enter Password");
+		passwordTf.setFont(generalFont);
 
 		//add to panel
 		centerPanel.add(usernameTf);
@@ -98,6 +105,7 @@ public class Admin1 extends JFrame {
 		
 		//create login button
 		loginBtn = new JButton("Login");
+		loginBtn.setFont(generalFont);
 		
 		//add to panel
 		centerPanel.add(new JLabel());//blank space
@@ -115,12 +123,30 @@ public class Admin1 extends JFrame {
 		add(eastPanel, BorderLayout.EAST);
 		add(westPanel, BorderLayout.WEST);
 		
+		
+		//south panel
+		southPanel = new JPanel(new FlowLayout(1, 240, 10));
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(generalFont);
+		
+		backBtn = new JButton("Back");
+		backBtn.setFont(generalFont);
+		
+		southPanel.add(backBtn);
+		southPanel.add(exitBtn);
+		
+		add(southPanel, BorderLayout.SOUTH);
+		
+		setResizable(false);
+		
 		//create focus listener
 		MyListenerClass listener = new MyListenerClass();
 		//add focus listeners to text fields
 		usernameTf.addFocusListener(listener);
 		passwordTf.addFocusListener(listener);
 		
+		backBtn.addActionListener(new ActionListenerClass());
+		exitBtn.addActionListener(new ActionListenerClass());
 		
 		//add anonymous listener on login button
 		loginBtn.addActionListener(new ActionListener() {
@@ -167,6 +193,39 @@ public class Admin1 extends JFrame {
 		
 		
 	}//end constructor
+	
+	
+	//inner action listener
+	public class ActionListenerClass implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			Object event = e.getSource();
+
+			//if event equals back button
+			if(event == backBtn) {
+				
+				//dispose this page
+				dispose();
+				
+				//open home page
+				HomePage.drawHome();
+			}
+			
+			//if event equal exit button
+			else if(event == exitBtn) {
+				
+				dispose();
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -237,7 +296,7 @@ public class Admin1 extends JFrame {
 		Admin1 a1 = new Admin1();
 		a1.setTitle("Administrator");		
 		//op.pack();
-		a1.setSize(500, 300);
+		a1.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		a1.setLocationRelativeTo(null);
 		a1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		a1.setVisible(true);
