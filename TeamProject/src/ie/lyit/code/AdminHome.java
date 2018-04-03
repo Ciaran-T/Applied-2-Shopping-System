@@ -11,6 +11,7 @@ package ie.lyit.code;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +23,17 @@ import javax.swing.JPanel;
 
 public class AdminHome extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//instance fields
-	private JPanel northPanel, centerPanel, southPanel;
+	private JPanel northPanel, centerPanel, innerCenterPanel, southPanel;
 	
 	//labels
 	private JLabel titleLabel = new JLabel("Simple Shopping System");
+	private JLabel detailLabel;
 	
 	//font
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
@@ -34,6 +41,7 @@ public class AdminHome extends JFrame{
 	
 	//button
 	private JButton backBtn, exitBtn;
+	private JButton productBtn, customerBtn;
 	
 	//constructor
 	public AdminHome() {
@@ -64,6 +72,33 @@ public class AdminHome extends JFrame{
 		add(southPanel, BorderLayout.SOUTH);
 		
 		
+		//center panel
+		centerPanel = new JPanel(new GridLayout(2, 1, 30, 30));
+		
+		
+		detailLabel = new JLabel("What would you like to do?");
+		detailLabel.setFont(generalFont);
+		detailLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		//inner panel
+		innerCenterPanel = new JPanel(new FlowLayout(1, 240, 10));
+		
+		productBtn = new JButton("Configure Products");
+		productBtn.setFont(generalFont);
+		customerBtn = new JButton("Configure Customers");
+		customerBtn.setFont(generalFont);
+		
+		innerCenterPanel.add(productBtn);
+		innerCenterPanel.add(customerBtn);
+		
+		centerPanel.add(detailLabel);
+		centerPanel.add(innerCenterPanel);
+		
+		add(centerPanel, BorderLayout.CENTER);
+		
+		
+		
+		
 		
 		
 		
@@ -72,6 +107,9 @@ public class AdminHome extends JFrame{
 		//add listeners
 		backBtn.addActionListener(new ActionListenerClass());
 		exitBtn.addActionListener(new ActionListenerClass());
+		
+		productBtn.addActionListener(new ActionListenerClass());
+		customerBtn.addActionListener(new ActionListenerClass());
 		
 		
 		//disable resizing
@@ -103,6 +141,22 @@ public class AdminHome extends JFrame{
 				
 				//dispose this page
 				dispose();
+			}
+			else if(event == productBtn) {
+				
+				//dispose this page
+				dispose();
+				
+				//open admin2
+				Admin2.drawAdmin2();
+			}
+			else if(event == customerBtn) {
+				
+				//dispose this page
+				dispose();
+				
+				//open admin3
+				Admin3.drawAdmin3();
 			}
 		}
 	}
