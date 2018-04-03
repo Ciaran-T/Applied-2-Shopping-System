@@ -34,9 +34,10 @@ public class HomePage extends JFrame{
 	//panels for each section
 	//in BorderLayout
 	private JPanel northPanel, eastPanel, westPanel, centerPanel;
+	private JPanel southPanel;
 
 	//default font
-	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
+	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 
 	//Text Areas
@@ -46,7 +47,7 @@ public class HomePage extends JFrame{
 	private JLabel titleLabel, existingUser, newUser;
 
 	//Buttons
-	private JButton loginBtn, createAccBtn, adminBtn;
+	private JButton loginBtn, createAccBtn, adminBtn, exitBtn;
 
 	//constructor
 	public HomePage() {
@@ -76,12 +77,15 @@ public class HomePage extends JFrame{
 		//email field
 		emailText = new JTextField("Enter Email");
 		emailText.setColumns(15);
+		emailText.setFont(generalFont);
 
 		//password text
 		passwordText = new JTextField("Enter Password");
+		passwordText.setFont(generalFont);
 
 		//login button
 		loginBtn = new JButton("Login");
+		loginBtn.setFont(generalFont);
 
 
 		//add each component to east panel
@@ -96,7 +100,7 @@ public class HomePage extends JFrame{
 		eastPanel.add(new JLabel(" "));
 		eastPanel.add(loginBtn);
 		//add east panel to frame
-		add(eastPanel, BorderLayout.EAST);
+		//add(eastPanel, BorderLayout.EAST);
 
 		
 		
@@ -111,16 +115,21 @@ public class HomePage extends JFrame{
 		//(which sets the width for all in the panel)
 		fNameText = new JTextField("Enter First Name");
 		fNameText.setColumns(15);
+		fNameText.setFont(generalFont);
 
 		//last name
 		lNameText = new JTextField("Enter Last Name");
+		lNameText.setFont(generalFont);
 
 		//new user and password
 		newEmail = new JTextField("Enter New Email Address");
+		newEmail.setFont(generalFont);
 		newPassword = new JTextField("Enter New Password");
+		newPassword.setFont(generalFont);
 
 		//create account button, set alignment
 		createAccBtn = new JButton("Create Account");
+		createAccBtn.setFont(generalFont);
 		createAccBtn.setAlignmentX(CENTER_ALIGNMENT);
 
 
@@ -138,29 +147,47 @@ public class HomePage extends JFrame{
 
 
 		//add to frame
-		add(westPanel, BorderLayout.WEST);
+		//add(westPanel, BorderLayout.WEST);
 
 		//disable resizing of frame
 		setResizable(false);
 		
 
-		centerPanel = new JPanel(new GridLayout(8,0));
+		//centerPanel = new JPanel(new GridLayout(8,0));
+		centerPanel = new JPanel(new FlowLayout(1, 30, 30));
 		adminBtn = new JButton("Administrator");
-		
+		adminBtn.setFont(generalFont);
 		
 		
 		//center panel, admin link
 		//add blank labels to make all buttons match
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
-		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
+//		centerPanel.add(new JLabel());
 		
-		centerPanel.add(adminBtn);
+		centerPanel.add(westPanel);
+		westPanel.setAlignmentX(CENTER_ALIGNMENT);
+		centerPanel.add(eastPanel);
+		eastPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		add(centerPanel);
+		
+		//create new panel
+		//override flow panel layout
+		//1 = center, 240 = vertical gap, 10 = horizontal gap
+		southPanel = new JPanel(new FlowLayout(1, 240, 10));
+		
+		southPanel.add(adminBtn);
+		
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(generalFont);
+		
+		southPanel.add(exitBtn);
+		
+		add(southPanel, BorderLayout.SOUTH);
 
 		
 		//Listeners
@@ -178,6 +205,7 @@ public class HomePage extends JFrame{
 		createAccBtn.addActionListener(new ActionListenerClass());
 		loginBtn.addActionListener(new ActionListenerClass());
 		adminBtn.addActionListener(new ActionListenerClass());
+		exitBtn.addActionListener(new ActionListenerClass());
 
 	}//end of constructor
 
@@ -414,6 +442,12 @@ public class HomePage extends JFrame{
 					//open admin login page
 					Admin1.drawAdmin1();
 				}
+				//if exit button
+				else if(event == exitBtn) {
+					
+					//dispose frame and exit
+					dispose();
+				}
 			}
 			
 			//if no Internet
@@ -431,7 +465,7 @@ public class HomePage extends JFrame{
 		HomePage hp = new HomePage();
 		hp.setTitle("Create Account or Sign In");		
 		//hp.pack();
-		hp.setSize(550, 400);
+		hp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		hp.setLocationRelativeTo(null);
 		hp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		hp.setVisible(true);
