@@ -15,6 +15,7 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -70,7 +71,7 @@ public class Admin2 extends JFrame {
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//buttons
-	private JButton backBtn, deliveryScheduleBtn;
+	private JButton backBtn, exitBtn;
 	private JButton addBtn;
 	private JButton editBtn, removeBtn;
 	private JButton resetBtn;
@@ -114,18 +115,18 @@ public class Admin2 extends JFrame {
 		
 		//south panel
 		//create south panel
-		southPanel = new JPanel(new GridLayout(1, 2, 300, 0));
+		southPanel = new JPanel(new FlowLayout(1, 240, 10));
 		//back button
-		backBtn = new JButton("Back/Logout");
-		backBtn.setFont(apb2.getTfFont());
+		backBtn = new JButton("Back");
+		backBtn.setFont(new Font("SanSerif", Font.BOLD, 22));
 		//add button to south panel
 		southPanel.add(backBtn);
 		
 		//delivery button
-		deliveryScheduleBtn = new JButton("Go to Delivery Schedule");
-		deliveryScheduleBtn.setFont(apb2.getTfFont());
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(new Font("SanSerif", Font.BOLD, 22));
 		//add button to panel
-		southPanel.add(deliveryScheduleBtn);
+		southPanel.add(exitBtn);
 		
 		//add panel to frame
 		add(southPanel, BorderLayout.SOUTH);
@@ -193,7 +194,7 @@ public class Admin2 extends JFrame {
 		ActionListenerClass actionListener = new ActionListenerClass();
 		//set listeners on buttons
 		backBtn.addActionListener(actionListener);
-		deliveryScheduleBtn.addActionListener(actionListener);
+		exitBtn.addActionListener(actionListener);
 		addBtn.addActionListener(actionListener);
 		editBtn.addActionListener(actionListener);
 		removeBtn.addActionListener(actionListener);
@@ -243,9 +244,11 @@ public class Admin2 extends JFrame {
 				//open AdminHome page
 				AdminHome.drawAdminHome();
 			}
-			// TODO - Event handling
-			else if(event == deliveryScheduleBtn) {
+			//if exit button
+			else if(event == exitBtn) {
 				
+				//dispose this page
+				dispose();
 			}
 			
 			//add button
