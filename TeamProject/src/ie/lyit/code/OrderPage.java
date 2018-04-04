@@ -14,7 +14,9 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -53,7 +55,7 @@ public class OrderPage extends JFrame {
 	private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, westPanel, southPanel;
 	
 	//default font
-	private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
+	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//labels
@@ -71,7 +73,7 @@ public class OrderPage extends JFrame {
 	private JList<ImageIcon> centerJlist;
 	
 	//buttons
-	private JButton backBtn, placeOrder, addToCartBtn, removeBtn;
+	private JButton backBtn, placeOrder, addToCartBtn, removeBtn, exitBtn;
 	
 	//default model view for products
 	private DefaultListModel<ImageIcon> listModel;
@@ -118,7 +120,7 @@ public class OrderPage extends JFrame {
 		//label and set alignment
 		orderDetailsLabel = new JLabel("Order Details");
 		orderDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
-		orderDetailsLabel.setFont(generalFont);
+		orderDetailsLabel.setFont(titleFont);
 		
 		//add label to panel
 		eastTopPanel.add(orderDetailsLabel, BorderLayout.NORTH);
@@ -132,10 +134,12 @@ public class OrderPage extends JFrame {
 		nameTf = new JTextField(acc.getfName() + " " + acc.getlName());
 		nameTf.setColumns(15);
 		nameTf.setEditable(false);
+		nameTf.setFont(generalFont);
 		
 		//create label and add to panel
 		//set alignment				
 		custNameLabel = new JLabel("<html><u>Customer Name</u></html");//used to underline label
+		custNameLabel.setFont(generalFont);
 		eastPanel.add(custNameLabel);
 		custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		//add text field to panel
@@ -144,17 +148,20 @@ public class OrderPage extends JFrame {
 		//create label and add to panel
 		//set alignment
 		productTypeLabel = new JLabel("<html><u> Product Type </u></html");
+		productTypeLabel.setFont(generalFont);
 		eastPanel.add(productTypeLabel);
 		productTypeLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//product type text field
 		productTypeTf = new JTextField("");
+		productTypeTf.setFont(generalFont);
 		productTypeTf.setEditable(false);
 		//add to panel
 		eastPanel.add(productTypeTf);
 		
 		//create product price label
 		productPriceLabel = new JLabel("<html><u> Product Price </u></html");
+		productPriceLabel.setFont(generalFont);
 		eastPanel.add(productPriceLabel);
 		productPriceLabel.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -169,6 +176,7 @@ public class OrderPage extends JFrame {
 		
 		//total bill
 		totalTf = new JTextField("Total: €");
+		totalTf.setFont(generalFont);
 		totalTf.setEditable(false);
 		
 		//add to panel
@@ -178,13 +186,22 @@ public class OrderPage extends JFrame {
 		
 		//south panel
 		//buttons to proceed or quit
-		southPanel = new JPanel(new GridLayout(1, 2));
+		southPanel = new JPanel(new FlowLayout(1, 240, 10));
 		
+		//button to go back
 		backBtn = new JButton("Back/Log Out");
+		backBtn.setFont(generalFont);
 		southPanel.add(backBtn);
+		
+		//button to exit
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(generalFont);
+		southPanel.add(exitBtn);
+		
 		
 		//button to place order
 		placeOrder = new JButton("Place Order");
+		placeOrder.setFont(generalFont);
 		southPanel.add(placeOrder);
 		
 		add(southPanel, BorderLayout.SOUTH);
@@ -195,7 +212,7 @@ public class OrderPage extends JFrame {
 		//shopping cart
 		westPanel = new JPanel(new BorderLayout());
 		productsLabel = new JLabel("Products");
-		productsLabel.setFont(generalFont);
+		productsLabel.setFont(titleFont);
 		productsLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//add label to panel
@@ -219,6 +236,7 @@ public class OrderPage extends JFrame {
 		//panel to frame
 		westPanel.add(westScrollPane, BorderLayout.CENTER);
 		addToCartBtn = new JButton("Add");
+		addToCartBtn.setFont(generalFont);
 		westPanel.add(addToCartBtn, BorderLayout.SOUTH);
 		add(westPanel, BorderLayout.WEST);
 		
@@ -227,13 +245,14 @@ public class OrderPage extends JFrame {
 		centerPanel = new JPanel(new BorderLayout());
 		shoppingCartLabel = new JLabel("Shopping Cart");
 		shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
-		shoppingCartLabel.setFont(generalFont);
+		shoppingCartLabel.setFont(titleFont);
 		
 		//add to panel
 		centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
 		
 		//remove button
 		removeBtn = new JButton("Remove");
+		removeBtn.setFont(generalFont);
 		centerPanel.add(removeBtn, BorderLayout.SOUTH);
 		
 		//create model list
@@ -259,6 +278,7 @@ public class OrderPage extends JFrame {
 		addToCartBtn.addActionListener(listener);
 		removeBtn.addActionListener(listener);
 		placeOrder.addActionListener(listener);
+		exitBtn.addActionListener(listener);
 	}
 	
 	
@@ -375,6 +395,13 @@ public class OrderPage extends JFrame {
 					
 				}
 			}
+			
+			//if exit button
+			else if(event == exitBtn) {
+				
+				//dispose this page
+				dispose();
+			}
 		}
 	}
 	
@@ -442,7 +469,7 @@ public class OrderPage extends JFrame {
 		OrderPage op = new OrderPage(acc);
 		op.setTitle("Order");		
 		//op.pack();
-		op.setSize(550, 400);
+		op.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		op.setLocationRelativeTo(null);
 		op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		op.setVisible(true);
@@ -453,13 +480,6 @@ public class OrderPage extends JFrame {
 	//tester
 	//main method
 	public static void main(String[] args){
-		OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass", 0));
-		op.setTitle("Order");		
-		//op.pack();
-		op.setSize(550, 400);
-		op.setLocationRelativeTo(null);
-		op.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		op.setVisible(true);
-		//op.
+		drawOrder(new Account("Somebody","Else","elseIf@mail.ie","TestPass", 0));
 	}//end of main method
 }
