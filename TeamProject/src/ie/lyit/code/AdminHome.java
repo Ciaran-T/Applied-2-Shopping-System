@@ -130,11 +130,11 @@ public class AdminHome extends JFrame{
 			//if event equals back button
 			if(event == backBtn) {
 				
-				//dispose this page
-				dispose();
-				
 				//open login page
 				Admin1.drawAdmin1();
+				
+				//dispose this page
+				dispose();
 			}
 			//if exit button
 			else if(event == exitBtn) {
@@ -144,19 +144,19 @@ public class AdminHome extends JFrame{
 			}
 			else if(event == productBtn) {
 				
-				//dispose this page
-				dispose();
-				
 				//open admin2
 				Admin2.drawAdmin2();
+				
+				//dispose this page
+				dispose();
 			}
 			else if(event == customerBtn) {
 				
-				//dispose this page
-				dispose();
-				
 				//open admin3
 				Admin3.drawAdmin3();
+				
+				//dispose this page
+				dispose();
 			}
 		}
 	}
