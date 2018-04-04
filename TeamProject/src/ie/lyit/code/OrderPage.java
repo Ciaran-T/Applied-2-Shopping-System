@@ -339,7 +339,7 @@ public class OrderPage extends JFrame {
 				
 				
 				//draw delivery page
-				DeliveryPage.drawDelivery(a, o);
+				DeliveryPageNew.drawDeliveryNew(a, o);
 				
 				//dispose order page
 				dispose();

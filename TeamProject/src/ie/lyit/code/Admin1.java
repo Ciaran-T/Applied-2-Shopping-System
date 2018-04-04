@@ -35,6 +35,11 @@ public class Admin1 extends JFrame {
 	
 	//instance fields
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	//title
 	//label
 	private JLabel titleLabel = new JLabel("Simple Shopping Service");

@@ -18,9 +18,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class HomePage extends JFrame{
 	/**
