@@ -3,5 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/jdbc/mysql-connector-java-5.1.45-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="F:/mail/activation.jar"/>
+	<classpathentry kind="lib" path="F:/mail/javax.mail-api-1.4.7.jar"/>
+	<classpathentry kind="lib" path="F:/mail/mailapi-1.4.7.jar"/>
+	<classpathentry kind="lib" path="F:/mail/smtp-1.4.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
