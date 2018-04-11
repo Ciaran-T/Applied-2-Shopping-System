@@ -13,36 +13,37 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.event.ActionEvent;
+
+import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+
 import ie.lyit.data.Account;
 import ie.lyit.data.Order;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
-
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 public class OrderPage extends JFrame {
 
@@ -78,6 +79,11 @@ public class OrderPage extends JFrame {
 	//default model view for products
 	private DefaultListModel<ImageIcon> listModel;
 	private DefaultListModel<ImageIcon> productModel;
+	
+	//radio button + group
+	private JRadioButton perishables, dairy, fruit, meat, all;
+	private ButtonGroup groupOfBtns;
+	private JPanel bgPanel;
 	
 	//total of order
 	private double total = 0;
@@ -193,16 +199,16 @@ public class OrderPage extends JFrame {
 		backBtn.setFont(generalFont);
 		southPanel.add(backBtn);
 		
-		//button to exit
-		exitBtn = new JButton("Exit Application");
-		exitBtn.setFont(generalFont);
-		southPanel.add(exitBtn);
-		
 		
 		//button to place order
 		placeOrder = new JButton("Place Order");
 		placeOrder.setFont(generalFont);
 		southPanel.add(placeOrder);
+		
+		//button to exit
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(generalFont);
+		southPanel.add(exitBtn);
 		
 		add(southPanel, BorderLayout.SOUTH);
 		
@@ -217,6 +223,31 @@ public class OrderPage extends JFrame {
 		
 		//add label to panel
 		westPanel.add(productsLabel, BorderLayout.NORTH);
+		
+		perishables = new JRadioButton("Perishables"); 
+		dairy = new JRadioButton("Dairy"); 
+		fruit = new JRadioButton("Fruit"); 
+		meat = new JRadioButton("Meat");
+		all = new JRadioButton("All");
+		
+		bgPanel = new JPanel(new GridLayout(10, 1, 20, 20));
+		bgPanel.add(perishables);
+		bgPanel.add(dairy);
+		bgPanel.add(fruit);
+		bgPanel.add(meat);
+		bgPanel.add(all);
+		groupOfBtns = new ButtonGroup();
+		
+		groupOfBtns.add(perishables);
+		groupOfBtns.add(dairy);
+		groupOfBtns.add(fruit);
+		groupOfBtns.add(meat);
+		groupOfBtns.add(all);
+		
+		westPanel.add(bgPanel, BorderLayout.WEST);
+		
+		
+		
 		
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
