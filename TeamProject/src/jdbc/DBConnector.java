@@ -165,6 +165,34 @@ public class DBConnector {
 
 		return a;
 	}
+	
+	//read admin account
+	public static Account readAccountByName(String username) {
+		Account a = null;
+		ResultSet res;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+
+		try {
+			String query = queryAccountByName(username);
+			res = stmt.executeQuery(query);
+
+			res.next();
+
+			a = new Account(username, "Admin", "applied2shoppingsystem.gmail.com", res.getString(1), 0);
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+		return a;
+	}
 
 	/*
 	 * helper method
@@ -174,6 +202,13 @@ public class DBConnector {
 	 */
 	private static String queryAccount(String email) {
 		String query = "SELECT FirstName, LastName, Email, Password, orders FROM Accounts WHERE Email = '" + email + "';";
+
+		return query;
+	}
+	
+	//admin query
+	private static String queryAccountByName(String username) {
+		String query = "SELECT Password FROM Accounts WHERE FirstName = '" + username + "';";
 
 		return query;
 	}
