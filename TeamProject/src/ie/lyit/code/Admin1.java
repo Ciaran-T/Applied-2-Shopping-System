@@ -97,8 +97,9 @@ public class Admin1 extends JFrame {
 		add(centerPanel, BorderLayout.CENTER);
 		
 		//create text fields
-		usernameTf = new JTextField("Enter Username");
+		usernameTf = new JTextField("Administrator");
 		usernameTf.setFont(generalFont);
+		usernameTf.setEditable(false);
 		passwordTf = new JTextField("Enter Password");
 		passwordTf.setFont(generalFont);
 
@@ -162,7 +163,7 @@ public class Admin1 extends JFrame {
 						usernameTf.getText().equalsIgnoreCase("") || 
 						passwordTf.getText().equalsIgnoreCase(""))) {
 					
-					Account a = DBConnector.readAccount(usernameTf.getText());
+					Account a = DBConnector.readAccountByName(usernameTf.getText());
 					
 					//if account exists
 					if(!(a == null)) {
