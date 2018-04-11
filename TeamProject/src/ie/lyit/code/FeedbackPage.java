@@ -111,6 +111,7 @@ public class FeedbackPage extends JFrame{
       
       ActionListenerClass listener = new ActionListenerClass();
 	  submitButton.addActionListener(listener);
+	  backButton.addActionListener(listener);
 	  
 	  focusListener focusListener = new focusListener();
 	  feedbackArea.addFocusListener(focusListener);
