@@ -83,9 +83,9 @@ public class AdminHome extends JFrame{
 		//inner panel
 		innerCenterPanel = new JPanel(new FlowLayout(1, 240, 10));
 		
-		productBtn = new JButton("Configure Products");
+		productBtn = new JButton("Maintain Products");
 		productBtn.setFont(generalFont);
-		customerBtn = new JButton("Configure Customers");
+		customerBtn = new JButton("Maintain Customers");
 		customerBtn.setFont(generalFont);
 		
 		innerCenterPanel.add(productBtn);
