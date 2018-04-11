@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import ie.lyit.data.Account;
 import ie.lyit.data.Order;
+import ie.lyit.data.Delivery;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
 
@@ -337,9 +338,11 @@ public class OrderPage extends JFrame {
 				Order o = new Order(prods, total, id, a.getEmail());
 				DBConnector.writeOrder(o, a);
 				
+				//mock delivery
+				Delivery d = new Delivery("");
 				
 				//draw delivery page
-				DeliveryPageNew.drawDeliveryNew(a, o);
+				DeliveryPageNew.drawDeliveryNew(a, o, d);
 				
 				//dispose order page
 				dispose();

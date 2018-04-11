@@ -16,12 +16,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import ie.lyit.code.OrderPage.ActionListenerClass;
 import ie.lyit.data.Account;
 import ie.lyit.data.Order;
+import ie.lyit.data.Delivery;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
 
@@ -59,12 +61,14 @@ public class ViewOrderPage extends JFrame {
 		
 		private Account a;
 		private Order o;
+		private Delivery d;
 		
 		//constructor
-		public ViewOrderPage(Account a, Order o) {
+		public ViewOrderPage(Account a, Order o, Delivery d) {
 			
 			this.a = a;
 			this.o = o;
+			this.d = d;
 			
 			//north panel
 			northPanel = new JPanel();
@@ -91,7 +95,7 @@ public class ViewOrderPage extends JFrame {
 			orderDetailsLabel.setFont(generalFont);
 			
 			//add label to panel
-			eastTopPanel.add(orderDetailsLabel, BorderLayout.NORTH);
+			eastPanel.add(orderDetailsLabel, BorderLayout.NORTH);
 			
 			//add east panel to east top panel
 			eastTopPanel.add(eastPanel, BorderLayout.CENTER);
@@ -100,56 +104,43 @@ public class ViewOrderPage extends JFrame {
 			//set width
 			//make un-editable
 			nameTf = new JTextField(a.getfName() + " " + a.getlName());
-			nameTf.setColumns(15);
+			//nameTf.setColumns(15);
 			nameTf.setEditable(false);
 			
 			//name of customer
 			//set width
-			//make un-editable
-			emailTf = new JTextField(a.getEmail());
-			emailTf.setColumns(15);
-			emailTf.setEditable(false);
 			
 			//create label and add to panel
 			//set alignment				
 			custNameLabel = new JLabel("<html><u> Your Name </u></html");//used to underline label
 			eastPanel.add(custNameLabel);
 			custNameLabel.setHorizontalAlignment(JLabel.CENTER);
-			//add text field to panel
 			eastPanel.add(nameTf);
 			
 			//create label and add to panel
 			//set alignment
-			productTypeLabel = new JLabel("<html><u> Your Address </u></html");
-			eastPanel.add(productTypeLabel);
-			productTypeLabel.setHorizontalAlignment(JLabel.CENTER);
+			JLabel jlbcustEmail = new JLabel("<html><u>Order ID</u></html");
+			eastPanel.add(jlbcustEmail);
+			jlbcustEmail.setHorizontalAlignment(JLabel.CENTER);
 			
 			//product type text field
-			productTypeTf = new JTextField("");
-			productTypeTf.setEditable(false);
+			JTextField jtfOrderID = new JTextField(""+ o.getOrderID());
+			jtfOrderID.setEditable(false);
 			//add to panel
-			eastPanel.add(emailTf);
+			eastPanel.add(jtfOrderID);
 			
-			//create product price label
-			productPriceLabel = new JLabel("<html><u> Your Alternative Address </u></html");
-			eastPanel.add(productPriceLabel);
-			productPriceLabel.setHorizontalAlignment(JLabel.CENTER);
+			//create Delivery details label
+			JLabel jlbdelDetails = new JLabel("<html><u> Delivery Details </u></html");
+			eastPanel.add(jlbdelDetails);
+			jlbdelDetails.setHorizontalAlignment(JLabel.CENTER);
 			
-			//price of product
-			productPriceTf = new JTextField("");
-			productPriceTf.setEditable(false);
+			//delivery details textarea
+			JTextArea jtaDelDets = new JTextArea(d.getAllDetails() , 5 , 15);
+			jtaDelDets.setEditable(false);
 			//add to panel
-			eastPanel.add(productPriceTf);
+			eastPanel.add(jtaDelDets);
 			//add panel to frame
-			add(eastTopPanel, BorderLayout.EAST);
-			//eastPanel.add(new JLabel());
-			
-			//total bill
-			totalTf = new JTextField("Total: €");
-			totalTf.setEditable(false);
-			
-			//add to panel
-			eastPanel.add(totalTf);
+			add(eastPanel, BorderLayout.EAST);
 			
 			//south panel
 			//buttons to proceed or quit
@@ -172,15 +163,16 @@ public class ViewOrderPage extends JFrame {
 			
 			//add to panel
 			centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
-			
+	
 			
 			
 			//create model list
-			listModel = new DefaultListModel<Product>();
-			
+			//listModel = new DefaultListModel<Product>();
+			JTextArea  orderSummery = new JTextArea("" + o.getOrderID()); 
+			centerPanel.add(orderSummery);
 			//create list and passing into  scroll pane
 			//set horizontal scroll bars to NEVER
-			centerJlist = new JList<Product>(listModel);
+			centerJlist = new JList<Product>();
 			centerScrollPane = new JScrollPane(centerJlist);
 			centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			
@@ -254,7 +246,7 @@ public class ViewOrderPage extends JFrame {
 					
 					dispose();
 					
-					DeliveryPage.drawDelivery(a, o);
+					DeliveryPageNew.drawDeliveryNew(a, o, d);
 				}
 				
 				/* if event equals add to cart button
@@ -305,9 +297,9 @@ public class ViewOrderPage extends JFrame {
 		}
 		
 		
-		public static void drawViewOrderPage(Account acc, Order o) {
+		public static void drawViewOrderPage(Account acc, Order o, Delivery d) {
 			
-			ViewOrderPage vop = new ViewOrderPage(acc, o);
+			ViewOrderPage vop = new ViewOrderPage(acc, o, d);
 			
 			vop.setTitle("View Order Page");		
 			//vop.pack();
@@ -326,7 +318,9 @@ public class ViewOrderPage extends JFrame {
 			
 			ArrayList<Product> sampleProducts = new ArrayList<Product>();
 			
-			drawViewOrderPage(new Account("Shaun", "Haugh", "haughshaun@gmail.com", "password", 0), new Order(new ArrayList<Product>(sampleProducts), 100, 100, "haughshaun@gmail.com"));
+			drawViewOrderPage(new Account("Shaun", "Haugh", "haughshaun@gmail.com", "password", 0),
+							new Order(new ArrayList<Product>(sampleProducts), 100, 100, "haughshaun@gmail.com"),
+							new Delivery(""));
 
 				
 		}
