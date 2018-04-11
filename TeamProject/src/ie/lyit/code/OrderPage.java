@@ -13,37 +13,40 @@
 package ie.lyit.code;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.event.ActionEvent;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+
 import ie.lyit.data.Account;
 import ie.lyit.data.Order;
 import ie.lyit.data.Delivery;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
-
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 public class OrderPage extends JFrame {
 
@@ -79,6 +82,11 @@ public class OrderPage extends JFrame {
 	//default model view for products
 	private DefaultListModel<ImageIcon> listModel;
 	private DefaultListModel<ImageIcon> productModel;
+	
+	//radio button + group
+	private JRadioButton perishables, dairy, fruit, meat, all;
+	private ButtonGroup groupOfBtns;
+	private JPanel bgPanel;
 	
 	//total of order
 	private double total = 0;
@@ -194,16 +202,16 @@ public class OrderPage extends JFrame {
 		backBtn.setFont(generalFont);
 		southPanel.add(backBtn);
 		
-		//button to exit
-		exitBtn = new JButton("Exit Application");
-		exitBtn.setFont(generalFont);
-		southPanel.add(exitBtn);
-		
 		
 		//button to place order
 		placeOrder = new JButton("Place Order");
 		placeOrder.setFont(generalFont);
 		southPanel.add(placeOrder);
+		
+		//button to exit
+		exitBtn = new JButton("Exit Application");
+		exitBtn.setFont(generalFont);
+		southPanel.add(exitBtn);
 		
 		add(southPanel, BorderLayout.SOUTH);
 		
@@ -217,7 +225,43 @@ public class OrderPage extends JFrame {
 		productsLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//add label to panel
-		westPanel.add(productsLabel, BorderLayout.NORTH);
+		//westPanel.add(productsLabel, BorderLayout.NORTH);
+		
+		
+		//Radio buttons
+		perishables = new JRadioButton("Perishables");
+		perishables.setFont(generalFont);
+		dairy = new JRadioButton("Dairy");
+		dairy.setFont(generalFont);
+		fruit = new JRadioButton("Fruit");
+		fruit.setFont(generalFont);
+		meat = new JRadioButton("Meat");
+		meat.setFont(generalFont);
+		all = new JRadioButton("All");
+		all.setFont(generalFont);
+		
+		//add buttons to panel
+		bgPanel = new JPanel(new GridLayout(10, 1, 20, 20));
+		bgPanel.add(perishables);
+		bgPanel.add(dairy);
+		bgPanel.add(fruit);
+		bgPanel.add(meat);
+		bgPanel.add(all);
+		
+		//add buttons to button group
+		groupOfBtns = new ButtonGroup();
+		groupOfBtns.add(perishables);
+		groupOfBtns.add(dairy);
+		groupOfBtns.add(fruit);
+		groupOfBtns.add(meat);
+		groupOfBtns.add(all);
+		
+		//add to panel
+		westPanel.add(bgPanel, BorderLayout.WEST);
+		
+		
+		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Products"), "Products", TitledBorder.CENTER,
+				TitledBorder.TOP, generalFont));
 		
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
@@ -280,6 +324,11 @@ public class OrderPage extends JFrame {
 		removeBtn.addActionListener(listener);
 		placeOrder.addActionListener(listener);
 		exitBtn.addActionListener(listener);
+		perishables.addActionListener(listener);
+		dairy.addActionListener(listener);
+		fruit.addActionListener(listener);
+		meat.addActionListener(listener);
+		all.addActionListener(listener);
 	}
 	
 	
@@ -306,6 +355,12 @@ public class OrderPage extends JFrame {
 				HomePage.drawHome();
 				
 			}
+			//TODO -- populate list by product
+			else if(event == perishables) {}
+			else if(event == dairy) {}
+			else if(event == fruit) {}
+			else if(event == meat) {}
+			else if(event == all) {}
 			
 			/* if event equal place order button
 			 * 
