@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -40,7 +41,7 @@ public class ViewOrderPage extends JFrame {
 		private JTextField nameTf, emailTf, productTypeTf, productPriceTf, totalTf;
 		
 		//buttons
-		private JButton backBtn, cancelOrder, placeOrder, addToCartBtn;
+		private JButton backBtn, cancelOrder, goToFeedback, addToCartBtn;
 		
 		//lists
 		private JList<Product> westJlist;
@@ -55,6 +56,7 @@ public class ViewOrderPage extends JFrame {
 		//default font
 		private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
 		private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
+		private Font buttonFont = new Font("SanSerif",Font.BOLD,22);
 		
 		//total of order
 		private double total = 0;
@@ -147,11 +149,14 @@ public class ViewOrderPage extends JFrame {
 			southPanel = new JPanel(new GridLayout(1, 2));
 			
 			backBtn = new JButton("Back/Log Out");
+			backBtn.setFont(buttonFont);
 			southPanel.add(backBtn);
 			
 			//button to cancel order
-			cancelOrder = new JButton("Cancel Order");
-			southPanel.add(cancelOrder);
+			goToFeedback = new JButton("Leave Feedback/Comment");
+			goToFeedback.setFont(buttonFont);
+			southPanel.add(goToFeedback);
+			
 			
 			add(southPanel, BorderLayout.SOUTH);
 			
@@ -185,7 +190,7 @@ public class ViewOrderPage extends JFrame {
 			//add listeners on buttons
 			ActionListenerClass listener = new ActionListenerClass();
 			backBtn.addActionListener(listener);
-			cancelOrder.addActionListener(listener);
+			goToFeedback.addActionListener(listener);
 			//placeOrder.addActionListener(listener);
 			//addToCartBtn.addActionListener(listener);;
 
@@ -230,23 +235,10 @@ public class ViewOrderPage extends JFrame {
 				 * dispose order page and jump to delivery page
 				 * 
 				 * */
-				else if(event == placeOrder) {
+				else if(event == goToFeedback) {
 					
-					int noOfProducts = listModel.getSize();
+					FeedbackPage.drawFeedbackPage();
 					
-					ArrayList<Product> prods = new ArrayList<>();
-					
-					for(int i = 0; i < noOfProducts; i++) {
-						prods.add(listModel.getElementAt(i));
-					}
-					
-					int id = DBConnector.getLastOrderID() + 1;
-					Order o = new Order(prods, total, id, a.getEmail());
-					DBConnector.writeOrder(o, a);
-					
-					dispose();
-					
-					DeliveryPageNew.drawDeliveryNew(a, o, d);
 				}
 				
 				/* if event equals add to cart button
@@ -303,11 +295,12 @@ public class ViewOrderPage extends JFrame {
 			
 			vop.setTitle("View Order Page");		
 			//vop.pack();
-			vop.setSize(550, 400);
-			vop.setLocationRelativeTo(null);
+			//vop.setSize(550, 400);
+			vop.setLocation(0,0);
 			vop.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			vop.setVisible(true);
 			vop.requestFocusInWindow(true);
+			vop.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 			
 		}
 		
