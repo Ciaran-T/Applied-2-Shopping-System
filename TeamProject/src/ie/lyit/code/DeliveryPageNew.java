@@ -2,6 +2,7 @@ package ie.lyit.code;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -50,6 +51,9 @@ public class DeliveryPageNew extends JFrame{
 	//default font
    private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
    private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
+   private Font textFont = new Font("SanSerif", Font.ITALIC,20);
+   private Font buttonFont = new Font("SanSerif",Font.BOLD,22);
+   private Font textAreaFont = new Font("SanSerif", Font.ITALIC,10);
 
 	//labels
    private JLabel jlbCustAdress, jlbOrderDetails, jlbHeader, jlbDeliveryDate, jlbSelDate;
@@ -93,11 +97,23 @@ public class DeliveryPageNew extends JFrame{
       centerPanel.add(jtfAddressL3 = new JTextField("Address Line 3", 20));
       centerPanel.add(jtfCity = new JTextField("City/Town", 20));
       centerPanel.add(jtfCounty = new JTextField("County", 20));
-   
-   	// add alternative delivery instructions here
+      
+      //set Fonts on page
+      jlbCustAdress.setFont(buttonFont);
+      jtfAddressL1.setFont(textFont);
+      jtfAddressL2.setFont(textFont);
+      jtfAddressL3.setFont(textFont);
+      jtfCity.setFont(textFont);
+      jtfCounty.setFont(textFont);
+   	
+      // add alternative delivery instructions here
       centerPanel.add(jlbAltInstructions = new JLabel("Alternative Delivery Instructions: "));
       centerPanel.add(jtaAltInstructions = new JTextArea("Enter Alternative Delivery Instructions",5,20));
    	
+      jtaAltInstructions.setLineWrap(true);
+      jlbAltInstructions.setFont(buttonFont);
+      jtaAltInstructions.setFont(textFont);
+      
    	//add panel to frame
       add(centerPanel, BorderLayout.CENTER);
    	
@@ -106,23 +122,31 @@ public class DeliveryPageNew extends JFrame{
       //label and set alignment
       jlbOrderDetails = new JLabel("Order Details");
       jlbOrderDetails.setHorizontalAlignment(JLabel.CENTER);
-      jlbOrderDetails.setFont(generalFont);
+      jlbOrderDetails.setFont(buttonFont);
    	//add label to panel
       eastPanel.add(jlbOrderDetails);
       name = new JTextField(a.getfName() + " " + a.getlName());
       //name.setColumns(15);
+      //name.setLineWrap(true);
+      name.setFont(textFont);
       name.setEditable(false);
    
       //order
       JTextField jtfOrderEmail = new JTextField(o.getCustomerEmail());
       jtfOrderEmail.setEditable(false);
+      jtfOrderEmail.setFont(textFont);
       JTextField jtfOrderID = new JTextField("" + o.getOrderID());
       jtfOrderID.setEditable(false);
+      jtfOrderID.setFont(textFont);
       JTextField jtfOrderTotal = new JTextField(""+o.getTotal());
       jtfOrderTotal.setEditable(false);
+      jtfOrderTotal.setFont(textFont);
    
       JTextArea jtaProducts = new JTextArea(""+ o.getProducts(),20,10);
       jtaProducts.setEditable(false);
+      jtaProducts.setLineWrap(true);
+      jtaProducts.setFont(textAreaFont);
+      
    
    	//add to panel
       eastPanel.add(name);
@@ -136,7 +160,9 @@ public class DeliveryPageNew extends JFrame{
       southPanel = new JPanel();
       southPanel.setLayout(new GridLayout(1,1));
       southPanel.add(backBtn = new JButton("Go Back"), BorderLayout.EAST);
+      backBtn.setFont(buttonFont);
       southPanel.add(confirmDelDetsBtn = new JButton("Confirm Delivery Details"), BorderLayout.WEST);
+      confirmDelDetsBtn.setFont(buttonFont);
       add(southPanel, BorderLayout.SOUTH);
    
    	//Action Listeners
@@ -228,8 +254,11 @@ public class DeliveryPageNew extends JFrame{
          });
    
       selDate.setVisible(true);
-      selTime.setVisible(true);   
+      selDate.setFont(textFont);
+      selTime.setVisible(true); 
+      selTime.setFont(textFont);
       westPanel.add(jlbSelDate = new JLabel("Select Delivery Date: "));
+      jlbSelDate.setFont(buttonFont);
       westPanel.add(selDate);
       westPanel.add(selTime);
       jlbDelDate = new JLabel("");
@@ -402,10 +431,12 @@ public class DeliveryPageNew extends JFrame{
       DeliveryPageNew dp = new DeliveryPageNew(acc, o, d);
       dp.setTitle("Delivery Page");		
    	//dp.pack();
-      dp.setSize(700, 400);
-      dp.setLocationRelativeTo(null);
+      //dp.setSize(700, 400);
+      dp.setLocation(0, 0);
+      //dp.setLocationRelativeTo(null);
       dp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       dp.setVisible(true);
+      dp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
    }//end Draw Method
 	
 	//main method
