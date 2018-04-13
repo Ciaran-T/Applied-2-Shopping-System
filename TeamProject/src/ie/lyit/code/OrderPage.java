@@ -137,6 +137,7 @@ public class OrderPage extends JFrame {
 		nameTf.setColumns(15);
 		nameTf.setEditable(false);
 		nameTf.setFont(generalFont);
+		nameTf.setBorder(null);
 		
 		//create label and add to panel
 		//set alignment				
@@ -147,18 +148,19 @@ public class OrderPage extends JFrame {
 		//add text field to panel
 		eastPanel.add(nameTf);
 		
-		//order number
+		//order number label
 		orderNoLabel = new JLabel("<html><u>Order No.</u></html");
 		orderNoLabel.setFont(generalFont);
 		orderNoLabel.setHorizontalAlignment(JLabel.CENTER);
 		eastPanel.add(orderNoLabel);
 		
-		
+		//order number text field
 		orderNoTf = new JTextField("");
 		orderNoTf.setText((String.valueOf(DBConnector.getLastOrderID()+1)));
 		orderNoTf.setEditable(false);
 		orderNoTf.setFont(generalFont);
 		orderNoTf.setHorizontalAlignment(JTextField.CENTER);
+		orderNoTf.setBorder(null);
 		
 		eastPanel.add(orderNoTf);
 		
@@ -173,6 +175,7 @@ public class OrderPage extends JFrame {
 		productTypeTf = new JTextField("");
 		productTypeTf.setFont(generalFont);
 		productTypeTf.setEditable(false);
+		productTypeTf.setBorder(null);
 		//add to panel
 		eastPanel.add(productTypeTf);
 		
@@ -186,6 +189,7 @@ public class OrderPage extends JFrame {
 		productPriceTf = new JTextField("");
 		productPriceTf.setEditable(false);
 		productPriceTf.setFont(generalFont);
+		productPriceTf.setBorder(null);
 		//add to panel
 		eastPanel.add(productPriceTf);
 		//add panel to frame
@@ -196,6 +200,7 @@ public class OrderPage extends JFrame {
 		totalTf = new JTextField("Total: €");
 		totalTf.setFont(generalFont);
 		totalTf.setEditable(false);
+		totalTf.setBorder(null);
 		
 		//add to panel
 		eastPanel.add(totalTf);
