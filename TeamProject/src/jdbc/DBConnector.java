@@ -417,6 +417,45 @@ public class DBConnector {
 
 		return products;
 	}
+	
+	//read products by type
+	public static ArrayList<Product> readProducts(String type) {
+
+		ArrayList<Product> products = new ArrayList<>();
+		ResultSet res;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+		try {
+			
+			if(type.equalsIgnoreCase("Perishables")) {}
+			else if(type.equalsIgnoreCase("Veg")) {}
+			else if(type.equalsIgnoreCase("Meat")) {}
+			else if(type.equalsIgnoreCase("Biscuits")) {}
+			else if(type.equalsIgnoreCase("Dairy")) {}
+			else if(type.equalsIgnoreCase("Fruit")) {}
+			String query = queryProduct();
+			res = stmt.executeQuery(query);
+
+			while(res.next()) {				//get name, price, productNo, type and quantity
+				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
+				products.add(pr);  
+
+			}
+
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+
+		return products;
+	}
 
 
 	public static String[] getProductIds() {
