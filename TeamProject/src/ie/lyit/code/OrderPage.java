@@ -424,10 +424,73 @@ public class OrderPage extends JFrame {
 				}
 			}
 			
-			else if(event == meat) {}
-			else if(event == veg) {}
-			else if(event == biscuits) {}
-			else if(event == all) {}
+			else if(event == meat) {
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(meat.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			else if(event == veg) {
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(veg.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
+			else if(event == biscuits) {
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(biscuits.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
+			else if(event == all) {
+				
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts();
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
 			
 			/* if event equal place order button
 			 * 
