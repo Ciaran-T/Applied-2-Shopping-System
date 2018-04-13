@@ -427,21 +427,42 @@ public class DBConnector {
 		createConnection(DB_URL, USER, PASSWORD);
 
 
+		//initialize query object
+		String query = "";
+		
 		try {
 			
-			if(type.equalsIgnoreCase("Perishables")) {}
-			else if(type.equalsIgnoreCase("Veg")) {}
-			else if(type.equalsIgnoreCase("Meat")) {}
-			else if(type.equalsIgnoreCase("Biscuits")) {}
-			else if(type.equalsIgnoreCase("Dairy")) {}
-			else if(type.equalsIgnoreCase("Fruit")) {}
-			String query = queryProduct();
-			res = stmt.executeQuery(query);
+			//test product type and
+			//get query by product
+			if(type.equalsIgnoreCase("Perishables")) {
+				query = queryPerishables();
+			}
+			else if(type.equalsIgnoreCase("Veg")) {
+				query = queryVeg();
+			}
+			else if(type.equalsIgnoreCase("Meat")) {
+				query = queryMeat();
+			}
+			else if(type.equalsIgnoreCase("Biscuits")) {
+				query = queryBiscuits();
+			}
+			else if(type.equalsIgnoreCase("Dairy")) {
+				query = queryDairy();
+			}
+			else if(type.equalsIgnoreCase("Fruit")) {
+				query = queryFruit();
+			}
+			
+			//make sure variable was assigned a query
+			if(query != "") {
+				
+				res = stmt.executeQuery(query);
 
-			while(res.next()) {				//get name, price, productNo, type and quantity
-				Product pr = new Product(res.getString(1), res.getDouble(2), res.getInt(3), res.getString(4), res.getInt(5)); 
-				products.add(pr);  
+				while(res.next()) {				//get name - 2, price - 3, productNo - 1, type - 4 and quantity - 5
+					Product pr = new Product(res.getString(2), res.getDouble(3), res.getInt(1), res.getString(4), res.getInt(5)); 
+					products.add(pr);  
 
+				}
 			}
 
 
@@ -456,6 +477,8 @@ public class DBConnector {
 
 		return products;
 	}
+	
+	
 
 
 	public static String[] getProductIds() {
@@ -549,7 +572,7 @@ public class DBConnector {
 	}
 
 	//get dairy products query
-	public static String queryDiary() {
+	public static String queryDairy() {
 
 		return "SELECT * FROM Products WHERE Type='Diary';";
 	}
@@ -570,6 +593,12 @@ public class DBConnector {
 	public static String queryBiscuits() {
 
 		return "SELECT * FROM Products WHERE Type='Biscuits';";
+	}
+	
+	//get fruit product query
+	public static String queryFruit() {
+
+		return "SELECT * FROM Products WHERE Type='Fruit';";
 	}
 
 	//get products from DB query
