@@ -85,7 +85,7 @@ public class OrderPage extends JFrame {
 	private DefaultListModel<Product> productModel;
 	
 	//radio button + group
-	private JRadioButton perishables, dairy, fruit, meat, all;
+	private JRadioButton perishables, dairy, fruit, meat, veg, biscuits, all;
 	private ButtonGroup groupOfBtns;
 	private JPanel bgPanel;
 	
@@ -238,6 +238,10 @@ public class OrderPage extends JFrame {
 		fruit.setFont(generalFont);
 		meat = new JRadioButton("Meat");
 		meat.setFont(generalFont);
+		veg = new JRadioButton("Veg");
+		veg.setFont(generalFont);
+		biscuits = new JRadioButton("Biscuits");
+		biscuits.setFont(generalFont);
 		all = new JRadioButton("All");
 		all.setFont(generalFont);
 		
@@ -247,6 +251,8 @@ public class OrderPage extends JFrame {
 		bgPanel.add(dairy);
 		bgPanel.add(fruit);
 		bgPanel.add(meat);
+		bgPanel.add(veg);
+		bgPanel.add(biscuits);
 		bgPanel.add(all);
 		
 		all.setSelected(true);
@@ -256,6 +262,8 @@ public class OrderPage extends JFrame {
 		groupOfBtns.add(dairy);
 		groupOfBtns.add(fruit);
 		groupOfBtns.add(meat);
+		groupOfBtns.add(veg);
+		groupOfBtns.add(biscuits);
 		groupOfBtns.add(all);
 		
 		
@@ -264,7 +272,7 @@ public class OrderPage extends JFrame {
 		
 		
 		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Products", TitledBorder.CENTER,
-				TitledBorder.TOP, generalFont));
+				TitledBorder.TOP, titleFont));
 		
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
@@ -334,6 +342,8 @@ public class OrderPage extends JFrame {
 		dairy.addActionListener(listener);
 		fruit.addActionListener(listener);
 		meat.addActionListener(listener);
+		veg.addActionListener(listener);
+		biscuits.addActionListener(listener);
 		all.addActionListener(listener);
 	}
 	
@@ -362,10 +372,16 @@ public class OrderPage extends JFrame {
 				
 			}
 			//TODO -- populate list by product
-			else if(event == perishables) {}
+			else if(event == perishables) {
+				
+				
+				
+			}
 			else if(event == dairy) {}
 			else if(event == fruit) {}
 			else if(event == meat) {}
+			else if(event == veg) {}
+			else if(event == biscuits) {}
 			else if(event == all) {}
 			
 			/* if event equal place order button
