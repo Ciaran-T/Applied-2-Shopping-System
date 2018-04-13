@@ -57,16 +57,15 @@ public class OrderPage extends JFrame {
 
 	//panels
 	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
-	private JPanel removeBtnPanel, addBtnPanel;
+	private JPanel removeBtnPanel, addBtnPanel, placeOrderPanel;
 	
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//labels
-	private JLabel titleLabel, shoppingCartLabel, productsLabel;
+	private JLabel titleLabel, orderNoLabel;
 	private JLabel custNameLabel, productPriceLabel, productTypeLabel;
-	private JLabel orderNoLabel;
 	
 	//text fields
 	private JTextField nameTf, productTypeTf, productPriceTf, totalTf;
@@ -124,8 +123,9 @@ public class OrderPage extends JFrame {
 		
 		
 		//east panel
-		eastPanel = new JPanel(new GridLayout(9, 1, 10, 10));
+		eastPanel = new JPanel(new GridLayout(10, 1, 2, 2));
 		
+		//set titled border
 		eastPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Order Details", TitledBorder.CENTER,
 				TitledBorder.TOP, titleFont));
 		
@@ -138,11 +138,12 @@ public class OrderPage extends JFrame {
 		nameTf.setColumns(15);
 		nameTf.setEditable(false);
 		nameTf.setFont(generalFont);
+		//disable border + set alignment
 		nameTf.setBorder(null);
 		nameTf.setHorizontalAlignment(JTextField.CENTER);
 		
 		//create label and add to panel
-		//set alignment				
+		//set alignment + font				
 		custNameLabel = new JLabel("<html><u>Customer Name</u></html");//used to underline label
 		custNameLabel.setFont(generalFont);
 		eastPanel.add(custNameLabel);
@@ -209,6 +210,16 @@ public class OrderPage extends JFrame {
 		//add to panel
 		eastPanel.add(totalTf);
 		
+		//panel for place order button
+		placeOrderPanel = new JPanel(new FlowLayout(1, 100, 5));
+		placeOrder = new JButton("Place Order");
+		placeOrder.setFont(generalFont);
+		
+		//add button to panel
+		placeOrderPanel.add(placeOrder);
+		
+		//add flow panel to grid panel
+		eastPanel.add(placeOrderPanel);
 		
 		
 		//south panel
@@ -221,10 +232,6 @@ public class OrderPage extends JFrame {
 		southPanel.add(backBtn);
 		
 		
-		//button to place order
-		placeOrder = new JButton("Place Order");
-		placeOrder.setFont(generalFont);
-		southPanel.add(placeOrder);
 		
 		//button to exit
 		exitBtn = new JButton("Exit Application");
@@ -299,18 +306,23 @@ public class OrderPage extends JFrame {
 		westJlist.setFixedCellWidth(250);
 		westScrollPane = new JScrollPane(westJlist);
 		westScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//westScrollPane.setColumnHeader(shoppingCart);
 		
 		//add label to panel
 		//panel to frame
 		westPanel.add(westScrollPane, BorderLayout.CENTER);
+		
 		addToCartBtn = new JButton("Add");
 		addToCartBtn.setFont(generalFont);
-		//westPanel.add(addToCartBtn, BorderLayout.SOUTH);
+		
+		addBtnPanel = new JPanel(new FlowLayout(1, 80, 10));
+		addBtnPanel.add(addToCartBtn);
+		
 		//add blank space
 		bgPanel.add(new JLabel(""));
 		//add button to panel
-		bgPanel.add(addToCartBtn);
+		
+		westPanel.add(addBtnPanel, BorderLayout.SOUTH);
+		addBtnPanel.setAlignmentY(RIGHT_ALIGNMENT);
 		
 		//add panel to frame
 		add(westPanel, BorderLayout.WEST);
@@ -318,19 +330,17 @@ public class OrderPage extends JFrame {
 		
 		//center panel (set alignment + font)
 		centerPanel = new JPanel(new BorderLayout());
-		//shoppingCartLabel = new JLabel("Shopping Cart");
-		//shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
-		//shoppingCartLabel.setFont(titleFont);
+
+		centerPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Shopping Cart", TitledBorder.CENTER,
+				TitledBorder.TOP, titleFont));
 		
-		//add to panel
-		//centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
 		
 		//remove button
 		removeBtn = new JButton("Remove");
 		removeBtn.setFont(generalFont);
 		
 		//remove button panel
-		removeBtnPanel = new JPanel();
+		removeBtnPanel = new JPanel(new FlowLayout(1, 80, 10));
 		removeBtnPanel.add(removeBtn);
 		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
