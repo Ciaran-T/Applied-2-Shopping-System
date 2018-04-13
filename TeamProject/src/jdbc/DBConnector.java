@@ -520,6 +520,18 @@ public class DBConnector {
 
 		return "SELECT * FROM Products WHERE Type='Veg';";
 	}
+	
+	//get perishable products query
+	public static String queryPerishables() {
+
+		return "SELECT * FROM Products WHERE Type='Perishables';";
+	}
+	
+	//get biscuits product query
+	public static String queryBiscuits() {
+
+		return "SELECT * FROM Products WHERE Type='Biscuits';";
+	}
 
 	//get products from DB query
 	private static String queryProduct() {
@@ -630,7 +642,7 @@ public class DBConnector {
 	}
 
 	//get product from DB
-	public static Product readProducts(String name) {
+	public static Product readProduct(String name) {
 
 		Product product = new Product();
 
