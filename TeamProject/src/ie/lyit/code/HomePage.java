@@ -49,6 +49,7 @@ public class HomePage extends JFrame{
 	//constructor
 	public HomePage() {
 
+		setLayout(new BorderLayout(20, 100));
 		
 		//Title
 		//north panel
@@ -151,7 +152,7 @@ public class HomePage extends JFrame{
 		
 
 		//centerPanel = new JPanel(new GridLayout(8,0));
-		centerPanel = new JPanel(new FlowLayout(1, 30, 30));
+		centerPanel = new JPanel(new FlowLayout(1, 100, 30));
 		adminBtn = new JButton("Administrator");
 		adminBtn.setFont(generalFont);
 		
