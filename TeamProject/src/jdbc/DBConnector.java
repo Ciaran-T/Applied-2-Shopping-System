@@ -568,13 +568,13 @@ public class DBConnector {
 	//get meat products query
 	public static String queryMeat() {
 
-		return "SELECT * FROM products WHERE Type='Meat';";
+		return "SELECT * FROM Products WHERE Type='Meat';";
 	}
 
 	//get dairy products query
 	public static String queryDairy() {
 
-		return "SELECT * FROM Products WHERE Type='Diary';";
+		return "SELECT * FROM Products WHERE Type='Dairy';";
 	}
 
 	//get Veg products query
