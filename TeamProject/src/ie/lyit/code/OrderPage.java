@@ -29,7 +29,6 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,18 +56,20 @@ public class OrderPage extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	//panels
-	private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, westPanel, southPanel;
+	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
 	
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//labels
-	private JLabel titleLabel, orderDetailsLabel, shoppingCartLabel, productsLabel;
+	private JLabel titleLabel, shoppingCartLabel, productsLabel;
 	private JLabel custNameLabel, productPriceLabel, productTypeLabel;
+	private JLabel orderNoLabel;
 	
 	//text fields
 	private JTextField nameTf, productTypeTf, productPriceTf, totalTf;
+	private JTextField orderNoTf;
 	
 	//scroll pane for lists
 	private JScrollPane westScrollPane, centerScrollPane;
@@ -121,22 +122,13 @@ public class OrderPage extends JFrame {
 		
 		
 		
-		//east top panel to hold title
-		eastTopPanel = new JPanel(new BorderLayout());
+		//east panel
+		eastPanel = new JPanel(new GridLayout(10, 1, 10, 10));
 		
-		//east panel to add to eastTopPanel
-		eastPanel = new JPanel(new GridLayout(7, 1));
+		eastPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Order Details", TitledBorder.CENTER,
+				TitledBorder.TOP, titleFont));
 		
-		//label and set alignment
-		orderDetailsLabel = new JLabel("Order Details");
-		orderDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
-		orderDetailsLabel.setFont(titleFont);
-		
-		//add label to panel
-		eastTopPanel.add(orderDetailsLabel, BorderLayout.NORTH);
-		
-		//add east panel to east top panel
-		eastTopPanel.add(eastPanel, BorderLayout.CENTER);
+
 		
 		//name of customer
 		//set width
@@ -154,6 +146,21 @@ public class OrderPage extends JFrame {
 		custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		//add text field to panel
 		eastPanel.add(nameTf);
+		
+		//order number
+		orderNoLabel = new JLabel("<html><u>Order No.</u></html");
+		orderNoLabel.setFont(generalFont);
+		orderNoLabel.setHorizontalAlignment(JLabel.CENTER);
+		eastPanel.add(orderNoLabel);
+		
+		
+		orderNoTf = new JTextField("");
+		orderNoTf.setText((String.valueOf(DBConnector.getLastOrderID()+1)));
+		orderNoTf.setEditable(false);
+		orderNoTf.setFont(generalFont);
+		orderNoTf.setHorizontalAlignment(JTextField.CENTER);
+		
+		eastPanel.add(orderNoTf);
 		
 		//create label and add to panel
 		//set alignment
@@ -182,7 +189,7 @@ public class OrderPage extends JFrame {
 		//add to panel
 		eastPanel.add(productPriceTf);
 		//add panel to frame
-		add(eastTopPanel, BorderLayout.EAST);
+		add(eastPanel, BorderLayout.EAST);
 		//eastPanel.add(new JLabel());
 		
 		//total bill
