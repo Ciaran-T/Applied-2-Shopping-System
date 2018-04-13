@@ -178,6 +178,7 @@ public class OrderPage extends JFrame {
 		//price of product
 		productPriceTf = new JTextField("");
 		productPriceTf.setEditable(false);
+		productPriceTf.setFont(generalFont);
 		//add to panel
 		eastPanel.add(productPriceTf);
 		//add panel to frame
@@ -373,6 +374,19 @@ public class OrderPage extends JFrame {
 			}
 			//TODO -- populate list by product
 			else if(event == perishables) {
+				
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(perishables.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
 				
 				
 				
