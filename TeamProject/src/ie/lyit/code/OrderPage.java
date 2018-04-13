@@ -57,6 +57,7 @@ public class OrderPage extends JFrame {
 
 	//panels
 	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
+	private JPanel removeBtnPanel, addBtnPanel;
 	
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
@@ -123,7 +124,7 @@ public class OrderPage extends JFrame {
 		
 		
 		//east panel
-		eastPanel = new JPanel(new GridLayout(10, 1, 10, 10));
+		eastPanel = new JPanel(new GridLayout(9, 1, 10, 10));
 		
 		eastPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Order Details", TitledBorder.CENTER,
 				TitledBorder.TOP, titleFont));
@@ -138,6 +139,7 @@ public class OrderPage extends JFrame {
 		nameTf.setEditable(false);
 		nameTf.setFont(generalFont);
 		nameTf.setBorder(null);
+		nameTf.setHorizontalAlignment(JTextField.CENTER);
 		
 		//create label and add to panel
 		//set alignment				
@@ -176,6 +178,7 @@ public class OrderPage extends JFrame {
 		productTypeTf.setFont(generalFont);
 		productTypeTf.setEditable(false);
 		productTypeTf.setBorder(null);
+		productTypeTf.setHorizontalAlignment(JTextField.CENTER);
 		//add to panel
 		eastPanel.add(productTypeTf);
 		
@@ -190,6 +193,7 @@ public class OrderPage extends JFrame {
 		productPriceTf.setEditable(false);
 		productPriceTf.setFont(generalFont);
 		productPriceTf.setBorder(null);
+		productPriceTf.setHorizontalAlignment(JTextField.CENTER);
 		//add to panel
 		eastPanel.add(productPriceTf);
 		//add panel to frame
@@ -234,12 +238,6 @@ public class OrderPage extends JFrame {
 		//west panel
 		//shopping cart
 		westPanel = new JPanel(new BorderLayout());
-		productsLabel = new JLabel("Products");
-		productsLabel.setFont(titleFont);
-		productsLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		//add label to panel
-		//westPanel.add(productsLabel, BorderLayout.NORTH);
 		
 		
 		//Radio buttons
@@ -320,17 +318,21 @@ public class OrderPage extends JFrame {
 		
 		//center panel (set alignment + font)
 		centerPanel = new JPanel(new BorderLayout());
-		shoppingCartLabel = new JLabel("Shopping Cart");
-		shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
-		shoppingCartLabel.setFont(titleFont);
+		//shoppingCartLabel = new JLabel("Shopping Cart");
+		//shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
+		//shoppingCartLabel.setFont(titleFont);
 		
 		//add to panel
-		centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
+		//centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
 		
 		//remove button
 		removeBtn = new JButton("Remove");
 		removeBtn.setFont(generalFont);
-		centerPanel.add(removeBtn, BorderLayout.SOUTH);
+		
+		//remove button panel
+		removeBtnPanel = new JPanel();
+		removeBtnPanel.add(removeBtn);
+		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
 		//create model list
 		listModel = new DefaultListModel<Product>();
@@ -546,7 +548,7 @@ public class OrderPage extends JFrame {
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
-					productPriceTf.setText("" + item.getPrice());
+					productPriceTf.setText("€" + item.getPrice());
 					productTypeTf.setText("" + item.getType());
 				}
 				
@@ -572,7 +574,7 @@ public class OrderPage extends JFrame {
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//fill fields in with details of product
-					productPriceTf.setText("-" + p.getPrice());
+					productPriceTf.setText("€-" + p.getPrice());
 					productTypeTf.setText("" + p.getType());
 					
 					
