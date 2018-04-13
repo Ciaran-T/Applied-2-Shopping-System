@@ -372,6 +372,7 @@ public class OrderPage extends JFrame {
 				HomePage.drawHome();
 				
 			}
+			
 			//TODO -- populate list by product
 			else if(event == perishables) {
 				
@@ -391,8 +392,38 @@ public class OrderPage extends JFrame {
 				
 				
 			}
-			else if(event == dairy) {}
-			else if(event == fruit) {}
+			else if(event == dairy) {
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(dairy.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			else if(event == fruit) {
+				
+
+				//get array list of products by type
+				ArrayList<Product> pList = DBConnector.readProducts(fruit.getText());
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: pList) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
 			else if(event == meat) {}
 			else if(event == veg) {}
 			else if(event == biscuits) {}
