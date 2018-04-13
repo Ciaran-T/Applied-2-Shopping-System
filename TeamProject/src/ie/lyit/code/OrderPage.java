@@ -296,7 +296,13 @@ public class OrderPage extends JFrame {
 		westPanel.add(westScrollPane, BorderLayout.CENTER);
 		addToCartBtn = new JButton("Add");
 		addToCartBtn.setFont(generalFont);
-		westPanel.add(addToCartBtn, BorderLayout.SOUTH);
+		//westPanel.add(addToCartBtn, BorderLayout.SOUTH);
+		//add blank space
+		bgPanel.add(new JLabel(""));
+		//add button to panel
+		bgPanel.add(addToCartBtn);
+		
+		//add panel to frame
 		add(westPanel, BorderLayout.WEST);
 		
 		
@@ -373,17 +379,13 @@ public class OrderPage extends JFrame {
 				
 			}
 			
-			//TODO -- populate list by product
 			else if(event == perishables) {
-				
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(perishables.getText());
 				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(perishables.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -394,14 +396,11 @@ public class OrderPage extends JFrame {
 			}
 			else if(event == dairy) {
 
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(dairy.getText());
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(dairy.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -409,15 +408,11 @@ public class OrderPage extends JFrame {
 			}
 			else if(event == fruit) {
 				
-
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(fruit.getText());
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(fruit.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -426,14 +421,11 @@ public class OrderPage extends JFrame {
 			
 			else if(event == meat) {
 
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(meat.getText());
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(meat.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -441,14 +433,11 @@ public class OrderPage extends JFrame {
 			}
 			else if(event == veg) {
 
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(veg.getText());
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(veg.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -458,14 +447,11 @@ public class OrderPage extends JFrame {
 			
 			else if(event == biscuits) {
 
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts(biscuits.getText());
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts(biscuits.getText())) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
@@ -475,15 +461,11 @@ public class OrderPage extends JFrame {
 			
 			else if(event == all) {
 				
-
-				//get array list of products by type
-				ArrayList<Product> pList = DBConnector.readProducts();
-				
 				//clear current model
 				productModel.clear();
 				
 				//for every product in pList
-				for(Product p: pList) {
+				for(Product p: DBConnector.readProducts()) {
 					
 					//add to current model (re-populate)
 					productModel.addElement(p);
