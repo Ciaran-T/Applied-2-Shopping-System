@@ -104,6 +104,9 @@ public class OrderPage extends JFrame {
 	//constructor
 	public OrderPage(Account acc) {
 		
+		//set spacing between component in frame
+		setLayout(new BorderLayout(20, 10));
+		
 		a = acc;
 		
 		
