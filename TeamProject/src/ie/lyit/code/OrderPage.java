@@ -29,6 +29,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,8 +44,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import ie.lyit.data.Account;
-import ie.lyit.data.Order;
 import ie.lyit.data.Delivery;
+import ie.lyit.data.Order;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
 
@@ -248,6 +249,7 @@ public class OrderPage extends JFrame {
 		bgPanel.add(meat);
 		bgPanel.add(all);
 		
+		all.setSelected(true);
 		//add buttons to button group
 		groupOfBtns = new ButtonGroup();
 		groupOfBtns.add(perishables);
@@ -255,6 +257,7 @@ public class OrderPage extends JFrame {
 		groupOfBtns.add(fruit);
 		groupOfBtns.add(meat);
 		groupOfBtns.add(all);
+		
 		
 		//add to panel
 		westPanel.add(bgPanel, BorderLayout.WEST);
@@ -266,13 +269,15 @@ public class OrderPage extends JFrame {
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
 		
-		//populate list with images
-		productModel = new DefaultListModel<Product>();
+		//populate list with products
+		productModel = createProductModels(test);
 		
 		//pass product model list into JList
 		westJlist = new JList<Product>(productModel);
+		//set font on items in list
+		westJlist.setFont(generalFont);
 		//set width of list
-		westJlist.setFixedCellWidth(100);
+		westJlist.setFixedCellWidth(250);
 		westScrollPane = new JScrollPane(westJlist);
 		westScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		//westScrollPane.setColumnHeader(shoppingCart);
@@ -306,6 +311,7 @@ public class OrderPage extends JFrame {
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
 		centerJlist = new JList<Product>(listModel);
+		centerJlist.setFont(generalFont);
 		
 		centerScrollPane = new JScrollPane(centerJlist);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -523,7 +529,23 @@ public class OrderPage extends JFrame {
 	
 	
 	//populate model list of products
-	
+	private DefaultListModel<Product> createProductModels(ArrayList<Product> prods){
+		
+		//create list to populate and pass back
+		DefaultListModel<Product> temp = new DefaultListModel<Product>();
+		
+		//for every product in product array list
+		for(Product p: prods) {
+			
+			//add element to model list 
+			temp.addElement(p);
+		}
+		
+		
+		//return model list
+		return temp;
+		
+	}
 	
 	
 	
