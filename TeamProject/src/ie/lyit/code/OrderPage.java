@@ -73,15 +73,15 @@ public class OrderPage extends JFrame {
 	private JScrollPane westScrollPane, centerScrollPane;
 	
 	//lists
-	private JList<ImageIcon> westJlist;
-	private JList<ImageIcon> centerJlist;
+	private JList<Product> westJlist;
+	private JList<Product> centerJlist;
 	
 	//buttons
 	private JButton backBtn, placeOrder, addToCartBtn, removeBtn, exitBtn;
 	
 	//default model view for products
-	private DefaultListModel<ImageIcon> listModel;
-	private DefaultListModel<ImageIcon> productModel;
+	private DefaultListModel<Product> listModel;
+	private DefaultListModel<Product> productModel;
 	
 	//radio button + group
 	private JRadioButton perishables, dairy, fruit, meat, all;
@@ -260,17 +260,17 @@ public class OrderPage extends JFrame {
 		westPanel.add(bgPanel, BorderLayout.WEST);
 		
 		
-		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Products"), "Products", TitledBorder.CENTER,
+		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Products", TitledBorder.CENTER,
 				TitledBorder.TOP, generalFont));
 		
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
 		
 		//populate list with images
-		productModel = createProductModel(test);
+		productModel = new DefaultListModel<Product>();
 		
 		//pass product model list into JList
-		westJlist = new JList<ImageIcon>(productModel);
+		westJlist = new JList<Product>(productModel);
 		//set width of list
 		westJlist.setFixedCellWidth(100);
 		westScrollPane = new JScrollPane(westJlist);
@@ -301,11 +301,11 @@ public class OrderPage extends JFrame {
 		centerPanel.add(removeBtn, BorderLayout.SOUTH);
 		
 		//create model list
-		listModel = new DefaultListModel<ImageIcon>();
+		listModel = new DefaultListModel<Product>();
 		
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList<ImageIcon>(listModel);
+		centerJlist = new JList<Product>(listModel);
 		
 		centerScrollPane = new JScrollPane(centerJlist);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -383,8 +383,8 @@ public class OrderPage extends JFrame {
 				ArrayList<Product> prods = new ArrayList<>();
 				
 				for(int i = 0; i < noOfProducts; i++) {
-					ImageIcon img = listModel.getElementAt(i);
-					Product prod = imageMap.get(img);
+					Product prod = listModel.getElementAt(i);
+					//Product prod = imageMap.get(img);
 					prods.add(prod);
 					
 				}
@@ -413,16 +413,17 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-				ImageIcon item = westJlist.getSelectedValue();
-				Product product = imageMap.get(item);
+				//ImageIcon item = westJlist.getSelectedValue();
+				Product item = westJlist.getSelectedValue();
+				//Product product = imageMap.get(item);
 				if(item != null) {
 					listModel.addElement(item);
-					total += product.getPrice();
+					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
-					productPriceTf.setText("" + product.getPrice());
-					productTypeTf.setText("" + product.getType());
+					productPriceTf.setText("" + item.getPrice());
+					productTypeTf.setText("" + item.getType());
 				}
 				
 			}
@@ -440,9 +441,9 @@ public class OrderPage extends JFrame {
 				
 				//if item equals -1, no element is selected
 				if(item != -1) {
-					ImageIcon icon = listModel.remove(item);
+					Product p = listModel.remove(item);
 					//get product by image
-					Product p = imageMap.get(icon);
+					//Product p = imageMap.get(icon);
 					total -= p.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
@@ -519,6 +520,10 @@ public class OrderPage extends JFrame {
 		return temp;
 		
 	}
+	
+	
+	//populate model list of products
+	
 	
 	
 	
