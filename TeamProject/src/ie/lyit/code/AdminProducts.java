@@ -9,6 +9,7 @@
 
 package ie.lyit.code;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -69,6 +70,7 @@ public class AdminProducts extends JPanel{
 
 		//create combo box
 		box = new JComboBox<>();
+		box.setPreferredSize(new Dimension(30, 15));
 
 		// create labels
 		numLbl = new JLabel(type[0] + type[1]);
