@@ -302,7 +302,7 @@ public class Admin2 extends JFrame {
 						details[2].equals(null) || details[2].equals("") ||
 						details[3].equals(null) || details[3].equals(""))) {
 					
-					Product product = DBConnector.readProducts(details[0]);
+					Product product = DBConnector.readProduct(details[0]);
 					
 					//if product is null then there is no product in DB
 					if(product != null) {

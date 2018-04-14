@@ -43,8 +43,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import ie.lyit.data.Account;
-import ie.lyit.data.Order;
 import ie.lyit.data.Delivery;
+import ie.lyit.data.Order;
 import ie.lyit.data.Product;
 import jdbc.DBConnector;
 
@@ -56,35 +56,37 @@ public class OrderPage extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	//panels
-	private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, westPanel, southPanel;
+	private JPanel northPanel, centerPanel, eastPanel, westPanel, southPanel;
+	private JPanel removeBtnPanel, addBtnPanel, placeOrderPanel;
 	
 	//default font
 	private Font generalFont = new Font("SanSerif", Font.BOLD, 22);
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 	
 	//labels
-	private JLabel titleLabel, orderDetailsLabel, shoppingCartLabel, productsLabel;
+	private JLabel titleLabel, orderNoLabel;
 	private JLabel custNameLabel, productPriceLabel, productTypeLabel;
 	
 	//text fields
 	private JTextField nameTf, productTypeTf, productPriceTf, totalTf;
+	private JTextField orderNoTf;
 	
 	//scroll pane for lists
 	private JScrollPane westScrollPane, centerScrollPane;
 	
 	//lists
-	private JList<ImageIcon> westJlist;
-	private JList<ImageIcon> centerJlist;
+	private JList<Product> westJlist;
+	private JList<Product> centerJlist;
 	
 	//buttons
 	private JButton backBtn, placeOrder, addToCartBtn, removeBtn, exitBtn;
 	
 	//default model view for products
-	private DefaultListModel<ImageIcon> listModel;
-	private DefaultListModel<ImageIcon> productModel;
+	private DefaultListModel<Product> listModel;
+	private DefaultListModel<Product> productModel;
 	
 	//radio button + group
-	private JRadioButton perishables, dairy, fruit, meat, all;
+	private JRadioButton perishables, dairy, fruit, meat, veg, biscuits, all;
 	private ButtonGroup groupOfBtns;
 	private JPanel bgPanel;
 	
@@ -101,6 +103,9 @@ public class OrderPage extends JFrame {
 	
 	//constructor
 	public OrderPage(Account acc) {
+		
+		//set spacing between component in frame
+		setLayout(new BorderLayout(20, 10));
 		
 		a = acc;
 		
@@ -120,22 +125,14 @@ public class OrderPage extends JFrame {
 		
 		
 		
-		//east top panel to hold title
-		eastTopPanel = new JPanel(new BorderLayout());
+		//east panel
+		eastPanel = new JPanel(new GridLayout(10, 1, 2, 2));
 		
-		//east panel to add to eastTopPanel
-		eastPanel = new JPanel(new GridLayout(7, 1));
+		//set titled border
+		eastPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Order Details", TitledBorder.CENTER,
+				TitledBorder.TOP, titleFont));
 		
-		//label and set alignment
-		orderDetailsLabel = new JLabel("Order Details");
-		orderDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
-		orderDetailsLabel.setFont(titleFont);
-		
-		//add label to panel
-		eastTopPanel.add(orderDetailsLabel, BorderLayout.NORTH);
-		
-		//add east panel to east top panel
-		eastTopPanel.add(eastPanel, BorderLayout.CENTER);
+
 		
 		//name of customer
 		//set width
@@ -144,15 +141,34 @@ public class OrderPage extends JFrame {
 		nameTf.setColumns(15);
 		nameTf.setEditable(false);
 		nameTf.setFont(generalFont);
+		//disable border + set alignment
+		nameTf.setBorder(null);
+		nameTf.setHorizontalAlignment(JTextField.CENTER);
 		
 		//create label and add to panel
-		//set alignment				
+		//set alignment + font				
 		custNameLabel = new JLabel("<html><u>Customer Name</u></html");//used to underline label
 		custNameLabel.setFont(generalFont);
 		eastPanel.add(custNameLabel);
 		custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 		//add text field to panel
 		eastPanel.add(nameTf);
+		
+		//order number label
+		orderNoLabel = new JLabel("<html><u>Order No.</u></html");
+		orderNoLabel.setFont(generalFont);
+		orderNoLabel.setHorizontalAlignment(JLabel.CENTER);
+		eastPanel.add(orderNoLabel);
+		
+		//order number text field
+		orderNoTf = new JTextField("");
+		orderNoTf.setText((String.valueOf(DBConnector.getLastOrderID()+1)));
+		orderNoTf.setEditable(false);
+		orderNoTf.setFont(generalFont);
+		orderNoTf.setHorizontalAlignment(JTextField.CENTER);
+		orderNoTf.setBorder(null);
+		
+		eastPanel.add(orderNoTf);
 		
 		//create label and add to panel
 		//set alignment
@@ -165,6 +181,8 @@ public class OrderPage extends JFrame {
 		productTypeTf = new JTextField("");
 		productTypeTf.setFont(generalFont);
 		productTypeTf.setEditable(false);
+		productTypeTf.setBorder(null);
+		productTypeTf.setHorizontalAlignment(JTextField.CENTER);
 		//add to panel
 		eastPanel.add(productTypeTf);
 		
@@ -177,20 +195,34 @@ public class OrderPage extends JFrame {
 		//price of product
 		productPriceTf = new JTextField("");
 		productPriceTf.setEditable(false);
+		productPriceTf.setFont(generalFont);
+		productPriceTf.setBorder(null);
+		productPriceTf.setHorizontalAlignment(JTextField.CENTER);
 		//add to panel
 		eastPanel.add(productPriceTf);
 		//add panel to frame
-		add(eastTopPanel, BorderLayout.EAST);
+		add(eastPanel, BorderLayout.EAST);
 		//eastPanel.add(new JLabel());
 		
 		//total bill
 		totalTf = new JTextField("Total: €");
 		totalTf.setFont(generalFont);
 		totalTf.setEditable(false);
+		totalTf.setBorder(null);
 		
 		//add to panel
 		eastPanel.add(totalTf);
 		
+		//panel for place order button
+		placeOrderPanel = new JPanel(new FlowLayout(1, 100, 5));
+		placeOrder = new JButton("Place Order");
+		placeOrder.setFont(generalFont);
+		
+		//add button to panel
+		placeOrderPanel.add(placeOrder);
+		
+		//add flow panel to grid panel
+		eastPanel.add(placeOrderPanel);
 		
 		
 		//south panel
@@ -203,10 +235,6 @@ public class OrderPage extends JFrame {
 		southPanel.add(backBtn);
 		
 		
-		//button to place order
-		placeOrder = new JButton("Place Order");
-		placeOrder.setFont(generalFont);
-		southPanel.add(placeOrder);
 		
 		//button to exit
 		exitBtn = new JButton("Exit Application");
@@ -220,12 +248,6 @@ public class OrderPage extends JFrame {
 		//west panel
 		//shopping cart
 		westPanel = new JPanel(new BorderLayout());
-		productsLabel = new JLabel("Products");
-		productsLabel.setFont(titleFont);
-		productsLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		//add label to panel
-		//westPanel.add(productsLabel, BorderLayout.NORTH);
 		
 		
 		//Radio buttons
@@ -237,6 +259,10 @@ public class OrderPage extends JFrame {
 		fruit.setFont(generalFont);
 		meat = new JRadioButton("Meat");
 		meat.setFont(generalFont);
+		veg = new JRadioButton("Veg");
+		veg.setFont(generalFont);
+		biscuits = new JRadioButton("Biscuits");
+		biscuits.setFont(generalFont);
 		all = new JRadioButton("All");
 		all.setFont(generalFont);
 		
@@ -246,66 +272,88 @@ public class OrderPage extends JFrame {
 		bgPanel.add(dairy);
 		bgPanel.add(fruit);
 		bgPanel.add(meat);
+		bgPanel.add(veg);
+		bgPanel.add(biscuits);
 		bgPanel.add(all);
 		
+		all.setSelected(true);
 		//add buttons to button group
 		groupOfBtns = new ButtonGroup();
 		groupOfBtns.add(perishables);
 		groupOfBtns.add(dairy);
 		groupOfBtns.add(fruit);
 		groupOfBtns.add(meat);
+		groupOfBtns.add(veg);
+		groupOfBtns.add(biscuits);
 		groupOfBtns.add(all);
+		
 		
 		//add to panel
 		westPanel.add(bgPanel, BorderLayout.WEST);
 		
 		
-		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder("Products"), "Products", TitledBorder.CENTER,
-				TitledBorder.TOP, generalFont));
+		westPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Products", TitledBorder.CENTER,
+				TitledBorder.TOP, titleFont));
 		
 		//read products from DB and populate product array list
 		ArrayList<Product> test = DBConnector.readProducts();
 		
-		//populate list with images
-		productModel = createProductModel(test);
+		//populate list with products
+		productModel = createProductModels(test);
 		
 		//pass product model list into JList
-		westJlist = new JList<ImageIcon>(productModel);
+		westJlist = new JList<Product>(productModel);
+		//set font on items in list
+		westJlist.setFont(generalFont);
 		//set width of list
-		westJlist.setFixedCellWidth(100);
+		westJlist.setFixedCellWidth(250);
 		westScrollPane = new JScrollPane(westJlist);
 		westScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		//westScrollPane.setColumnHeader(shoppingCart);
 		
 		//add label to panel
 		//panel to frame
 		westPanel.add(westScrollPane, BorderLayout.CENTER);
+		
 		addToCartBtn = new JButton("Add");
 		addToCartBtn.setFont(generalFont);
-		westPanel.add(addToCartBtn, BorderLayout.SOUTH);
+		
+		addBtnPanel = new JPanel(new FlowLayout(1, 80, 10));
+		addBtnPanel.add(addToCartBtn);
+		
+		//add blank space
+		bgPanel.add(new JLabel(""));
+		//add button to panel
+		
+		westPanel.add(addBtnPanel, BorderLayout.SOUTH);
+		addBtnPanel.setAlignmentY(RIGHT_ALIGNMENT);
+		
+		//add panel to frame
 		add(westPanel, BorderLayout.WEST);
 		
 		
 		//center panel (set alignment + font)
 		centerPanel = new JPanel(new BorderLayout());
-		shoppingCartLabel = new JLabel("Shopping Cart");
-		shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
-		shoppingCartLabel.setFont(titleFont);
+
+		centerPanel.setBorder(BorderFactory.createTitledBorder(new TitledBorder(""), "Shopping Cart", TitledBorder.CENTER,
+				TitledBorder.TOP, titleFont));
 		
-		//add to panel
-		centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
 		
 		//remove button
 		removeBtn = new JButton("Remove");
 		removeBtn.setFont(generalFont);
-		centerPanel.add(removeBtn, BorderLayout.SOUTH);
+		
+		//remove button panel
+		removeBtnPanel = new JPanel(new FlowLayout(1, 80, 10));
+		removeBtnPanel.add(removeBtn);
+		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
 		//create model list
-		listModel = new DefaultListModel<ImageIcon>();
+		listModel = new DefaultListModel<Product>();
 		
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList<ImageIcon>(listModel);
+		centerJlist = new JList<Product>(listModel);
+		centerJlist.setFont(generalFont);
 		
 		centerScrollPane = new JScrollPane(centerJlist);
 		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -328,6 +376,8 @@ public class OrderPage extends JFrame {
 		dairy.addActionListener(listener);
 		fruit.addActionListener(listener);
 		meat.addActionListener(listener);
+		veg.addActionListener(listener);
+		biscuits.addActionListener(listener);
 		all.addActionListener(listener);
 	}
 	
@@ -355,12 +405,101 @@ public class OrderPage extends JFrame {
 				HomePage.drawHome();
 				
 			}
-			//TODO -- populate list by product
-			else if(event == perishables) {}
-			else if(event == dairy) {}
-			else if(event == fruit) {}
-			else if(event == meat) {}
-			else if(event == all) {}
+			
+			else if(event == perishables) {
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(perishables.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+				
+				
+				
+			}
+			else if(event == dairy) {
+
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(dairy.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			else if(event == fruit) {
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(fruit.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			else if(event == meat) {
+
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(meat.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			else if(event == veg) {
+
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(veg.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
+			else if(event == biscuits) {
+
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts(biscuits.getText())) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
+			else if(event == all) {
+				
+				//clear current model
+				productModel.clear();
+				
+				//for every product in pList
+				for(Product p: DBConnector.readProducts()) {
+					
+					//add to current model (re-populate)
+					productModel.addElement(p);
+				}
+			}
+			
+			
 			
 			/* if event equal place order button
 			 * 
@@ -383,8 +522,8 @@ public class OrderPage extends JFrame {
 				ArrayList<Product> prods = new ArrayList<>();
 				
 				for(int i = 0; i < noOfProducts; i++) {
-					ImageIcon img = listModel.getElementAt(i);
-					Product prod = imageMap.get(img);
+					Product prod = listModel.getElementAt(i);
+					//Product prod = imageMap.get(img);
 					prods.add(prod);
 					
 				}
@@ -413,16 +552,17 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-				ImageIcon item = westJlist.getSelectedValue();
-				Product product = imageMap.get(item);
+				//ImageIcon item = westJlist.getSelectedValue();
+				Product item = westJlist.getSelectedValue();
+				//Product product = imageMap.get(item);
 				if(item != null) {
 					listModel.addElement(item);
-					total += product.getPrice();
+					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
-					productPriceTf.setText("" + product.getPrice());
-					productTypeTf.setText("" + product.getType());
+					productPriceTf.setText("€" + item.getPrice());
+					productTypeTf.setText("" + item.getType());
 				}
 				
 			}
@@ -440,14 +580,14 @@ public class OrderPage extends JFrame {
 				
 				//if item equals -1, no element is selected
 				if(item != -1) {
-					ImageIcon icon = listModel.remove(item);
+					Product p = listModel.remove(item);
 					//get product by image
-					Product p = imageMap.get(icon);
+					//Product p = imageMap.get(icon);
 					total -= p.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//fill fields in with details of product
-					productPriceTf.setText("-" + p.getPrice());
+					productPriceTf.setText("€-" + p.getPrice());
 					productTypeTf.setText("" + p.getType());
 					
 					
@@ -516,6 +656,26 @@ public class OrderPage extends JFrame {
 		}
 		
 		
+		return temp;
+		
+	}
+	
+	
+	//populate model list of products
+	private DefaultListModel<Product> createProductModels(ArrayList<Product> prods){
+		
+		//create list to populate and pass back
+		DefaultListModel<Product> temp = new DefaultListModel<Product>();
+		
+		//for every product in product array list
+		for(Product p: prods) {
+			
+			//add element to model list 
+			temp.addElement(p);
+		}
+		
+		
+		//return model list
 		return temp;
 		
 	}

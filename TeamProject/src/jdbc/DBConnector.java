@@ -417,6 +417,68 @@ public class DBConnector {
 
 		return products;
 	}
+	
+	//read products by type
+	public static ArrayList<Product> readProducts(String type) {
+
+		ArrayList<Product> products = new ArrayList<>();
+		ResultSet res;
+
+		createConnection(DB_URL, USER, PASSWORD);
+
+
+		//initialize query object
+		String query = "";
+		
+		try {
+			
+			//test product type and
+			//get query by product
+			if(type.equalsIgnoreCase("Perishables")) {
+				query = queryPerishables();
+			}
+			else if(type.equalsIgnoreCase("Veg")) {
+				query = queryVeg();
+			}
+			else if(type.equalsIgnoreCase("Meat")) {
+				query = queryMeat();
+			}
+			else if(type.equalsIgnoreCase("Biscuits")) {
+				query = queryBiscuits();
+			}
+			else if(type.equalsIgnoreCase("Dairy")) {
+				query = queryDairy();
+			}
+			else if(type.equalsIgnoreCase("Fruit")) {
+				query = queryFruit();
+			}
+			
+			//make sure variable was assigned a query
+			if(query != "") {
+				
+				res = stmt.executeQuery(query);
+
+				while(res.next()) {				//get name - 2, price - 3, productNo - 1, type - 4 and quantity - 5
+					Product pr = new Product(res.getString(2), res.getDouble(3), res.getInt(1), res.getString(4), res.getInt(5)); 
+					products.add(pr);  
+
+				}
+			}
+
+
+		}catch(SQLException e) {
+			System.out.println("SQL error ==>" + e.getMessage());
+		}catch(Exception e) {
+			System.out.println("Error ==>" + e.getMessage());
+		}finally {
+			closeConnection();
+		}
+
+
+		return products;
+	}
+	
+	
 
 
 	public static String[] getProductIds() {
@@ -506,19 +568,37 @@ public class DBConnector {
 	//get meat products query
 	public static String queryMeat() {
 
-		return "SELECT * FROM products WHERE Type='Meat';";
+		return "SELECT * FROM Products WHERE Type='Meat';";
 	}
 
 	//get dairy products query
-	public static String queryDiary() {
+	public static String queryDairy() {
 
-		return "SELECT * FROM Products WHERE Type='Diary';";
+		return "SELECT * FROM Products WHERE Type='Dairy';";
 	}
 
 	//get Veg products query
 	public static String queryVeg() {
 
 		return "SELECT * FROM Products WHERE Type='Veg';";
+	}
+	
+	//get perishable products query
+	public static String queryPerishables() {
+
+		return "SELECT * FROM Products WHERE Type='Perishables';";
+	}
+	
+	//get biscuits product query
+	public static String queryBiscuits() {
+
+		return "SELECT * FROM Products WHERE Type='Biscuits';";
+	}
+	
+	//get fruit product query
+	public static String queryFruit() {
+
+		return "SELECT * FROM Products WHERE Type='Fruit';";
 	}
 
 	//get products from DB query
@@ -630,7 +710,7 @@ public class DBConnector {
 	}
 
 	//get product from DB
-	public static Product readProducts(String name) {
+	public static Product readProduct(String name) {
 
 		Product product = new Product();
 
