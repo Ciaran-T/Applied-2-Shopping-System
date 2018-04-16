@@ -365,7 +365,7 @@ public class OrderPage extends JFrame {
 		table.getTableHeader().setFont(generalFont);
 		table.setFont(new Font("SanSerif", Font.ITALIC + Font.BOLD, 16));
 		table.setRowHeight(30);
-		table.setEnabled(false);
+		//table.setEnabled(false);
 		//create model list
 		//listModel = new DefaultListModel<Product>();
 		
@@ -633,30 +633,77 @@ public class OrderPage extends JFrame {
 			
 			/* if event equals remove button
 			 * 
-			 * remove selected item from list,
 			 * 
-			 * take away from total.
 			 * 
 			 * */
 			else if(event == removeBtn) {
 				
-				int item = (int)table.getSelectedColumn();
+				Product p = null;
 				
-				//if item equals -1, no element is selected
+				//one entry flag
+				boolean flagOne = false;
+				
+				//get row that was selected
+				int item = (int)table.getSelectedRow();
+				
+				//if item equals -1, no row was selected
 				if(item != -1) {
-					Product p = listModel.remove(item);
-					//get product by image
-					//Product p = imageMap.get(icon);
+					
+					//for every entry in map
+					for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
+						
+						//compare name of product with the name
+						//at the row selected, column zero
+						if(ent.getKey().getName().equals((String)tableModel.getValueAt(item, 0))) {
+							
+							
+							//if there is only one product in the table
+							if(ent.getValue() == 1) {
+								
+								//flick flag
+								flagOne = true;
+								//save product object
+								p = ent.getKey();
+								
+								
+							}
+							//else there is more than one product in table
+							else {
+								//decrement key value (Qty)
+								ent.setValue(ent.getValue()-1);
+								//save product object
+								p = ent.getKey();
+							}
+						}
+						
+					}
+						
+					
+					//if only one product exists
+					if(flagOne) {
+						
+						//remove from hash map
+						countMap.remove(p);
+						
+					}	
+						
+					//clear table model
+					clearTable(tableModel);
+					
+					//build table model from hash set
+					buildTable();
+					
+					
+					//decrement price
 					total -= p.getPrice();
+					//format to two decimal places on output
 					totalTf.setText("Total: €" + df.format(total));
 					
-					//fill fields in with details of product
-					productPriceTf.setText("€-" + p.getPrice());
-					productTypeTf.setText("" + p.getType());
-					
-					
+
 				}
-			}
+			}//end remove button event method
+			
+			
 			
 			//if exit button
 			else if(event == exitBtn) {
