@@ -95,6 +95,9 @@ public class OrderPage extends JFrame {
 	private ButtonGroup groupOfBtns;
 	private JPanel bgPanel;
 	
+	//format number to two decimal places
+	DecimalFormat df = new DecimalFormat("#0.00");
+	
 	//total of order
 	private double total = 0;
 	
@@ -408,9 +411,6 @@ public class OrderPage extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			//format number to two decimal places
-			DecimalFormat df = new DecimalFormat("#0.00");
-			
 			//get source of event
 			Object event = e.getSource();
 			
@@ -608,19 +608,11 @@ public class OrderPage extends JFrame {
 						
 						
 						//if table model was cleared
-						if(clear(tableModel)) {
+						if(clearTable(tableModel)) {
 							
-							//for every entry in hash map
-							for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
-
-								//add row
-								//adding key's (products) name
-								tableModel.addRow(new Object[] {ent.getKey().getName(), 
-										//adding key's price multiplied by value (Quantity)
-										String.valueOf((df.format(ent.getKey().getPrice() * ent.getValue()))), 
-										//adding quantity in shopping cart (value of hash map) 
-										String.valueOf(ent.getValue())});
-							}
+							//build table
+							buildTable();
+							
 						}
 						
 					}
@@ -677,7 +669,7 @@ public class OrderPage extends JFrame {
 	
 	
 	//clear table model
-	private static boolean clear(DefaultTableModel tableModel) {
+	private static boolean clearTable(DefaultTableModel tableModel) {
 		
 		//assign flag
 		boolean removed = false;
@@ -699,6 +691,24 @@ public class OrderPage extends JFrame {
 		}
 		
 		return removed;
+		
+	}
+	
+	
+	//re-build table model
+	private void buildTable() {
+		
+		//for every entry in hash map
+		for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
+
+			//add row
+			//adding key's (products) name
+			tableModel.addRow(new Object[] {ent.getKey().getName(), 
+					//adding key's price multiplied by value (Quantity)
+					String.valueOf((df.format(ent.getKey().getPrice() * ent.getValue()))), 
+					//adding quantity in shopping cart (value of hash map) 
+					String.valueOf(ent.getValue())});
+		}
 		
 	}
 	
