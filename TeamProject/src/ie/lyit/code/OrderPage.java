@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -360,6 +361,7 @@ public class OrderPage extends JFrame {
 		table.getTableHeader().setFont(generalFont);
 		table.setFont(new Font("SanSerif", Font.ITALIC + Font.BOLD, 16));
 		table.setRowHeight(30);
+		table.setEnabled(false);
 		//create model list
 		//listModel = new DefaultListModel<Product>();
 		
@@ -560,7 +562,8 @@ public class OrderPage extends JFrame {
 			
 			/* if event equals add to cart button
 			 * 
-			 * add to model list
+			 * map product to integer (quantity in cart)
+			 * 
 			 * 
 			 * accumulate total (Decimal format, 2 decimal places)
 			 * set total text field to display total
@@ -568,29 +571,78 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
+
+				//swapped
+				boolean removed = false;
 				//get product from west list
 				Product item = westJlist.getSelectedValue();
 				
 				
+				//if list item was selected
 				if(item != null) {
+					
 					
 					//if map doesn't contain product
 					if(!countMap.containsKey(item)) {
 						
 						//map product to quantity - equal 1
-						//(first occurrence)
+						//(first occurrence of product)
 						countMap.put(item, 1);
+						
+						
+						//add new row to table
+						//adding key name
+						tableModel.addRow(new Object[] {item.getName(), 
+								//adding key price
+								String.valueOf(item.getPrice()), 
+								//adding key value (Qty)
+								String.valueOf(countMap.get(item))});
+						
 					}
+					
 					//else map already has product
-					else {
+					else if(countMap.containsKey(item)){
+						
 						//increment value (quantity)
-						countMap.put(item, countMap.get(item)+1);
+						countMap.replace(item, countMap.get(item), countMap.get(item)+1);
+						
+						
+						//clear table model
+						//if row count more than zero
+						if(tableModel.getRowCount() > 0){
+							
+							//for every row in table
+							for(int i = tableModel.getRowCount()-1; i > -1; i--) {
+								
+								//remove
+								tableModel.removeRow(i);
+								
+							}
+							//flick variable
+							removed = true;
+							
+						}
+						
+						//if table model was cleared
+						if(removed) {
+							
+							//for every entry in hash map
+							for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
+
+								//add row
+								//adding key's (products) name
+								tableModel.addRow(new Object[] {ent.getKey().getName(), 
+										//adding key's price multiplied by value (Quantity)
+										String.valueOf((df.format(ent.getKey().getPrice() * ent.getValue()))), 
+										//adding quantity in shopping cart (value of hash map) 
+										String.valueOf(ent.getValue())});
+							}
+						}
 						
 					}
 					
 					
-					//add new row to table
-					tableModel.addRow(new Object[] {item.getName(), String.valueOf(item.getPrice()), String.valueOf(countMap.get(item))});
+					//set text fields
 					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
@@ -638,6 +690,7 @@ public class OrderPage extends JFrame {
 			}
 		}
 	}
+	
 	
 	
 	/* create model list of images
