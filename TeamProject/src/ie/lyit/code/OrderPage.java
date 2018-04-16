@@ -38,9 +38,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import ie.lyit.data.Account;
 import ie.lyit.data.Delivery;
@@ -84,6 +86,11 @@ public class OrderPage extends JFrame {
 	//default model view for products
 	private DefaultListModel<Product> listModel;
 	private DefaultListModel<Product> productModel;
+	
+	private DefaultTableModel tableModel;
+	private JTable table;
+	private JScrollPane tablePane;
+	private String[] columnNames = {"Name", "Price", "Quantity"};
 	
 	//radio button + group
 	private JRadioButton perishables, dairy, fruit, meat, veg, biscuits, all;
@@ -347,19 +354,25 @@ public class OrderPage extends JFrame {
 		removeBtnPanel.add(removeBtn);
 		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
+		//create table model
+		tableModel = new DefaultTableModel(columnNames, 1);
+		//create table with column headings
+		table = new JTable(tableModel);
+		
+		tablePane = new JScrollPane(table);
 		//create model list
-		listModel = new DefaultListModel<Product>();
+		//listModel = new DefaultListModel<Product>();
 		
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList<Product>(listModel);
-		centerJlist.setFont(generalFont);
+		//centerJlist = new JList<Product>(listModel);
+		//centerJlist.setFont(generalFont);
 		
-		centerScrollPane = new JScrollPane(centerJlist);
-		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	//	centerScrollPane = new JScrollPane(centerJlist);
+		//centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		centerPanel.add(centerScrollPane, BorderLayout.CENTER);
-		
+		//centerPanel.add(centerScrollPane, BorderLayout.CENTER);
+		centerPanel.add(tablePane, BorderLayout.CENTER);
 		
 		add(centerPanel, BorderLayout.CENTER);
 		setResizable(false);
