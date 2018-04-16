@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 import ie.lyit.data.Account;
 import ie.lyit.data.Delivery;
@@ -564,7 +565,6 @@ public class OrderPage extends JFrame {
 			 * 
 			 * map product to integer (quantity in cart)
 			 * 
-			 * 
 			 * accumulate total (Decimal format, 2 decimal places)
 			 * set total text field to display total
 			 * 
@@ -578,7 +578,7 @@ public class OrderPage extends JFrame {
 				Product item = westJlist.getSelectedValue();
 				
 				
-				//if list item was selected
+				//if a list item was selected
 				if(item != null) {
 					
 					
@@ -607,24 +607,8 @@ public class OrderPage extends JFrame {
 						countMap.replace(item, countMap.get(item), countMap.get(item)+1);
 						
 						
-						//clear table model
-						//if row count more than zero
-						if(tableModel.getRowCount() > 0){
-							
-							//for every row in table
-							for(int i = tableModel.getRowCount()-1; i > -1; i--) {
-								
-								//remove
-								tableModel.removeRow(i);
-								
-							}
-							//flick variable
-							removed = true;
-							
-						}
-						
 						//if table model was cleared
-						if(removed) {
+						if(clear(tableModel)) {
 							
 							//for every entry in hash map
 							for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
@@ -689,6 +673,33 @@ public class OrderPage extends JFrame {
 				dispose();
 			}
 		}
+	}
+	
+	
+	//clear table model
+	private static boolean clear(DefaultTableModel tableModel) {
+		
+		//assign flag
+		boolean removed = false;
+		
+		//clear table model
+		//if row count more than zero
+		if(tableModel.getRowCount() > 0){
+			
+			//for every row in table
+			for(int i = tableModel.getRowCount()-1; i > -1; i--) {
+				
+				//remove
+				tableModel.removeRow(i);
+				
+			}
+			//flick variable
+			removed = true;
+			
+		}
+		
+		return removed;
+		
 	}
 	
 	
