@@ -20,17 +20,13 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -104,8 +100,8 @@ public class OrderPage extends JFrame {
 	//assign to global variable
 	private Account a;
 	
-	//hash map to map image to product
-	private HashMap<ImageIcon, Product> imageMap; 
+	//hash map to map product to integer
+	private HashMap<Product, Integer> countMap; 
 	
 	
 	//constructor
@@ -355,11 +351,15 @@ public class OrderPage extends JFrame {
 		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
 		//create table model
-		tableModel = new DefaultTableModel(columnNames, 1);
+		tableModel = new DefaultTableModel(columnNames, 0);
 		//create table with column headings
 		table = new JTable(tableModel);
 		
 		tablePane = new JScrollPane(table);
+		
+		table.getTableHeader().setFont(generalFont);
+		table.setFont(new Font("SanSerif", Font.ITALIC + Font.BOLD, 16));
+		table.setRowHeight(30);
 		//create model list
 		//listModel = new DefaultListModel<Product>();
 		
@@ -376,6 +376,9 @@ public class OrderPage extends JFrame {
 		
 		add(centerPanel, BorderLayout.CENTER);
 		setResizable(false);
+		
+		//initialize map
+		countMap = new HashMap<>();
 		
 		
 		//add listeners on buttons
@@ -530,7 +533,7 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == placeOrder) {
 				
-				int noOfProducts = listModel.getSize();
+				int noOfProducts = tableModel.getRowCount();
 				
 				ArrayList<Product> prods = new ArrayList<>();
 				
@@ -565,17 +568,37 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-				//ImageIcon item = westJlist.getSelectedValue();
+				//get product from west list
 				Product item = westJlist.getSelectedValue();
-				//Product product = imageMap.get(item);
+				
+				
 				if(item != null) {
-					listModel.addElement(item);
+					
+					//if map doesn't contain product
+					if(!countMap.containsKey(item)) {
+						
+						//map product to quantity - equal 1
+						//(first occurrence)
+						countMap.put(item, 1);
+					}
+					//else map already has product
+					else {
+						//increment value (quantity)
+						countMap.put(item, countMap.get(item)+1);
+						
+					}
+					
+					
+					//add new row to table
+					tableModel.addRow(new Object[] {item.getName(), String.valueOf(item.getPrice()), String.valueOf(countMap.get(item))});
 					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
 					productPriceTf.setText("€" + item.getPrice());
 					productTypeTf.setText("" + item.getType());
+					
+					
 				}
 				
 			}
@@ -589,7 +612,7 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == removeBtn) {
 				
-				int item = (int)centerJlist.getSelectedIndex();
+				int item = (int)table.getSelectedColumn();
 				
 				//if item equals -1, no element is selected
 				if(item != -1) {
@@ -639,39 +662,39 @@ public class OrderPage extends JFrame {
 	 * return list of images
 	 * 
 	 */
-	private DefaultListModel<ImageIcon> createProductModel(ArrayList<Product> prods) {
-		
-		imageMap = new HashMap<>();
-		ImageIcon icon;
-
-		DefaultListModel<ImageIcon> temp = new DefaultListModel<>();
-		
-		String pathName = "src/pictures";
-		
-		File dir = new File(pathName);
-		File[] files = dir.listFiles();
-		
-		for(Product p: prods) {
-			
-			for(File f: files) {
-				
-				if(f.getName().contains(p.getName())) {
-					try {
-						icon = new ImageIcon(ImageIO.read(f));
-						temp.addElement(icon);
-						imageMap.put(icon, p);
-						break;
-					} catch (IOException e) {
-						System.out.println("Input/Output Error");
-					}
-				}
-			}
-		}
-		
-		
-		return temp;
-		
-	}
+//	private DefaultListModel<ImageIcon> createProductModel(ArrayList<Product> prods) {
+//
+//		//imageMap = new HashMap<>();
+//		ImageIcon icon;
+//
+//		DefaultListModel<ImageIcon> temp = new DefaultListModel<>();
+//
+//		String pathName = "src/pictures";
+//
+//		File dir = new File(pathName);
+//		File[] files = dir.listFiles();
+//
+//		for(Product p: prods) {
+//
+//			for(File f: files) {
+//
+//				if(f.getName().contains(p.getName())) {
+//					try {
+//						icon = new ImageIcon(ImageIO.read(f));
+//						temp.addElement(icon);
+//						//imageMap.put(icon, p);
+//						break;
+//					} catch (IOException e) {
+//						System.out.println("Input/Output Error");
+//					}
+//				}
+//			}
+//		}
+//
+//
+//		return temp;
+//
+//	}
 	
 	
 	//populate model list of products
