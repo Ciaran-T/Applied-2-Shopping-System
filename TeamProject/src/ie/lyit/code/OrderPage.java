@@ -522,11 +522,9 @@ public class OrderPage extends JFrame {
 			
 			/* if event equal place order button
 			 * 
-			 * get no. of product in list
 			 * create array list to store products
 			 * 
-			 * get product by selected image
-			 * add products to array list
+			 * iterate over hash map, add to list
 			 * 
 			 * connect to DB to get last order No. given out
 			 * create order and write to DB
@@ -536,16 +534,23 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == placeOrder) {
 				
-				int noOfProducts = tableModel.getRowCount();
-				
 				ArrayList<Product> prods = new ArrayList<>();
 				
-				for(int i = 0; i < noOfProducts; i++) {
-					Product prod = listModel.getElementAt(i);
-					//Product prod = imageMap.get(img);
-					prods.add(prod);
+				//for every entry in hash map
+				for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
 					
+					//while value (Qty) greater than zero
+					while(ent.getValue() > 0) {
+						
+						//add to products list
+						prods.add(ent.getKey());
+						
+						//decrement value
+						ent.setValue(ent.getValue()-1);
+					}
 				}
+				
+				
 				
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
@@ -571,9 +576,6 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-
-				//swapped
-				boolean removed = false;
 				//get product from west list
 				Product item = westJlist.getSelectedValue();
 				
@@ -690,7 +692,7 @@ public class OrderPage extends JFrame {
 					//clear table model
 					clearTable(tableModel);
 					
-					//build table model from hash set
+					//build table model from hash map
 					buildTable();
 					
 					
