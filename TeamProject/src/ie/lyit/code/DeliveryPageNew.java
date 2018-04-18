@@ -68,8 +68,8 @@ public class DeliveryPageNew extends JFrame{
 	
 	
 	///TEST USER DETAILS PANEL
-   private JLabel titleLabel, custDetailsLabel, shoppingCartLabel, productsLabel, jlbAltInstructions, jlbDelDate;
-   private JTextField name, email, password, total;
+   private JLabel jlbAltInstructions, jlbDelDate;
+   private JTextField name;
 	
    public DeliveryPageNew(Account a, Order o, Delivery delDets) {
    	
