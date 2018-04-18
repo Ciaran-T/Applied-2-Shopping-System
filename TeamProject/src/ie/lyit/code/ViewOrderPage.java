@@ -8,22 +8,17 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 import ie.lyit.data.Account;
 import ie.lyit.data.Delivery;
@@ -34,44 +29,35 @@ public class ViewOrderPage extends JFrame {
 	
 	//instance fields
 	    //labels
-		private JLabel titleLabel, orderDetailsLabel, shoppingCartLabel, productsLabel;
-		private JLabel custNameLabel, productPriceLabel, productTypeLabel;
+		private JLabel titleLabel, orderDetailsLabel, shoppingCartLabel;
+		private JLabel custNameLabel;
 		
-		private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, westPanel, southPanel;
+		private JPanel northPanel, centerPanel, eastPanel, eastTopPanel, southPanel;
 		
 		//text fields
-		private JTextField nameTf, emailTf, productTypeTf, productPriceTf, totalTf;
+		private JTextField nameTf;
 		
 		//buttons
 		private JButton backBtn, exitBtn, goToFeedback;
 		
-		//lists
-		private JList<Product> westJlist;
-		private JList<Product> centerJlist;
 		
-		//default model view for products
-		private DefaultListModel<Product> listModel;
 		
 		//scroll pane for lists
-		private JScrollPane westScrollPane, centerScrollPane;
+		private JScrollPane centerScrollPane;
 		
 		//default font
 		private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
 		private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 		private Font buttonFont = new Font("SanSerif",Font.BOLD,22);
 		
-		//total of order
-		private double total = 0;
 		
 		private Account a;
 		private Order o;
 		private Delivery d;
 		
-//		private static HashMap<Product, Integer> countMap;
-//		private DefaultTableModel tableModel;
+
 		private JTable table;
-//		private JScrollPane tablePane;
-//		private String[] columnNames = {"Name", "Price", "Quantity"};
+
 		
 		//constructor
 		public ViewOrderPage(Account a, Order o, Delivery d) {
@@ -232,9 +218,6 @@ public class ViewOrderPage extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				//format number to two decimal places
-				DecimalFormat df = new DecimalFormat("#0.00");
 				
 				//get source of event
 				Object event = e.getSource();
