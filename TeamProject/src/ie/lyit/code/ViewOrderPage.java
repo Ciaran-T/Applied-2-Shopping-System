@@ -267,6 +267,7 @@ public class ViewOrderPage extends JFrame {
 				else if(event == goToFeedback) {
 					
 					FeedbackPage.drawFeedbackPage();
+					dispose();
 					
 				}
 				
