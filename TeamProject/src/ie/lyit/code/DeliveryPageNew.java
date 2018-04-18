@@ -64,12 +64,12 @@ public class DeliveryPageNew extends JFrame{
 	//text Area
    private JTextArea jtaAltInstructions;
 
-   private JButton confirmDelDetsBtn, backBtn, jBtn;
+   private JButton confirmDelDetsBtn, backBtn, exitBtn;
 	
 	
 	///TEST USER DETAILS PANEL
-   private JLabel titleLabel, custDetailsLabel, shoppingCartLabel, productsLabel, jlbAltInstructions, jlbDelDate;
-   private JTextField name, email, password, total;
+   private JLabel jlbAltInstructions, jlbDelDate;
+   private JTextField name;
 	
    public DeliveryPageNew(Account a, Order o, Delivery delDets) {
    	
@@ -157,11 +157,14 @@ public class DeliveryPageNew extends JFrame{
       add(eastPanel, BorderLayout.EAST);
    	
    	//southPanel Buttons
-      southPanel = new JPanel();
-      southPanel.setLayout(new GridLayout(1,1));
+      southPanel = new JPanel(new FlowLayout(1, 100, 5));
+      //southPanel.setLayout(new GridLayout(1,1));
+      
       southPanel.add(backBtn = new JButton("Go Back"), BorderLayout.EAST);
       backBtn.setFont(buttonFont);
       southPanel.add(confirmDelDetsBtn = new JButton("Confirm Delivery Details"), BorderLayout.WEST);
+      southPanel.add(exitBtn = new JButton("Exit Application"), BorderLayout.EAST);
+      exitBtn.setFont(buttonFont);
       confirmDelDetsBtn.setFont(buttonFont);
       add(southPanel, BorderLayout.SOUTH);
    
@@ -169,6 +172,7 @@ public class DeliveryPageNew extends JFrame{
    	//add action listens to button
       backBtn.addActionListener(new ActionListenerClass());
       confirmDelDetsBtn.addActionListener(new ActionListenerClass());
+      exitBtn.addActionListener(new ActionListenerClass());
    
    
    		//Listeners
@@ -264,6 +268,8 @@ public class DeliveryPageNew extends JFrame{
       jlbDelDate = new JLabel("");
       westPanel.add(jlbDelDate);
       add(westPanel, BorderLayout.NORTH);
+      
+      setResizable(false);
    
    }//end of constructor
 
@@ -362,10 +368,13 @@ public class DeliveryPageNew extends JFrame{
       	//get source of event
          Object event = e.getSource();
       
+         if(event == exitBtn) {
+        	 dispose();
+         }
       	/* if event equal back button
       	 * dispose order page and open home page
       	 * */
-         if(event == backBtn) 
+         else if(event == backBtn) 
          {
             dispose();
             OrderPage op = new OrderPage(new Account("Somebody","Else","elseIf@mail.ie","TestPass", 0));
@@ -432,11 +441,12 @@ public class DeliveryPageNew extends JFrame{
       dp.setTitle("Delivery Page");		
    	//dp.pack();
       //dp.setSize(700, 400);
-      dp.setLocation(0, 0);
-      //dp.setLocationRelativeTo(null);
+      //dp.setLocation(0, 0);
+      dp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+      dp.setLocationRelativeTo(null);
       dp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       dp.setVisible(true);
-      dp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+      
    }//end Draw Method
 	
 	//main method

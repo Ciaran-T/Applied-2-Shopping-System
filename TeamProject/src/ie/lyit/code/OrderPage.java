@@ -20,17 +20,14 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,9 +35,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 import ie.lyit.data.Account;
 import ie.lyit.data.Delivery;
@@ -85,10 +85,18 @@ public class OrderPage extends JFrame {
 	private DefaultListModel<Product> listModel;
 	private DefaultListModel<Product> productModel;
 	
+	private DefaultTableModel tableModel;
+	private JTable table;
+	private JScrollPane tablePane;
+	private String[] columnNames = {"Name", "Price", "Quantity"};
+	
 	//radio button + group
 	private JRadioButton perishables, dairy, fruit, meat, veg, biscuits, all;
 	private ButtonGroup groupOfBtns;
 	private JPanel bgPanel;
+	
+	//format number to two decimal places
+	DecimalFormat df = new DecimalFormat("#0.00");
 	
 	//total of order
 	private double total = 0;
@@ -97,8 +105,8 @@ public class OrderPage extends JFrame {
 	//assign to global variable
 	private Account a;
 	
-	//hash map to map image to product
-	private HashMap<ImageIcon, Product> imageMap; 
+	//hash map to map product to integer
+	private HashMap<Product, Integer> countMap; 
 	
 	
 	//constructor
@@ -347,22 +355,36 @@ public class OrderPage extends JFrame {
 		removeBtnPanel.add(removeBtn);
 		centerPanel.add(removeBtnPanel, BorderLayout.SOUTH);
 		
+		//create table model
+		tableModel = new DefaultTableModel(columnNames, 0);
+		//create table with column headings
+		table = new JTable(tableModel);
+		
+		tablePane = new JScrollPane(table);
+		
+		table.getTableHeader().setFont(generalFont);
+		table.setFont(new Font("SanSerif", Font.ITALIC + Font.BOLD, 16));
+		table.setRowHeight(30);
+		//table.setEnabled(false);
 		//create model list
-		listModel = new DefaultListModel<Product>();
+		//listModel = new DefaultListModel<Product>();
 		
 		//create list and passing into  scroll pane
 		//set horizontal scroll bars to NEVER
-		centerJlist = new JList<Product>(listModel);
-		centerJlist.setFont(generalFont);
+		//centerJlist = new JList<Product>(listModel);
+		//centerJlist.setFont(generalFont);
 		
-		centerScrollPane = new JScrollPane(centerJlist);
-		centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	//	centerScrollPane = new JScrollPane(centerJlist);
+		//centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		centerPanel.add(centerScrollPane, BorderLayout.CENTER);
-		
+		//centerPanel.add(centerScrollPane, BorderLayout.CENTER);
+		centerPanel.add(tablePane, BorderLayout.CENTER);
 		
 		add(centerPanel, BorderLayout.CENTER);
 		setResizable(false);
+		
+		//initialize map
+		countMap = new HashMap<>();
 		
 		
 		//add listeners on buttons
@@ -388,9 +410,6 @@ public class OrderPage extends JFrame {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			//format number to two decimal places
-			DecimalFormat df = new DecimalFormat("#0.00");
 			
 			//get source of event
 			Object event = e.getSource();
@@ -503,11 +522,9 @@ public class OrderPage extends JFrame {
 			
 			/* if event equal place order button
 			 * 
-			 * get no. of product in list
 			 * create array list to store products
 			 * 
-			 * get product by selected image
-			 * add products to array list
+			 * iterate over hash map, add to list
 			 * 
 			 * connect to DB to get last order No. given out
 			 * create order and write to DB
@@ -517,16 +534,23 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == placeOrder) {
 				
-				int noOfProducts = listModel.getSize();
-				
 				ArrayList<Product> prods = new ArrayList<>();
 				
-				for(int i = 0; i < noOfProducts; i++) {
-					Product prod = listModel.getElementAt(i);
-					//Product prod = imageMap.get(img);
-					prods.add(prod);
+				//for every entry in hash map
+				for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
 					
+					//while value (Qty) greater than zero
+					while(ent.getValue() > 0) {
+						
+						//add to products list
+						prods.add(ent.getKey());
+						
+						//decrement value
+						ent.setValue(ent.getValue()-1);
+					}
 				}
+				
+				
 				
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
@@ -544,7 +568,7 @@ public class OrderPage extends JFrame {
 			
 			/* if event equals add to cart button
 			 * 
-			 * add to model list
+			 * map product to integer (quantity in cart)
 			 * 
 			 * accumulate total (Decimal format, 2 decimal places)
 			 * set total text field to display total
@@ -552,47 +576,136 @@ public class OrderPage extends JFrame {
 			 * */
 			else if(event == addToCartBtn) {
 				
-				//ImageIcon item = westJlist.getSelectedValue();
+				//get product from west list
 				Product item = westJlist.getSelectedValue();
-				//Product product = imageMap.get(item);
+				
+				
+				//if a list item was selected
 				if(item != null) {
-					listModel.addElement(item);
+					
+					
+					//if map doesn't contain product
+					if(!countMap.containsKey(item)) {
+						
+						//map product to quantity - equal 1
+						//(first occurrence of product)
+						countMap.put(item, 1);
+						
+						
+						//add new row to table
+						//adding key name
+						tableModel.addRow(new Object[] {item.getName(), 
+								//adding key price
+								String.valueOf(item.getPrice()), 
+								//adding key value (Qty)
+								String.valueOf(countMap.get(item))});
+						
+					}
+					
+					//else map already has product
+					else if(countMap.containsKey(item)){
+						
+						//increment value (quantity)
+						countMap.replace(item, countMap.get(item), countMap.get(item)+1);
+						
+						
+						//if table model was cleared
+						if(clearTable(tableModel)) {
+							
+							//build table
+							buildTable();
+							
+						}
+						
+					}
+					
+					
+					//set text fields
 					total += item.getPrice();
 					totalTf.setText("Total: €" + df.format(total));
 					
 					//set details of product in east panel
 					productPriceTf.setText("€" + item.getPrice());
 					productTypeTf.setText("" + item.getType());
+					
+					
 				}
 				
 			}
 			
 			/* if event equals remove button
 			 * 
-			 * remove selected item from list,
 			 * 
-			 * take away from total.
 			 * 
 			 * */
 			else if(event == removeBtn) {
 				
-				int item = (int)centerJlist.getSelectedIndex();
+				Product p = null;
 				
-				//if item equals -1, no element is selected
+				//one entry flag
+				boolean flagOne = false;
+				
+				//get row that was selected
+				int item = (int)table.getSelectedRow();
+				
+				//if item equals -1, no row was selected
 				if(item != -1) {
-					Product p = listModel.remove(item);
-					//get product by image
-					//Product p = imageMap.get(icon);
+					
+					//for every entry in map
+					for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
+						
+						//compare name of product with the name
+						//at the row selected, column zero
+						if(ent.getKey().getName().equals((String)tableModel.getValueAt(item, 0))) {
+							
+							
+							//if there is only one product in the table
+							if(ent.getValue() == 1) {
+								
+								//flick flag
+								flagOne = true;
+								//save product object
+								p = ent.getKey();
+								
+								
+							}
+							//else there is more than one product in table
+							else {
+								//decrement key value (Qty)
+								ent.setValue(ent.getValue()-1);
+								//save product object
+								p = ent.getKey();
+							}
+						}
+						
+					}
+						
+					
+					//if only one product exists
+					if(flagOne) {
+						
+						//remove from hash map
+						countMap.remove(p);
+						
+					}	
+						
+					//clear table model
+					clearTable(tableModel);
+					
+					//build table model from hash map
+					buildTable();
+					
+					
+					//decrement price
 					total -= p.getPrice();
+					//format to two decimal places on output
 					totalTf.setText("Total: €" + df.format(total));
 					
-					//fill fields in with details of product
-					productPriceTf.setText("€-" + p.getPrice());
-					productTypeTf.setText("" + p.getType());
-					
-					
+
 				}
-			}
+			}//end remove button event method
+			
+			
 			
 			//if exit button
 			else if(event == exitBtn) {
@@ -602,6 +715,52 @@ public class OrderPage extends JFrame {
 			}
 		}
 	}
+	
+	
+	//clear table model
+	private static boolean clearTable(DefaultTableModel tableModel) {
+		
+		//assign flag
+		boolean removed = false;
+		
+		//clear table model
+		//if row count more than zero
+		if(tableModel.getRowCount() > 0){
+			
+			//for every row in table
+			for(int i = tableModel.getRowCount()-1; i > -1; i--) {
+				
+				//remove
+				tableModel.removeRow(i);
+				
+			}
+			//flick variable
+			removed = true;
+			
+		}
+		
+		return removed;
+		
+	}
+	
+	
+	//re-build table model
+	private void buildTable() {
+		
+		//for every entry in hash map
+		for(Map.Entry<Product, Integer> ent: countMap.entrySet()) {
+
+			//add row
+			//adding key's (products) name
+			tableModel.addRow(new Object[] {ent.getKey().getName(), 
+					//adding key's price multiplied by value (Quantity)
+					String.valueOf((df.format(ent.getKey().getPrice() * ent.getValue()))), 
+					//adding quantity in shopping cart (value of hash map) 
+					String.valueOf(ent.getValue())});
+		}
+		
+	}
+	
 	
 	
 	/* create model list of images
@@ -626,39 +785,39 @@ public class OrderPage extends JFrame {
 	 * return list of images
 	 * 
 	 */
-	private DefaultListModel<ImageIcon> createProductModel(ArrayList<Product> prods) {
-		
-		imageMap = new HashMap<>();
-		ImageIcon icon;
-
-		DefaultListModel<ImageIcon> temp = new DefaultListModel<>();
-		
-		String pathName = "src/pictures";
-		
-		File dir = new File(pathName);
-		File[] files = dir.listFiles();
-		
-		for(Product p: prods) {
-			
-			for(File f: files) {
-				
-				if(f.getName().contains(p.getName())) {
-					try {
-						icon = new ImageIcon(ImageIO.read(f));
-						temp.addElement(icon);
-						imageMap.put(icon, p);
-						break;
-					} catch (IOException e) {
-						System.out.println("Input/Output Error");
-					}
-				}
-			}
-		}
-		
-		
-		return temp;
-		
-	}
+//	private DefaultListModel<ImageIcon> createProductModel(ArrayList<Product> prods) {
+//
+//		//imageMap = new HashMap<>();
+//		ImageIcon icon;
+//
+//		DefaultListModel<ImageIcon> temp = new DefaultListModel<>();
+//
+//		String pathName = "src/pictures";
+//
+//		File dir = new File(pathName);
+//		File[] files = dir.listFiles();
+//
+//		for(Product p: prods) {
+//
+//			for(File f: files) {
+//
+//				if(f.getName().contains(p.getName())) {
+//					try {
+//						icon = new ImageIcon(ImageIO.read(f));
+//						temp.addElement(icon);
+//						//imageMap.put(icon, p);
+//						break;
+//					} catch (IOException e) {
+//						System.out.println("Input/Output Error");
+//					}
+//				}
+//			}
+//		}
+//
+//
+//		return temp;
+//
+//	}
 	
 	
 	//populate model list of products

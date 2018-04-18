@@ -8,7 +8,6 @@ import java.awt.event.*;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Properties.*;
-import java.awt.Font;
 
 import javax.swing.JTextArea;
 
@@ -20,7 +19,7 @@ import javax.activation.*;
 
 public class FeedbackPage extends JFrame{
    //panels
-   private JPanel northPanel, westPanel, southPanel;
+   private JPanel northPanel, westPanel, southPanel, btnPanel;
    
    //font styles
    private Font generalFont = new Font("SanSerif", Font.BOLD, 15);
@@ -38,7 +37,7 @@ public class FeedbackPage extends JFrame{
    private JLabel titleLabel, emailLabel;
    
    //button
-   private JButton submitButton, backButton;
+   private JButton submitButton, backButton, exitBtn;
    
    private static JFrame frame;
    
@@ -75,7 +74,7 @@ public class FeedbackPage extends JFrame{
       add(westPanel, BorderLayout.WEST);
       
       //south panel
-      feedbackArea = new JTextArea("Leave your comment here",30,25);
+      feedbackArea = new JTextArea("Leave your comment here",20,20);
       feedbackArea.setFont(textAreaFont);
       feedbackArea.setLineWrap(true);
       feedbackArea.setWrapStyleWord(true);
@@ -88,12 +87,19 @@ public class FeedbackPage extends JFrame{
       
       //submitButton.setPreferredSize(d);
       //submitButton.setBounds(20,30,50,30);
+      exitBtn = new JButton("Exit Application");
+      exitBtn.setFont(buttonFont);
+      btnPanel = new JPanel(new FlowLayout(1, 240, 10));
+      btnPanel.add(backButton);
+      btnPanel.add(submitButton);
+      btnPanel.add(exitBtn);
       
       southPanel = new JPanel(new BorderLayout());
       southPanel.add(feedbackArea, BorderLayout.NORTH);
       //southPanel.add(submitButton);  //BorderLayout.WEST
-      southPanel.add(backButton,BorderLayout.WEST);
-      southPanel.add(submitButton,BorderLayout.EAST);
+      //southPanel.add(backButton,BorderLayout.WEST);
+      //southPanel.add(submitButton,BorderLayout.EAST);
+      southPanel.add(btnPanel, BorderLayout.CENTER);
       
       add(southPanel, BorderLayout.SOUTH);
       //add(submitButton, BorderLayout.WEST);
@@ -109,9 +115,11 @@ public class FeedbackPage extends JFrame{
       //ListenerClass focusListener = new ListenerClass();
       //feedbackArea.addFocusListener(focuaListener);
       
+      setResizable(false);
       ActionListenerClass listener = new ActionListenerClass();
 	  submitButton.addActionListener(listener);
 	  backButton.addActionListener(listener);
+	  exitBtn.addActionListener(listener);
 	  
 	  focusListener focusListener = new focusListener();
 	  feedbackArea.addFocusListener(focusListener);
@@ -126,7 +134,11 @@ public class FeedbackPage extends JFrame{
 	   {
 		   Object event = e.getSource();
 		   
-		   if(event == submitButton)
+		   if(event == exitBtn) {
+			   
+			   dispose();
+		   }
+		   else if(event == submitButton)
 		   {
 			   
 			   String message = "Email: "+emailText +", your feedback has been successfully placed.";
@@ -195,11 +207,12 @@ public class FeedbackPage extends JFrame{
    {
 	   FeedbackPage fp = new FeedbackPage(frame);
 	   fp.setTitle("Leave your feedback");
-	   fp.pack();
-	   fp.setLocation(0, 0);
+	   //fp.pack();
+	   fp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+	   fp.setLocationRelativeTo(null);
 	   fp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   fp.setVisible(true);
-	   fp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+	   
 	   
 	   //Properties props;
    }
