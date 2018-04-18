@@ -403,11 +403,13 @@ public class HomePage extends JFrame{
 
 								JOptionPane.showMessageDialog(null, "Welcome", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
 
+								//jump to order page
+								OrderPage.drawOrder(a);
+								
 								//dispose home page
 								dispose();
 
-								//jump to order page
-								OrderPage.drawOrder(a);
+								
 							}
 							/* if password is wrong,
 							 * let the user know and retry,
