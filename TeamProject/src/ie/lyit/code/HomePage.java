@@ -38,8 +38,9 @@ public class HomePage extends JFrame{
 	private Font titleFont = new Font("SanSerif", Font.ITALIC, 40);
 
 	//Text Areas
-	private JTextField emailText, passwordText, fNameText, lNameText, newEmail, newPassword;
-
+	private JTextField emailText, fNameText, lNameText, newEmail;
+	private JPasswordField passwordText, newPassword;
+	
 	//labels
 	private JLabel titleLabel, existingUser, newUser;
 
@@ -78,7 +79,7 @@ public class HomePage extends JFrame{
 		emailText.setFont(generalFont);
 
 		//password text
-		passwordText = new JTextField("Enter Password");
+		passwordText = new JPasswordField("Enter Password");
 		passwordText.setFont(generalFont);
 
 		//login button
@@ -122,7 +123,7 @@ public class HomePage extends JFrame{
 		//new user and password
 		newEmail = new JTextField("Enter New Email Address");
 		newEmail.setFont(generalFont);
-		newPassword = new JTextField("Enter New Password");
+		newPassword = new JPasswordField("Enter New Password");
 		newPassword.setFont(generalFont);
 
 		//create account button, set alignment
