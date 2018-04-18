@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -18,16 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
-import ie.lyit.code.OrderPage.ActionListenerClass;
 import ie.lyit.data.Account;
-import ie.lyit.data.Order;
 import ie.lyit.data.Delivery;
+import ie.lyit.data.Order;
 import ie.lyit.data.Product;
-import jdbc.DBConnector;
 
 public class ViewOrderPage extends JFrame {
 	
@@ -66,12 +67,21 @@ public class ViewOrderPage extends JFrame {
 		private Order o;
 		private Delivery d;
 		
+//		private static HashMap<Product, Integer> countMap;
+//		private DefaultTableModel tableModel;
+		private JTable table;
+//		private JScrollPane tablePane;
+//		private String[] columnNames = {"Name", "Price", "Quantity"};
+		
 		//constructor
 		public ViewOrderPage(Account a, Order o, Delivery d) {
 			
 			this.a = a;
 			this.o = o;
 			this.d = d;
+			
+			//get products map
+		//	countMap = OrderPage.getMap();
 			
 			//north panel
 			northPanel = new JPanel();
@@ -95,7 +105,7 @@ public class ViewOrderPage extends JFrame {
 			//label and set alignment
 			orderDetailsLabel = new JLabel("Order Details");
 			orderDetailsLabel.setHorizontalAlignment(JLabel.CENTER);
-			orderDetailsLabel.setFont(generalFont);
+			orderDetailsLabel.setFont(buttonFont);
 			
 			//add label to panel
 			eastPanel.add(orderDetailsLabel, BorderLayout.NORTH);
@@ -109,6 +119,8 @@ public class ViewOrderPage extends JFrame {
 			nameTf = new JTextField(a.getfName() + " " + a.getlName());
 			//nameTf.setColumns(15);
 			nameTf.setEditable(false);
+			nameTf.setColumns(30);
+			nameTf.setFont(buttonFont);
 			
 			//name of customer
 			//set width
@@ -119,16 +131,19 @@ public class ViewOrderPage extends JFrame {
 			eastPanel.add(custNameLabel);
 			custNameLabel.setHorizontalAlignment(JLabel.CENTER);
 			eastPanel.add(nameTf);
+			custNameLabel.setFont(buttonFont);
 			
 			//create label and add to panel
 			//set alignment
 			JLabel jlbcustEmail = new JLabel("<html><u>Order ID</u></html");
 			eastPanel.add(jlbcustEmail);
 			jlbcustEmail.setHorizontalAlignment(JLabel.CENTER);
+			jlbcustEmail.setFont(buttonFont);
 			
 			//product type text field
 			JTextField jtfOrderID = new JTextField(""+ o.getOrderID());
 			jtfOrderID.setEditable(false);
+			jtfOrderID.setFont(buttonFont);
 			//add to panel
 			eastPanel.add(jtfOrderID);
 			
@@ -136,10 +151,12 @@ public class ViewOrderPage extends JFrame {
 			JLabel jlbdelDetails = new JLabel("<html><u> Delivery Details </u></html");
 			eastPanel.add(jlbdelDetails);
 			jlbdelDetails.setHorizontalAlignment(JLabel.CENTER);
+			jlbdelDetails.setFont(buttonFont);
 			
 			//delivery details textarea
-			JTextArea jtaDelDets = new JTextArea(d.getAllDetails() , 5 , 15);
+			JTextArea jtaDelDets = new JTextArea(d.getAllDetails());
 			jtaDelDets.setEditable(false);
+			jtaDelDets.setFont(buttonFont);
 			//add to panel
 			eastPanel.add(jtaDelDets);
 			//add panel to frame
@@ -154,7 +171,7 @@ public class ViewOrderPage extends JFrame {
 			southPanel.add(backBtn);
 			
 			//button to cancel order
-			goToFeedback = new JButton("Leave Feedback/Comment");
+			goToFeedback = new JButton("Leave Feedback");
 			goToFeedback.setFont(buttonFont);
 			southPanel.add(goToFeedback);
 			
@@ -169,7 +186,7 @@ public class ViewOrderPage extends JFrame {
 			centerPanel = new JPanel(new BorderLayout());
 			shoppingCartLabel = new JLabel("Your Order");
 			shoppingCartLabel.setHorizontalAlignment(JLabel.CENTER);
-			shoppingCartLabel.setFont(generalFont);
+			shoppingCartLabel.setFont(buttonFont);
 			
 			//add to panel
 			centerPanel.add(shoppingCartLabel, BorderLayout.NORTH);
@@ -182,8 +199,12 @@ public class ViewOrderPage extends JFrame {
 			centerPanel.add(orderSummery);
 			//create list and passing into  scroll pane
 			//set horizontal scroll bars to NEVER
-			centerJlist = new JList<Product>();
-			centerScrollPane = new JScrollPane(centerJlist);
+			//centerJlist = new JList<Product>();
+			table = new JTable(OrderPage.getTableModel());
+			table.getTableHeader().setFont(buttonFont);
+			table.setRowHeight(30);
+			table.setFont(buttonFont);
+			centerScrollPane = new JScrollPane(table);
 			centerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			
 			centerPanel.add(centerScrollPane, BorderLayout.CENTER);
