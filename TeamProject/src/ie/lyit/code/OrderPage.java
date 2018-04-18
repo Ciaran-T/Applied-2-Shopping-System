@@ -85,6 +85,7 @@ public class OrderPage extends JFrame {
 	private DefaultListModel<Product> listModel;
 	private DefaultListModel<Product> productModel;
 	
+	private static DefaultTableModel modelToPush;
 	private DefaultTableModel tableModel;
 	private JTable table;
 	private JScrollPane tablePane;
@@ -555,6 +556,7 @@ public class OrderPage extends JFrame {
 				int id = DBConnector.getLastOrderID() + 1;
 				Order o = new Order(prods, total, id, a.getEmail());
 				DBConnector.writeOrder(o, a);
+				modelToPush = tableModel;
 				
 				//mock delivery
 				Delivery d = new Delivery("");
@@ -761,7 +763,11 @@ public class OrderPage extends JFrame {
 		
 	}
 	
-	
+	//get table model
+	public static DefaultTableModel getTableModel() {
+		
+		return modelToPush;
+	}
 	
 	/* create model list of images
 	 * 
