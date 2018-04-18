@@ -333,21 +333,32 @@ public class HomePage extends JFrame{
 								lNameText.getText().equals("") ||
 								emailText.getText().equals("") ||
 								passwordText.getText().equals(""))) {
+							
+							//check if email is already registered in the database
+							Account acc = DBConnector.readAccount(newEmail.getText());
+							if(acc == null)
+							{
+								//create account with details taken from text fields
+								Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText(), 0);
+								
+								//pass to DB handler (write to database)
+								DBConnector.writeAccount(a);
+								//inform user that account has been created
+								JOptionPane.showMessageDialog(null, "Your new Account has been created", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+								
 
-							//create account with details taken from text fields
-							Account a = new Account(fNameText.getText(), lNameText.getText(), newEmail.getText(), newPassword.getText(), 0);
+								//Jump to Order page
+								OrderPage.drawOrder(a);
+								
+								//dispose home page 
+								dispose();
+							}
+							else 
+							{
+								//display message to user indicating that an coount already exists with that email
+								JOptionPane.showMessageDialog(null, "An account with this email already exists \nin the databse, try again. ", "account already exists", JOptionPane.INFORMATION_MESSAGE);	
 							
-							//pass to DB handler (write to database)
-							DBConnector.writeAccount(a);
-							//inform user that account has been created
-							JOptionPane.showMessageDialog(null, "Your new Account has been created", "Welcome", JOptionPane.INFORMATION_MESSAGE);
-							
-
-							//Jump to Order page
-							OrderPage.drawOrder(a);
-							
-							//dispose home page 
-							dispose();
+							}
 
 						}
 					}
