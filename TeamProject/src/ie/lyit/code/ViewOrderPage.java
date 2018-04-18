@@ -2,6 +2,7 @@ package ie.lyit.code;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -41,7 +42,7 @@ public class ViewOrderPage extends JFrame {
 		private JTextField nameTf, emailTf, productTypeTf, productPriceTf, totalTf;
 		
 		//buttons
-		private JButton backBtn, cancelOrder, goToFeedback, addToCartBtn;
+		private JButton backBtn, exitBtn, goToFeedback;
 		
 		//lists
 		private JList<Product> westJlist;
@@ -146,9 +147,9 @@ public class ViewOrderPage extends JFrame {
 			
 			//south panel
 			//buttons to proceed or quit
-			southPanel = new JPanel(new GridLayout(1, 2));
+			southPanel = new JPanel(new FlowLayout(1, 240, 10));
 			
-			backBtn = new JButton("Back/Log Out");
+			backBtn = new JButton("Back");
 			backBtn.setFont(buttonFont);
 			southPanel.add(backBtn);
 			
@@ -156,6 +157,10 @@ public class ViewOrderPage extends JFrame {
 			goToFeedback = new JButton("Leave Feedback/Comment");
 			goToFeedback.setFont(buttonFont);
 			southPanel.add(goToFeedback);
+			
+			exitBtn = new JButton("Exit Application");
+			exitBtn.setFont(buttonFont);
+			southPanel.add(exitBtn);
 			
 			
 			add(southPanel, BorderLayout.SOUTH);
@@ -191,7 +196,7 @@ public class ViewOrderPage extends JFrame {
 			ActionListenerClass listener = new ActionListenerClass();
 			backBtn.addActionListener(listener);
 			goToFeedback.addActionListener(listener);
-			//placeOrder.addActionListener(listener);
+			exitBtn.addActionListener(listener);
 			//addToCartBtn.addActionListener(listener);;
 
 			
@@ -213,10 +218,13 @@ public class ViewOrderPage extends JFrame {
 				//get source of event
 				Object event = e.getSource();
 				
+				if(event == exitBtn) {
+					dispose();
+				}
 				/* if event equal back button
 				 * dispose order page and open home page
 				 * */
-				if(event == backBtn) {
+				else if(event == backBtn) {
 					dispose();
 					
 					//draw new Home page using path to draw method
