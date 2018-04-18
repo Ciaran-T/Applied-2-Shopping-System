@@ -415,6 +415,7 @@ public class DeliveryPageNew extends JFrame{
              
              //draw the new view order page
                ViewOrderPage.drawViewOrderPage(a, o , delDets);
+               dispose();
             
              //dispose Delivery page
             // dispose();
