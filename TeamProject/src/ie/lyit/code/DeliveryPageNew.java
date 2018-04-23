@@ -160,7 +160,7 @@ public class DeliveryPageNew extends JFrame{
       southPanel = new JPanel(new FlowLayout(1, 100, 5));
       //southPanel.setLayout(new GridLayout(1,1));
       
-      southPanel.add(backBtn = new JButton("Go Back"), BorderLayout.EAST);
+      southPanel.add(backBtn = new JButton("Back"), BorderLayout.EAST);
       backBtn.setFont(buttonFont);
       southPanel.add(confirmDelDetsBtn = new JButton("Confirm Delivery Details"), BorderLayout.WEST);
       southPanel.add(exitBtn = new JButton("Exit Application"), BorderLayout.EAST);
@@ -174,6 +174,7 @@ public class DeliveryPageNew extends JFrame{
       confirmDelDetsBtn.addActionListener(new ActionListenerClass());
       exitBtn.addActionListener(new ActionListenerClass());
    
+      backBtn.setEnabled(false);
    
    		//Listeners
    		//add focus listener to text fields
