@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ie.lyit.data.Account;
@@ -56,7 +57,8 @@ public class Admin1 extends JFrame {
 	private JLabel detailLabel;
 	
 	//text fields
-	private JTextField usernameTf, passwordTf;
+	private JTextField usernameTf;
+	private JPasswordField passwordTf;
 	//blank text fields
 	private JLabel blanklabel1 = new JLabel("                              "
 			+ "                                                            "
@@ -100,7 +102,7 @@ public class Admin1 extends JFrame {
 		usernameTf = new JTextField("Administrator");
 		usernameTf.setFont(generalFont);
 		usernameTf.setEditable(false);
-		passwordTf = new JTextField("Enter Password");
+		passwordTf = new JPasswordField("Enter Password");
 		passwordTf.setFont(generalFont);
 
 		//add to panel
