@@ -747,6 +747,11 @@ public class DBConnector {
 
 		return "DELETE FROM Products WHERE ProductNo='" + id + "';";
 	}
+	
+	private static String removeProductOrderQuery(int id) {
+		
+		return "DELETE FROM order_product WHERE ProductID='" + id + "';";
+	}
 
 	//remove product
 	public static boolean removeProduct(int id) {
@@ -757,9 +762,8 @@ public class DBConnector {
 		try {
 			String query = removeProductQuery(id);
 			int i = stmt.executeUpdate(query);
-			if(i > 0) {
+			if(i > 0)
 				removed = true;
-			}
 
 			System.out.println("Removed Product from DB successfully");
 
@@ -768,7 +772,29 @@ public class DBConnector {
 		}finally {
 			closeConnection();
 		}
+		
+		if(!removed) {
+			
+			createConnection(DB_URL, USER, PASSWORD);
 
+			try {
+				String query = removeProductOrderQuery(id);
+				String query2 = removeProductQuery(id);
+				int i = stmt.executeUpdate(query);
+				int j = stmt.executeUpdate(query2);
+				if(i > 0 && j > 0)
+					removed = true;
+
+				System.out.println("Removed Product from DB successfully");
+
+			}catch(Exception e) {
+				System.out.println("Problem with remove product method ==> " + e.getMessage());
+			}finally {
+				closeConnection();
+			}
+		}
+
+		
 		return removed;
 	}
 
@@ -776,6 +802,10 @@ public class DBConnector {
 	private static String removeAccountQuery(String email) {
 
 		return "DELETE FROM Accounts WHERE email='" + email + "';";
+	}
+	private static String removeAccountOrderQuery(String email) {
+		
+		return "DELETE FROM Orders WHERE email='" + email + "';";
 	}
 
 	//remove account
@@ -798,6 +828,28 @@ public class DBConnector {
 			closeConnection();
 		}
 
+		if(!removed) {
+			
+			createConnection(DB_URL, USER, PASSWORD);
+
+			try {
+				String query = removeAccountOrderQuery(email);
+				String query2 = removeAccountQuery(email);
+				int i = stmt.executeUpdate(query);
+				int j = stmt.executeUpdate(query2);
+				if(i > 0 && j > 0)
+					removed = true;
+
+				System.out.println("Removed Account from DB successfully");
+
+			}catch(Exception e) {
+				System.out.println("Problem with remove account method ==> " + e.getMessage());
+			}finally {
+				closeConnection();
+			}
+		}
+		
+		
 		return removed;
 	}
 	
