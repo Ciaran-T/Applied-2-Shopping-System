@@ -1,21 +1,35 @@
 //Feedback page
 package ie.lyit.code;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Date;
 import java.util.Properties;
-import java.util.Properties.*;
 
-import javax.swing.JTextArea;
-
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.Message;
 import javax.mail.Session;
-import javax.mail.Session.*;
-import javax.activation.*;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+
+import ie.lyit.data.Account;
+import ie.lyit.data.Delivery;
+import ie.lyit.data.Order;
 
 public class FeedbackPage extends JFrame{
    //panels
@@ -41,11 +55,17 @@ public class FeedbackPage extends JFrame{
    
    private static JFrame frame;
    
-   
+   private Account a;
+   private Order o;
+   private Delivery d;
    static String email;
    static String messageToSend;
    
-   public FeedbackPage(JFrame frame) {
+   public FeedbackPage(Account a, Order o, Delivery d) {
+	   
+	   this.a = a;
+	   this.o = o;
+	   this.d = d;
       
      northPanel = new JPanel();
       titleLabel = new JLabel("Leave your Feedback");
@@ -129,6 +149,7 @@ public class FeedbackPage extends JFrame{
    
    public class ActionListenerClass implements ActionListener{
 	   
+	   boolean flag = false;
 	   @Override
 	   public void actionPerformed(ActionEvent e) 
 	   {
@@ -159,6 +180,12 @@ public class FeedbackPage extends JFrame{
 				   messageToSend = feedbackArea.getText();
 				   
 				   FeedbackPage.sendMail(email, messageToSend);
+				   flag = true;
+			   }
+			   
+			   if(flag) {
+				   
+				   dispose();
 			   }
 		   
 			   
@@ -167,7 +194,7 @@ public class FeedbackPage extends JFrame{
 		   
 		   if(event == backButton)
 		   {
-			   //ViewOrderPage.drawViewOrderPage();
+			   ViewOrderPage.drawViewOrderPage(a, o, d);
 			   dispose();
 		   }
 		   
@@ -203,9 +230,9 @@ public class FeedbackPage extends JFrame{
 		}
    }
    
-   public static void drawFeedbackPage()
+   public static void drawFeedbackPage(Account a, Order o, Delivery d)
    {
-	   FeedbackPage fp = new FeedbackPage(frame);
+	   FeedbackPage fp = new FeedbackPage(a, o, d);
 	   fp.setTitle("Leave your feedback");
 	   //fp.pack();
 	   fp.setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -272,7 +299,7 @@ public class FeedbackPage extends JFrame{
    
    public static void main(String []args){
    
-    drawFeedbackPage();
+   // drawFeedbackPage();
     
     //String MAIL = "hello@mail.com";
     //String MESSTOSEND = "Hello, team project feedback mail working";

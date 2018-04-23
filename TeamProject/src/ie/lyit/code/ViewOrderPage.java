@@ -232,7 +232,7 @@ public class ViewOrderPage extends JFrame {
 					dispose();
 					
 					//draw new Home page using path to draw method
-					HomePage.drawHome();
+					DeliveryPageNew.drawDeliveryNew(a, o, d);
 					
 				}
 				
@@ -249,7 +249,7 @@ public class ViewOrderPage extends JFrame {
 				 * */
 				else if(event == goToFeedback) {
 					
-					FeedbackPage.drawFeedbackPage();
+					FeedbackPage.drawFeedbackPage(a, o, d);
 					dispose();
 					
 				}
