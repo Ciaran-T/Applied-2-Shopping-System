@@ -82,6 +82,7 @@ public class FeedbackPage extends JFrame{
       
       emailText = new JTextField();
       emailText.setColumns(15);
+      emailText.setText(a.getEmail());
       
       
       //add to panel

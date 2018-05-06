@@ -117,7 +117,7 @@ public class Admin3 extends JFrame {
 		//create south panel
 		southPanel = new JPanel(new FlowLayout(1, 240, 10));
 		//back button
-		backBtn = new JButton("Back/Logout");
+		backBtn = new JButton("Back");
 		backBtn.setFont(new Font("SanSerif", Font.BOLD, 22));
 		//add button to south panel
 		southPanel.add(backBtn);
